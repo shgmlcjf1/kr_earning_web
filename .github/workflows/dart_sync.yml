@@ -1,0 +1,48 @@
+
+name: Daily DART Earnings Sync
+
+on:
+  schedule:
+    - cron: '0 7,8,9 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-dart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Real-Time DART & Naver Finance Data
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: |
+          python3 -c "
+          import json, os, server
+          key = os.environ.get('DART_API_KEY', '').strip()
+          if key:
+              data = server.build_real_earnings_dataset(key)
+              with open('earnings_data.json', 'w', encoding='utf-8') as f:
+                  json.dump(data, f, ensure_ascii=False, indent=2)
+              print('Saved earnings_data.json:', data.get('count', 0))
+          else:
+              raise RuntimeError('DART_API_KEY secret이 설정되지 않았습니다.')
+          "
+
+      - name: Commit and Push updated earnings_data.json
+        run: |
+          if [ -f earnings_data.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add earnings_data.json
+            git diff --staged --quiet || git commit -m "chore: update real-time DART earnings data"
+            git push
+          fi
