@@ -122,7 +122,7 @@ def fetch_naver_quarterly_and_consensus(stock_code: str) -> dict:
         quarters = ["전년동기", "3분기전", "2분기전", "전분기", "이번분기"]
         rev_q, op_q, net_q, q_headers_is_est = [], [], [], []
 
-        m_cop = re.search(r'<div class="section cop_analysis">(.*?)</div>\s*</div>', page, re.S)
+        m_cop = re.search(r'<div class="section cop_analysis">.*?<table[^>]*>(.*?)</table>', page, re.S)
         if m_cop:
             cop_html = m_cop.group(1)
             thead_m = re.search(r"<thead>(.*?)</thead>", cop_html, re.S)
@@ -235,36 +235,47 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
 
     try:
         raw_disclosures = []
-        for p_type in ("I", "A", ""):
-            params = {"crtfc_key": clean_key, "bgn_de": bgn_de, "page_count": 100}
-            if p_type:
-                params["pblntf_ty"] = p_type
-            q = urllib.parse.urlencode(params)
-            data = call_dart_api(f"https://opendart.fss.or.kr/api/list.json?{q}")
-            if data.get("status") not in ("000", "013"):
-                return {"status": data.get("status", "ERR"), "message": data.get("message", "DART 오류"), "items": []}
-            if isinstance(data.get("list"), list):
-                raw_disclosures.extend(data["list"])
-            if len(raw_disclosures) >= 80:
-                break
+        # 거래소 공정공시(I) 중 영업(잠정)실적/매출액손익구조변경 및 정기보고서(A: 분기/반기/사업보고서)를 다중 페이지로 스캔
+        for p_type, max_p in (("I", 5), ("A", 3)):
+            for page_no in range(1, max_p + 1):
+                params = {"crtfc_key": clean_key, "bgn_de": bgn_de, "pblntf_ty": p_type, "page_no": page_no, "page_count": 100}
+                q = urllib.parse.urlencode(params)
+                data = call_dart_api(f"https://opendart.fss.or.kr/api/list.json?{q}")
+                if data.get("status") not in ("000", "013"):
+                    if not raw_disclosures:
+                        return {"status": data.get("status", "ERR"), "message": data.get("message", "DART 오류"), "items": []}
+                    break
+                page_list = data.get("list") or []
+                if not page_list:
+                    break
+                raw_disclosures.extend(page_list)
+                if len(page_list) < 100:
+                    break
+
+        def is_real_earnings_report(rnm: str) -> bool:
+            if not rnm:
+                return False
+            # 예고, 안내공시, IR, 전망, 소송, 담보, 주식취득 등 비실적 공시는 100% 제외!
+            exclude_kw = ("예고", "안내공시", "기업설명회", "IR", "장래사업", "경영계획", "전망", "소송", "담보", "취득", "처분", "배당", "증자", "감자", "사채", "주주총회")
+            if any(ek in rnm for ek in exclude_kw):
+                return False
+            include_kw = ("잠정", "매출액또는손익구조", "분기보고서", "반기보고서", "사업보고서", "영업(잠정)실적")
+            return any(ik in rnm for ik in include_kw)
 
         seen_codes = set()
         earnings_candidates = []
-        other_candidates = []
-        earnings_keywords = ("잠정", "실적", "손익", "매출액", "분기보고서", "반기보고서", "사업보고서", "연결재무")
 
         for item in raw_disclosures:
             scode = (item.get("stock_code") or "").strip()
             if len(scode) != 6 or not scode.isdigit() or scode in seen_codes:
                 continue
-            seen_codes.add(scode)
-            rnm = item.get("report_nm") or ""
-            if any(k in rnm for k in earnings_keywords):
+            rnm = (item.get("report_nm") or "").strip()
+            if is_real_earnings_report(rnm):
+                seen_codes.add(scode)
                 earnings_candidates.append(item)
-            else:
-                other_candidates.append(item)
 
-        selected_disclosures = (earnings_candidates + other_candidates)[:20]
+        # 절대 일반 공시(other_candidates)로 빈자리를 채우지 않고, 100% 실제 실적발표 기업만 선택!
+        selected_disclosures = earnings_candidates[:30]
 
         def enrich_item(d_item):
             scode = d_item["stock_code"].strip()
@@ -364,6 +375,38 @@ class EarningsWebHandler(SimpleHTTPRequestHandler):
         self.wfile.write(raw)
 
 
+
+import threading
+import time
+
+def start_daily_4pm_7pm_scheduler():
+    def _worker():
+        last_run = ""
+        while True:
+            try:
+                now = datetime.now()
+                hm = now.strftime("%H:%M")
+                day_key = now.strftime("%Y-%m-%d_") + hm
+                if now.weekday() < 5 and hm in ("16:00", "19:00") and last_run != day_key:
+                    last_run = day_key
+                    if DART_API_KEY:
+                        print(f"[자동 검출 스케줄러] {hm} 정각 DART + 네이버증권 실적 수집 시작...")
+                        FINANCE_CACHE.clear()
+                        res = build_real_earnings_dataset(DART_API_KEY)
+                        try:
+                            with open(os.path.join(BASE_DIR, "earnings_data.json"), "w", encoding="utf-8") as f:
+                                json.dump(res, f, ensure_ascii=False, indent=2)
+                            print(f"[자동 검출 완료] {res.get('count', 0)}개 상장사 실적 업데이트 완료!")
+                        except Exception:
+                            pass
+            except Exception:
+                pass
+            time.sleep(20)
+
+    t = threading.Thread(target=_worker, daemon=True)
+    t.start()
+
+
 def main():
     parser = argparse.ArgumentParser(description="K-어닝 서프라이즈 레이더 웹 서버")
     parser.add_argument("--host", default="0.0.0.0", help="바인딩 호스트 (기본값: 0.0.0.0)")
@@ -372,6 +415,7 @@ def main():
     args = parser.parse_args()
 
     load_or_prompt_api_key(args.api_key)
+    start_daily_4pm_7pm_scheduler()
 
     key_status = f"등록 완료 ({DART_API_KEY[:6]}...)" if DART_API_KEY else "미등록 (웹 화면에서 입력 가능)"
     url = f"http://localhost:{args.port}"

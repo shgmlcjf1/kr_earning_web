@@ -95,7 +95,7 @@
           <span class="relative flex h-2.5 w-2.5 live-dot">
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 장후 실적공시 집중 감시중</span>
+          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 16:00 / 19:00 자동검출</span>
           <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">16:45:12</span>
         </div>
 
@@ -104,7 +104,7 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
-          <span id="autoDetectLabel">장마감 자동검출 ON</span>
+          <span id="autoDetectLabel">매일 16시·19시 자동검출 ON</span>
         </button>
 
         <!-- Simulate New Disclosure Scan -->
@@ -770,7 +770,7 @@
         <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
           <div class="font-semibold text-emerald-400">자동 검출 스케줄러 동작 방식</div>
           <ul class="space-y-1.5 text-slate-300 list-disc pl-4">
-            <li><strong class="text-white">집중 수집 시간대:</strong> 평일 15:30 정규장 마감 직후 ~ 18:30 (연결재무제표 기준 영업(잠정)실적 공정공시 집중 시간)</li>
+            <li><strong class="text-white">자동 검출 시간:</strong> 매일 장마감 후 <strong class="text-emerald-300">오후 4시(16:00)</strong> 및 <strong class="text-emerald-300">오후 7시(19:00)</strong> 정각 자동 스캔</li>
             <li><strong class="text-white">수집 대상:</strong> 금융감독원 DART OpenAPI <code class="text-emerald-300">공정공시(잠정실적)</code> 및 에프앤가이드(FnGuide)/연합인포맥스 증권사 3개월 컨센서스 평균치</li>
             <li><strong class="text-white">검출 공식:</strong>
               <div class="mt-1 font-mono text-[11px] text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
@@ -805,7 +805,8 @@
           <div>
             <label class="block text-slate-300 mb-1 font-medium">장마감 스캔 주기</label>
             <select id="scanIntervalSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
-              <option value="1">1분마다 자동 스캔 (15:30~18:00)</option>
+              <option value="16_19" selected>매일 장마감 후 16:00 · 19:00 정각 자동 검출</option>
+              <option value="1">1분마다 자동 스캔 (15:30~19:00)</option>
               <option value="5">5분마다 자동 스캔</option>
               <option value="15">15분마다 자동 스캔</option>
             </select>
@@ -1641,8 +1642,8 @@
         const label = document.getElementById('autoDetectLabel');
         if (autoDetectEnabled) {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition';
-          label.textContent = '장마감 자동검출 ON';
-          showToast('장마감 자동검출 활성화', '정규장 종료 후 발표되는 DART 잠정실적 공시를 실시간 감시합니다.');
+          label.textContent = '매일 16시·19시 자동검출 ON';
+          showToast('매일 16:00 / 19:00 자동검출 활성화', '장마감 후 오후 4시(16:00)와 오후 7시(19:00)에 DART 실적공시를 자동 검출합니다.');
         } else {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition';
           label.textContent = '장마감 자동검출 OFF';
@@ -1757,14 +1758,25 @@
       async function fetchNaverFinanceForCode(code) {
         const targetUrl = `https://finance.naver.com/item/main.naver?code=${code}`;
         const proxyUrls = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
           `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
         ];
         for (const pUrl of proxyUrls) {
           try {
             const r = await fetch(pUrl);
             if (!r.ok) continue;
-            const text = await r.text();
+            const buf = await r.arrayBuffer();
+            // 네이버 증권은 EUC-KR(CP949) 인코딩을 사용하므로 TextDecoder('euc-kr')로 먼저 디코딩해야 한글('매출액', '영업이익')이 깨지지 않음!
+            let text = '';
+            try {
+              text = new TextDecoder('euc-kr').decode(buf);
+            } catch (err) {
+              text = new TextDecoder('utf-8').decode(buf);
+            }
+            if (!text.includes('매출액') && !text.includes('영업이익')) {
+              text = new TextDecoder('utf-8').decode(buf);
+            }
             const parsed = parseNaverFinanceHtmlInBrowser(text);
             if (parsed && (parsed.rev.actual !== 0 || parsed.op.actual !== 0)) {
               return parsed;
@@ -1774,29 +1786,28 @@
         return null;
       }
 
+      function isStrictEarningsDisclosure(rpt) {
+        if (!rpt) return false;
+        const excludeKw = ['예고', '안내공시', '기업설명회', 'IR', '장래사업', '경영계획', '전망', '소송', '담보', '취득', '처분', '배당', '증자', '감자', '사채', '주주총회'];
+        if (excludeKw.some(k => rpt.includes(k))) return false;
+        const includeKw = ['잠정', '매출액또는손익구조', '분기보고서', '반기보고서', '사업보고서', '영업(잠정)실적'];
+        return includeKw.some(k => rpt.includes(k));
+      }
+
       async function convertRawDartListToRealItems(rawList) {
         if (!Array.isArray(rawList) || rawList.length === 0) return [];
-        const earningsKw = ['잠정', '실적', '매출액', '손익', '분기보고서', '반기보고서', '사업보고서'];
         const seenCodes = new Set();
         const candidates = [];
 
-        // Pass 1: Listed companies with earnings keywords
+        // 오직 진짜 실적발표 공시(잠정실적, 매출액또는손익구조변경, 정기보고서)만 엄격 필터링! (일반 공시나 결산실적공시예고는 100% 제외)
         for (const row of rawList) {
           const code = (row.stock_code || '').trim();
           const rpt = (row.report_nm || '').trim();
           if (!code || code.length !== 6 || seenCodes.has(code)) continue;
-          if (earningsKw.some(k => rpt.includes(k))) {
+          if (isStrictEarningsDisclosure(rpt)) {
             seenCodes.add(code);
             candidates.push(row);
           }
-        }
-        // Pass 2: Any listed company in the DART response
-        for (const row of rawList) {
-          if (candidates.length >= 15) break;
-          const code = (row.stock_code || '').trim();
-          if (!code || code.length !== 6 || seenCodes.has(code)) continue;
-          seenCodes.add(code);
-          candidates.push(row);
         }
 
         // Convert immediately so the table shows real DART companies right away
@@ -1913,11 +1924,33 @@
         if (!data) return { ok: false, reason: 'NO_RESPONSE' };
 
         if (Array.isArray(data.items) && data.items.length > 0) {
-          applyRealDartItemsToTable(data.items);
-          const badge = document.getElementById('connectionModeBadge');
-          badge.textContent = `🟢 DART 실시간 데이터 적용됨 (${data.items.length}개 상장사)`;
-          badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-          return { ok: true, count: data.items.length, list: data.list || [] };
+          // 기존에 생성된 earnings_data.json이나 구버전 서버 응답에 일반 공시(취득/담보/소송/예고)가 섞여 있으면 엄격 제거!
+          let strictItems = data.items.filter(it => isStrictEarningsDisclosure(it.reportName || it.comment || ''));
+          if (strictItems.length === 0 && Array.isArray(data.list) && data.list.length > 0) {
+            strictItems = await convertRawDartListToRealItems(data.list);
+          }
+          // 만약 재무 수치가 0인 항목이 있으면 브라우저에서 EUC-KR 디코더로 네이버증권 재무표를 즉시 보강
+          await Promise.all(strictItems.map(async (item) => {
+            if (!item.rev || (item.rev.actual === 0 && item.op.actual === 0)) {
+              const fin = await fetchNaverFinanceForCode(item.code);
+              if (fin) {
+                item.price = fin.price;
+                item.afterHoursChange = fin.afterHoursChange;
+                item.sector = fin.sector;
+                item.rev = fin.rev;
+                item.op = fin.op;
+                item.net = fin.net;
+                item.history = fin.history;
+              }
+            }
+          }));
+          if (strictItems.length > 0) {
+            applyRealDartItemsToTable(strictItems);
+            const badge = document.getElementById('connectionModeBadge');
+            badge.textContent = `🟢 DART 실제 실적발표 기업 (${strictItems.length}곳)`;
+            badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+            return { ok: true, count: strictItems.length, list: data.list || [] };
+          }
         }
 
         if (Array.isArray(data.list) && data.list.length > 0) {
@@ -2086,9 +2119,10 @@
 
       async function fetchLiveDartDisclosures(apiKey) {
         const now = new Date();
-        const past = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+        const past = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
         const bgnDe = past.toISOString().slice(0, 10).replace(/-/g, '');
-        const targetDartUrl = `https://opendart.fss.or.kr/api/list.json?crtfc_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}&page_count=60`;
+        // pblntf_ty=I (공정공시: 연결/별도 잠정실적 및 매출액·손익구조 30% 변경 공시 집중 조회)
+        const targetDartUrl = `https://opendart.fss.or.kr/api/list.json?crtfc_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}&pblntf_ty=I&page_count=100`;
 
         const endpoints = [
           `./earnings_data.json`,
@@ -2362,6 +2396,24 @@
       loadStateFromStorage();
       renderAll();
       checkLocalServerHealth();
+      // Daily 16:00 and 19:00 KST Auto-Detection Scheduler
+      let lastTriggeredSlot = '';
+      setInterval(() => {
+        if (!autoDetectEnabled) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const slotKey = `${now.toISOString().slice(0, 10)}_${hh}:${mm}`;
+        if ((hh === '16' && mm === '00') || (hh === '19' && mm === '00')) {
+          if (lastTriggeredSlot !== slotKey) {
+            lastTriggeredSlot = slotKey;
+            const key = document.getElementById('quickDartKeyInput').value.trim() || document.getElementById('dartApiKeyInput').value.trim();
+            showToast(`[${hh}:00 정기 검출 시작]`, `장마감 후 ${hh}시 정각 DART 실적공시 및 컨센서스 상회 종목을 자동 검출합니다.`);
+            loadAndApplyRealDart(key);
+          }
+        }
+      }, 20000);
+
       window.addEventListener('beforeunload', saveStateToStorage);
     });
   </script>
