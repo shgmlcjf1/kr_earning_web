@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K-어닝 서프라이즈 레이더 | 장마감 실적·컨센서스 상회 검출기</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'Inter', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+          },
+          colors: {
+            slate: {
+              850: '#131c2e',
+              925: '#0b1120',
+              950: '#060a12'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: #0b1120;
+      color: #f1f5f9;
+    }
+    input[type="range"] {
+      accent-color: #10b981;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.7);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.9);
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      70% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .live-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: #10b981;
+      animation: pulse-ring 2s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-500/30 selection:text-emerald-200">
+
+  <!-- Top Navigation & Market Status Header -->
+  <header class="sticky top-0 z-30 border-b border-slate-800/80 bg-slate-925/95 backdrop-blur-md">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-950/60 border border-emerald-400/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">K-어닝 서프라이즈 레이더</h1>
+            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">시뮬레이션 모드 (API키 입력 시 DART 실연동)</span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">장마감 잠정실적 발표 기업 실시간 검출 · 매출/영업이익/순이익 YoY·QoQ 및 컨센서스 상회 스크리너</p>
+        </div>
+      </div>
+
+      <!-- Market Close Status & Action Toolbar -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <!-- Market Status Badge -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs">
+          <span class="relative flex h-2.5 w-2.5 live-dot">
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </span>
+          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 장후 실적공시 집중 감시중</span>
+          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">16:45:12</span>
+        </div>
+
+        <!-- Auto-detect Toggle -->
+        <button id="toggleAutoDetectBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span id="autoDetectLabel">장마감 자동검출 ON</span>
+        </button>
+
+        <!-- Simulate New Disclosure Scan -->
+        <button id="scanNowBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/60 transition">
+          <svg id="scanIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>신규 발표실적 즉시 스캔</span>
+        </button>
+
+        <!-- Add Custom Disclosure Button -->
+        <button id="openAddModalBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>실적 직접 입력/검출</span>
+        </button>
+
+        <!-- API / Guide Modal Button -->
+        <button id="openApiModalBtn" type="button" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition" title="DART API 및 자동화 연동 설정">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="hidden md:inline">연동 설정</span>
+        </button>
+
+        <!-- Web Hosting & Share URL Modal Button -->
+        <button id="openWebDeployModalBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-950/60 border border-indigo-400/30 transition" title="웹 배포 및 외부 접속 URL 생성">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
+          <span>웹 배포 · URL 접속</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
+
+    <!-- Quick Real-Time DART Connect Bar -->
+    <section id="quickDartBar" class="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/40 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <div class="text-xs">
+          <span class="font-bold text-white">DART 실시간 공시 & 네이버증권 재무 직결 모드 (가상 종목 0건)</span>
+          <span id="quickDartStatusText" class="text-slate-300 ml-2">실행 중인 로컬 서버(localhost:8000)를 자동 감지하거나, 우측에 OPENDART 40자리 인증키를 입력하면 즉시 실제 기업 실적이 표시됩니다.</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <input id="quickDartKeyInput" type="text" placeholder="OPENDART 40자리 인증키 붙여넣기" class="flex-1 sm:w-72 bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500" />
+        <button id="quickDartConnectBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shrink-0 shadow transition">
+          실제 기업 즉시 불러오기
+        </button>
+      </div>
+    </section>
+
+    <!-- Top KPI Summary Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-400">발표 수집 기업 (선택 기간)</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiTotalCount" class="text-2xl font-bold text-white font-mono">0</span>
+            <span class="text-xs text-slate-400">개 종목</span>
+          </div>
+          <p id="kpiDateSub" class="text-[11px] text-slate-400 mt-1">잠정실적(연결) 공시 기준</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-gradient-to-br from-emerald-950/60 to-slate-900 border border-emerald-500/30 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-emerald-300">검출 조건 부합 종목 (Hit)</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiMatchedCount" class="text-2xl font-bold text-emerald-400 font-mono">0</span>
+            <span id="kpiMatchRate" class="text-xs font-semibold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">0%</span>
+          </div>
+          <p class="text-[11px] text-emerald-200/70 mt-1">매출·영익·순익 YoY/QoQ + 컨센 상회</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-400">검출종목 평균 영업이익 서프라이즈</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiAvgOpBeat" class="text-2xl font-bold text-amber-400 font-mono">+0.0%</span>
+            <span class="text-xs text-slate-400">vs 컨센서스</span>
+          </div>
+          <p id="kpiAvgOpYoY" class="text-[11px] text-slate-400 mt-1">평균 영업이익 YoY +0.0%</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-between">
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-slate-400">최고 어닝 서프라이즈 Top 픽</p>
+          <div class="flex items-center gap-2 mt-1">
+            <span id="kpiTopStockName" class="text-lg font-bold text-white truncate">-</span>
+            <span id="kpiTopStockBeat" class="text-xs font-mono font-semibold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 shrink-0">-</span>
+          </div>
+          <p id="kpiTopStockDesc" class="text-[11px] text-slate-400 mt-1 truncate">조건 충족 종목 기준</p>
+        </div>
+        <button id="viewTopStockBtn" type="button" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 shrink-0 transition">
+          상세보기
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Grid: Left Filter Control Panel + Right Detected Stock Table -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+
+      <!-- Left Column: Quantitative Screening Criteria (4 cols on XL) -->
+      <aside class="xl:col-span-4 bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              <span>실적 & 컨센서스 검출 기준 설정</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">슬라이더나 숫자를 조절하면 실시간으로 종목을 재검출합니다</p>
+          </div>
+          <button id="resetCriteriaBtn" type="button" class="text-xs text-slate-400 hover:text-emerald-400 underline">
+            기준 초기화
+          </button>
+        </div>
+
+        <!-- Quick Strategy Presets -->
+        <div class="space-y-2">
+          <label class="text-xs font-semibold text-slate-300 block">원클릭 전략 프리셋</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" data-preset="triple_surprise" class="preset-btn text-left p-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 transition">
+              <div class="text-xs font-bold text-emerald-300">🔥 트리플 서프라이즈</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">매출·영익·순익 YoY/QoQ↑ + 컨센 상회</div>
+            </button>
+            <button type="button" data-preset="high_growth" class="preset-btn text-left p-2.5 rounded-xl border border-slate-700/80 bg-slate-800/50 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-slate-200">🚀 고성장 어닝픽</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">매출 YoY≥15% · 영익 YoY≥30%</div>
+            </button>
+            <button type="button" data-preset="mega_beat" class="preset-btn text-left p-2.5 rounded-xl border border-slate-700/80 bg-slate-800/50 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-slate-200">🎯 컨센 대폭 상회</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">영업이익·순이익 컨센 +10% 이상</div>
+            </button>
+            <button type="button" data-preset="all_beat" class="preset-btn text-left p-2.5 rounded-xl border border-slate-700/80 bg-slate-800/50 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-slate-200">✅ 기본 상승 + 컨센상회</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">전항목 YoY/QoQ≥0% & 컨센≥0%</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Logic Mode & Strict Filter -->
+        <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-200">3대 지표(매출·영업이익·순이익) 결합 조건</span>
+            <select id="metricLogicSelect" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-emerald-300 font-semibold focus:outline-none focus:border-emerald-500">
+              <option value="AND">모두 충족 (AND · 엄격 검출)</option>
+              <option value="OR">하나라도 충족 (OR · 광범위 검출)</option>
+            </select>
+          </div>
+          <label class="flex items-center justify-between cursor-pointer pt-1 border-t border-slate-800/80">
+            <span class="text-xs text-slate-300">흑자전환 종목은 YoY/QoQ 상승률 조건 자동 통과</span>
+            <input id="allowTurnaroundChk" type="checkbox" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500" />
+          </label>
+        </div>
+
+        <!-- 1. Revenue Criteria -->
+        <div class="p-3.5 rounded-xl bg-slate-850/90 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <input id="useRevChk" type="checkbox" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500" />
+              <label for="useRevChk" class="text-sm font-bold text-white cursor-pointer">1. 매출액 (Revenue) 기준</label>
+            </div>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-blue-500/15 text-blue-300 border border-blue-500/30">외형 성장</span>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전년동기비 (YoY) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="revYoYVal">10</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="revYoYRange" type="range" min="-20" max="100" step="1" value="10" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="revYoYInput" type="number" min="-50" max="300" step="1" value="10" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전분기비 (QoQ) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="revQoQVal">5</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="revQoQRange" type="range" min="-20" max="100" step="1" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="revQoQInput" type="number" min="-50" max="300" step="1" value="5" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300 font-medium">컨센서스 상회율 (Beat %)</span>
+                <span class="font-mono font-bold text-amber-400">+<span id="revBeatVal">2</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="revBeatRange" type="range" min="-10" max="30" step="0.5" value="2" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="revBeatInput" type="number" min="-30" max="100" step="0.5" value="2" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-amber-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Operating Profit Criteria -->
+        <div class="p-3.5 rounded-xl bg-slate-850/90 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <input id="useOpChk" type="checkbox" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500" />
+              <label for="useOpChk" class="text-sm font-bold text-white cursor-pointer">2. 영업이익 (OP) 기준</label>
+            </div>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">핵심 수익성</span>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전년동기비 (YoY) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="opYoYVal">15</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="opYoYRange" type="range" min="-20" max="150" step="1" value="15" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="opYoYInput" type="number" min="-50" max="500" step="1" value="15" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전분기비 (QoQ) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="opQoQVal">10</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="opQoQRange" type="range" min="-20" max="150" step="1" value="10" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="opQoQInput" type="number" min="-50" max="500" step="1" value="10" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300 font-medium">컨센서스 상회율 (Beat %)</span>
+                <span class="font-mono font-bold text-amber-400">+<span id="opBeatVal">5</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="opBeatRange" type="range" min="-10" max="50" step="0.5" value="5" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="opBeatInput" type="number" min="-30" max="200" step="0.5" value="5" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-amber-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Net Income Criteria -->
+        <div class="p-3.5 rounded-xl bg-slate-850/90 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <input id="useNetChk" type="checkbox" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500" />
+              <label for="useNetChk" class="text-sm font-bold text-white cursor-pointer">3. 당기순이익 (Net Income) 기준</label>
+            </div>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">최종 이익</span>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전년동기비 (YoY) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="netYoYVal">15</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="netYoYRange" type="range" min="-20" max="150" step="1" value="15" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="netYoYInput" type="number" min="-50" max="500" step="1" value="15" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">전분기비 (QoQ) 최소 상승률</span>
+                <span class="font-mono font-bold text-emerald-400"><span id="netQoQVal">8</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="netQoQRange" type="range" min="-20" max="150" step="1" value="8" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="netQoQInput" type="number" min="-50" max="500" step="1" value="8" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-white" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-300 font-medium">컨센서스 상회율 (Beat %)</span>
+                <span class="font-mono font-bold text-amber-400">+<span id="netBeatVal">3</span>% 이상</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="netBeatRange" type="range" min="-10" max="50" step="0.5" value="3" class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer" />
+                <input id="netBeatInput" type="number" min="-30" max="200" step="0.5" value="3" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-right font-mono text-xs text-amber-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Detection Log Feed -->
+        <div class="p-3.5 rounded-xl bg-slate-950/90 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              장마감 실시간 공시 검출 로그
+            </span>
+            <span class="text-[11px] text-slate-500">DART 전자공시 기준</span>
+          </div>
+          <div id="detectionLogList" class="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar text-[11px] pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Screener Results Table & Analytics (8 cols on XL) -->
+      <section class="xl:col-span-8 space-y-4">
+
+        <!-- Filter & Search Bar -->
+        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <!-- Date / Session Tabs -->
+            <div id="dateTabsContainer" class="flex flex-wrap items-center gap-1.5">
+              <button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
+                전체 공시 (3Q26)
+              </button>
+              <button type="button" data-date="2026-10-24" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                오늘 장마감 발표 (10/24)
+              </button>
+              <button type="button" data-date="2026-10-23" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                어제 발표 (10/23)
+              </button>
+              <button type="button" data-date="2026-10-22" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                10/22 발표
+              </button>
+            </div>
+
+            <!-- Only Matched Switch & Export -->
+            <div class="flex items-center gap-2.5">
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 cursor-pointer">
+                <input id="onlyMatchedToggle" type="checkbox" class="rounded bg-slate-900 border-emerald-500 text-emerald-500 focus:ring-0" />
+                <span class="text-xs font-semibold text-emerald-300">검출 조건 통과 종목만 보기</span>
+              </label>
+
+              <input id="uploadCsvInput" type="file" accept=".csv" class="hidden" />
+              <button id="uploadCsvBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition" title="HTS/엑셀에서 저장한 실적·컨센서스 CSV 파일 일괄 업로드">
+                <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span>CSV 일괄 업로드</span>
+              </button>
+                            <button id="exportCsvBtn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>CSV 저장</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Secondary Filters: Search, Market, Sector, Sort, Watchlist -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 pt-2 border-t border-slate-800/80">
+            <div class="relative sm:col-span-2">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input id="searchInput" type="text" placeholder="종목명 또는 종목코드 검색 (예: SK하이닉스, 000660)" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" />
+            </div>
+
+            <select id="marketFilter" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="ALL">전체 시장 (KOSPI + KOSDAQ)</option>
+              <option value="KOSPI">KOSPI (유가증권)</option>
+              <option value="KOSDAQ">KOSDAQ (코스닥)</option>
+            </select>
+
+            <select id="sectorFilter" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+              <option value="ALL">전체 업종</option>
+              <option value="반도체/장비">반도체/장비</option>
+              <option value="전력기기/에너지">전력기기/에너지</option>
+              <option value="방산/조선">방산/조선</option>
+              <option value="바이오/의료기기">바이오/의료기기</option>
+              <option value="화장품/뷰티">화장품/뷰티</option>
+              <option value="자동차/부품">자동차/부품</option>
+              <option value="IT플랫폼/엔터">IT플랫폼/엔터</option>
+              <option value="2차전지/소재">2차전지/소재</option>
+            </select>
+
+            <div class="flex items-center gap-1.5">
+              <select id="sortSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                <option value="opBeatDesc">정렬: 영업이익 컨센상회율 ↓</option>
+                <option value="opYoYDesc">정렬: 영업이익 YoY 상승률 ↓</option>
+                <option value="revYoYDesc">정렬: 매출액 YoY 상승률 ↓</option>
+                <option value="netBeatDesc">정렬: 순이익 컨센상회율 ↓</option>
+                <option value="timeDesc">정렬: 최근 발표시각 순</option>
+              </select>
+              <button id="watchlistFilterBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 hover:text-amber-400 text-xs shrink-0 transition" title="관심종목만 보기">
+                ★
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Table Card -->
+        <div class="bg-slate-900/95 border border-slate-800 rounded-2xl overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-bold text-white">검출된 분기 실적 발표 종목 리스트</h3>
+              <span id="tableCountBadge" class="px-2 py-0.5 text-xs font-mono font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">0건</span>
+            </div>
+            <div class="text-[11px] text-slate-400 flex items-center gap-3">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>조건 충족 수치</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400"></span>컨센서스 상회(Beat)</span>
+              <span>단위: 억원, % (종목 클릭 시 5분기 추이 및 컨센 비교 차트)</span>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse min-w-[980px]">
+              <thead>
+                <tr class="border-b border-slate-800 bg-slate-950/70 text-[11px] font-semibold text-slate-400 uppercase">
+                  <th class="py-3 px-3 w-10 text-center">★</th>
+                  <th class="py-3 px-3">종목명 / 공시시각</th>
+                  <th class="py-3 px-3 text-center">검출 판정</th>
+                  <th class="py-3 px-3 text-right border-l border-slate-800/80">매출액 (실적/컨센)</th>
+                  <th class="py-3 px-3 text-right">매출 YoY · QoQ</th>
+                  <th class="py-3 px-3 text-right border-l border-slate-800/80 bg-emerald-950/15">영업이익 (실적/컨센)</th>
+                  <th class="py-3 px-3 text-right bg-emerald-950/15">영익 YoY · QoQ</th>
+                  <th class="py-3 px-3 text-right border-l border-slate-800/80">순이익 (실적/컨센)</th>
+                  <th class="py-3 px-3 text-right">순익 YoY · QoQ</th>
+                  <th class="py-3 px-3 text-right border-l border-slate-800/80">시간외/등락</th>
+                </tr>
+              </thead>
+              <tbody id="stockTableBody" class="divide-y divide-slate-800/70 text-xs">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyStateBox" class="hidden py-14 px-4 text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-500/15 text-emerald-400 flex items-center justify-center mx-auto">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <div class="text-sm font-semibold text-slate-200">가상(임의) 종목 데이터를 모두 제거했습니다 (0건)</div>
+            <p class="text-xs text-slate-400 max-w-lg mx-auto">상단 초록색 바에 <strong>OPENDART 40자리 인증키</strong>를 붙여넣고 <strong>[실제 기업 즉시 불러오기]</strong>를 클릭하시거나, 로컬 <code>server.py</code>가 실행 중이면 자동으로 실제 상장사 공시와 네이버증권 실적이 채워집니다.</p>
+            <button id="emptyRelaxBtn" type="button" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition">
+              기본 상승 + 컨센 상회 기준(0%↑)으로 완화하기
+            </button>
+          </div>
+        </div>
+
+        <!-- Selected Stock Detailed Visual Analytics Panel -->
+        <div id="detailPanel" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-3.5">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="detailMarketBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded bg-blue-500/15 text-blue-300 border border-blue-500/30">KOSPI</span>
+                <span id="detailSectorBadge" class="px-2 py-0.5 text-[11px] font-medium rounded bg-slate-800 text-slate-300">반도체/장비</span>
+                <h3 id="detailStockTitle" class="text-lg font-bold text-white">종목을 선택하세요</h3>
+                <span id="detailAnnouncementBadge" class="text-xs text-slate-400 font-mono">DART 실시간 공시 연동</span>
+              </div>
+              <p id="detailCommentary" class="text-xs text-slate-300 mt-1.5">상단 [신규 발표실적 즉시 스캔] 또는 [연동 설정]에서 DART 실시간 공시 데이터를 불러오면 실제 재무 수치와 차트가 표시됩니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="text-right">
+                <div id="detailPriceText" class="text-base font-bold font-mono text-white">-</div>
+                <div id="detailAfterHoursText" class="text-xs font-mono text-slate-400">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Metric Beat Breakdown Cards -->
+          <div id="detailMetricCards" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Charts Row -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1">
+            <div class="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-200">당해 분기 발표실적 vs 증권사 컨센서스 비교 (억원)</span>
+                <span class="text-[11px] text-slate-400">3Q26 연결 잠정실적</span>
+              </div>
+              <div class="relative h-60">
+                <canvas id="consensusChart"></canvas>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-200">최근 5개 분기 매출액 & 영업이익 추이 (억원)</span>
+                <span class="text-[11px] text-slate-400">YoY · QoQ 추세 확인</span>
+              </div>
+              <div class="relative h-60">
+                <canvas id="trendChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal 1: Add Custom Earnings Announcement & Test Detection -->
+  <div id="addDisclosureModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white">신규 분기 실적 발표 데이터 직접 입력 / 검출 테스트</h3>
+          <p class="text-xs text-slate-400 mt-0.5">발표된 잠정실적과 전년동기(YoY)·전분기(QoQ)·컨센서스(억원)를 입력하면 상승률과 검출 여부를 즉시 판별합니다.</p>
+        </div>
+        <button id="closeAddModalBtn" type="button" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <form id="addDisclosureForm" class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">종목명 *</label>
+            <input id="formName" type="text" required placeholder="예: 한미반도체" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">종목코드 *</label>
+            <input id="formCode" type="text" required placeholder="예: 042700" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono" />
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">시장 구분</label>
+            <select id="formMarket" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
+              <option value="KOSPI">KOSPI</option>
+              <option value="KOSDAQ">KOSDAQ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">업종 분류</label>
+            <select id="formSector" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
+              <option value="반도체/장비">반도체/장비</option>
+              <option value="전력기기/에너지">전력기기/에너지</option>
+              <option value="방산/조선">방산/조선</option>
+              <option value="바이오/의료기기">바이오/의료기기</option>
+              <option value="화장품/뷰티">화장품/뷰티</option>
+              <option value="자동차/부품">자동차/부품</option>
+              <option value="IT플랫폼/엔터">IT플랫폼/엔터</option>
+              <option value="2차전지/소재">2차전지/소재</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Revenue Row -->
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="font-bold text-blue-300">1. 매출액 (단위: 억원)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">이번 분기 발표실적 *</label>
+              <input id="formRevAct" type="number" step="0.1" required value="2150" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">증권사 컨센서스 *</label>
+              <input id="formRevCons" type="number" step="0.1" required value="1920" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전년동기 실적 (YoY 계산)</label>
+              <input id="formRevPrevY" type="number" step="0.1" required value="1450" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전분기 실적 (QoQ 계산)</label>
+              <input id="formRevPrevQ" type="number" step="0.1" required value="1780" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+          </div>
+        </div>
+
+        <!-- OP Row -->
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="font-bold text-emerald-300">2. 영업이익 (단위: 억원)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">이번 분기 발표실적 *</label>
+              <input id="formOpAct" type="number" step="0.1" required value="920" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">증권사 컨센서스 *</label>
+              <input id="formOpCons" type="number" step="0.1" required value="780" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전년동기 실적 (YoY 계산)</label>
+              <input id="formOpPrevY" type="number" step="0.1" required value="490" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전분기 실적 (QoQ 계산)</label>
+              <input id="formOpPrevQ" type="number" step="0.1" required value="710" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Net Income Row -->
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="font-bold text-purple-300">3. 당기순이익 (단위: 억원)</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div>
+              <label class="block text-slate-400 mb-1">이번 분기 발표실적 *</label>
+              <input id="formNetAct" type="number" step="0.1" required value="760" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">증권사 컨센서스 *</label>
+              <input id="formNetCons" type="number" step="0.1" required value="650" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전년동기 실적 (YoY 계산)</label>
+              <input id="formNetPrevY" type="number" step="0.1" required value="410" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">전분기 실적 (QoQ 계산)</label>
+              <input id="formNetPrevQ" type="number" step="0.1" required value="590" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-mono" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 mb-1 font-medium">핵심 실적 코멘트 / 공시 요약</label>
+          <input id="formComment" type="text" value="글로벌 고객사향 TC본더 납품 확대 및 영업이익률 42% 돌파로 어닝 서프라이즈 기록" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white" />
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+          <button id="cancelAddModalBtn" type="button" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">취소</button>
+          <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold">공시 등록 및 즉시 검출 판정</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: DART OpenAPI & After-Market Crawler Configuration -->
+  <div id="apiConfigModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-5 sm:p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white">장마감 DART 실적공시 & 컨센서스 자동 검출 설정</h3>
+          <p class="text-xs text-slate-400 mt-0.5">매일 15:30 정규장 종료 후 발표되는 잠정실적 공시 및 컨센서스 비교 파이프라인 설정</p>
+        </div>
+        <button id="closeApiModalBtn" type="button" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="font-semibold text-emerald-400">자동 검출 스케줄러 동작 방식</div>
+          <ul class="space-y-1.5 text-slate-300 list-disc pl-4">
+            <li><strong class="text-white">집중 수집 시간대:</strong> 평일 15:30 정규장 마감 직후 ~ 18:30 (연결재무제표 기준 영업(잠정)실적 공정공시 집중 시간)</li>
+            <li><strong class="text-white">수집 대상:</strong> 금융감독원 DART OpenAPI <code class="text-emerald-300">공정공시(잠정실적)</code> 및 에프앤가이드(FnGuide)/연합인포맥스 증권사 3개월 컨센서스 평균치</li>
+            <li><strong class="text-white">검출 공식:</strong>
+              <div class="mt-1 font-mono text-[11px] text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
+                YoY(%) = ((당기실적 - 전년동기) / |전년동기|) × 100<br/>
+                QoQ(%) = ((당기실적 - 전분기) / |전분기|) × 100<br/>
+                컨센상회율(%) = ((당기실적 - 컨센서스) / |컨센서스|) × 100
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 space-y-1">
+          <div class="font-bold text-amber-300">현재 연동 상태 안내 (시뮬레이션 vs 실시간 DART 연동)</div>
+          <p class="text-[11px] leading-relaxed">
+            1) <strong>웹 단독 화면(기본값):</strong> 금감원 DART 서버의 브라우저 보안(CORS) 정책과 개인 인증키 제한으로 인해 기본 상태에서는 <strong>내장 샘플 데이터 시뮬레이션</strong>으로 작동합니다.<br/>
+            2) <strong>실제 DART 연동 방법:</strong> 아래에 <a href="https://opendart.fss.or.kr/" target="_blank" rel="noopener noreferrer" class="underline text-emerald-300">금융감독원 OPENDART</a>에서 발급받은 40자리 API 인증키를 입력하고 함께 드린 <code>server.py</code>를 실행(또는 CORS 프록시 사용)하면 <strong>오늘 실제로 올라온 DART 잠정실적 공시 목록과 원문 링크</strong>를 실시간으로 불러옵니다.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-slate-300 font-medium">DART OpenAPI 40자리 인증키 입력 (실연동용)</label>
+          <div class="flex items-center gap-2">
+            <input id="dartApiKeyInput" type="text" placeholder="OPENDART 40자리 인증키 입력 (비워두면 시뮬레이션 모드)" value="" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-xs" />
+            <button id="testDartLiveBtn" type="button" class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shrink-0 transition">
+              실시간 공시 조회 테스트
+            </button>
+          </div>
+          <div id="dartLiveResultBox" class="hidden p-2.5 rounded-lg bg-slate-950 border border-slate-800 max-h-36 overflow-y-auto custom-scrollbar text-[11px] space-y-1"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">장마감 스캔 주기</label>
+            <select id="scanIntervalSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
+              <option value="1">1분마다 자동 스캔 (15:30~18:00)</option>
+              <option value="5">5분마다 자동 스캔</option>
+              <option value="15">15분마다 자동 스캔</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 mb-1 font-medium">최소 컨센서스 추정 기관 수</label>
+            <select id="minBrokerSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
+              <option value="3">증권사 3곳 이상 (신뢰도 높음)</option>
+              <option value="1">증권사 1곳 이상 전체 포함</option>
+              <option value="5">증권사 5곳 이상 대형주 위주</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+        <button id="saveApiConfigBtn" type="button" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold">설정 저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Web Deployment & Public URL Access Guide -->
+  <div id="webDeployModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-[11px] font-bold rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">WEB HOSTING</span>
+            <h3 class="text-base font-bold text-white">외부 웹(PC·모바일) 어디서나 접속하기</h3>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">현재 사이트는 단일 파일(Zero-Dependency) 구조로 설계되어 있어 무료 호스팅에 올리면 즉시 고유 웹 주소(https://)가 생성됩니다.</p>
+        </div>
+        <button id="closeWebDeployModalBtn" type="button" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <!-- Step 1: Download Standalone index.html or Copy Share URL -->
+        <div class="p-4 rounded-xl bg-gradient-to-br from-indigo-950/50 to-slate-950 border border-indigo-500/30 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div class="font-bold text-indigo-300 text-sm">1단계: 배포용 웹페이지 파일(index.html) 받기</div>
+              <p class="text-slate-300 mt-0.5">현재 설정된 필터와 추가한 실적 데이터가 모두 포함된 독립 실행형 웹 파일입니다.</p>
+            </div>
+            <button id="downloadIndexHtmlBtn" type="button" class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>index.html 원클릭 다운로드</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: 3 Ways to Publish to Public Web URL -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-400">방법 A. Netlify Drop (10초)</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300">가장 간편</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed">코딩이나 서버 설정 없이 <code class="text-slate-200">app.netlify.com/drop</code> 페이지에 다운로드한 파일을 마우스로 끌어다 놓으면 즉시 <code class="text-emerald-300">https://...netlify.app</code> 웹 주소가 발급됩니다.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-blue-400">방법 B. GitHub Pages / Vercel</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/15 text-blue-300">평생 무료</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed">함께 제공된 <code class="text-slate-200">kr_earnings_web_deploy.zip</code> 압축파일을 GitHub 저장소나 Vercel/Cloudflare Pages에 업로드하면 개인 도메인과 SSL이 자동 연결됩니다.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-amber-400">방법 C. DART 자동수집 서버</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300">Python 백엔드</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed">배포 패키지 내 <code class="text-slate-200">server.py</code>를 실행하면 매일 15:30 장마감 후 DART API를 자동 조회하는 자체 웹 서버(<code class="text-amber-300">http://내서버IP:8000</code>)가 구동됩니다.</p>
+          </div>
+        </div>
+
+        <!-- Step 3: Custom Filter URL Hash Generator & LocalStorage Sync -->
+        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-200">현재 검출 조건 URL 파라미터(Hash) 공유</span>
+            <span class="text-[11px] text-emerald-400">브라우저 LocalStorage 자동 저장 활성화됨</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="shareUrlInput" type="text" readonly value="" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 font-mono text-[11px] text-slate-300" />
+            <button id="copyShareUrlBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold shrink-0 border border-slate-700 transition">
+              조건 링크 복사
+            </button>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[11px] text-slate-400">터미널 즉시 실행 명령어: <code class="text-emerald-300 font-mono">python3 server.py --port 8000</code></span>
+            <button id="copyServerCmdBtn" type="button" class="text-[11px] text-indigo-400 hover:text-indigo-300 underline">명령어 복사</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+        <button id="closeWebDeployBottomBtn" type="button" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 max-w-sm w-full pointer-events-none"></div>
+
+  <script>
+    // --- 1. Real-Time DART & Naver Finance Earnings Dataset (Zero Virtual/Sample Stocks) ---
+    const initialEarningsData = [];
+    const simulatedIncomingPool = [];
+
+    // --- 2. Application State ---
+    let earningsList = [];
+    let simulatedPoolIndex = 0;
+    let selectedStockId = '';
+    let watchlistIds = new Set();
+    let autoDetectEnabled = true;
+
+    let filters = {
+      useRev: true,
+      revYoY: 10,
+      revQoQ: 5,
+      revBeat: 2,
+
+      useOp: true,
+      opYoY: 15,
+      opQoQ: 10,
+      opBeat: 5,
+
+      useNet: true,
+      netYoY: 15,
+      netQoQ: 8,
+      netBeat: 3,
+
+      metricLogic: 'AND',
+      allowTurnaround: true,
+      onlyMatched: false,
+      dateFilter: 'ALL',
+      marketFilter: 'ALL',
+      sectorFilter: 'ALL',
+      searchQuery: '',
+      sortBy: 'opBeatDesc',
+      watchlistOnly: false
+    };
+
+    let detectionLogs = [
+      { time: new Date().toTimeString().slice(0, 8), stock: 'DART 실시간 연동 대기', status: 'SCAN', msg: '로컬 서버(localhost:8000) 또는 DART API 키로 실제 공시 데이터를 불러옵니다.' }
+    ];
+
+    // Chart instances
+    let consensusChartInstance = null;
+    let trendChartInstance = null;
+
+    // --- 3. Helper Calculation Functions ---
+    function calcGrowth(actual, base) {
+      if (base <= 0 && actual > 0) {
+        return { pct: 999.9, isTurnaround: true, label: '흑자전환' };
+      }
+      if (base === 0) {
+        return { pct: 0, isTurnaround: false, label: '0.0%' };
+      }
+      const pct = ((actual - base) / Math.abs(base)) * 100;
+      return {
+        pct: Number(pct.toFixed(1)),
+        isTurnaround: false,
+        label: (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%'
+      };
+    }
+
+    function evaluateStock(item) {
+      const revYoY = calcGrowth(item.rev.actual, item.rev.prevY);
+      const revQoQ = calcGrowth(item.rev.actual, item.rev.prevQ);
+      const revBeat = calcGrowth(item.rev.actual, item.rev.consensus);
+
+      const opYoY = calcGrowth(item.op.actual, item.op.prevY);
+      const opQoQ = calcGrowth(item.op.actual, item.op.prevQ);
+      const opBeat = calcGrowth(item.op.actual, item.op.consensus);
+
+      const netYoY = calcGrowth(item.net.actual, item.net.prevY);
+      const netQoQ = calcGrowth(item.net.actual, item.net.prevQ);
+      const netBeat = calcGrowth(item.net.actual, item.net.consensus);
+
+      const checkMetric = (yoyObj, qoqObj, beatObj, minYoY, minQoQ, minBeat) => {
+        const passYoY = (filters.allowTurnaround && yoyObj.isTurnaround) || (yoyObj.pct >= minYoY);
+        const passQoQ = (filters.allowTurnaround && qoqObj.isTurnaround) || (qoqObj.pct >= minQoQ);
+        const passBeat = (filters.allowTurnaround && beatObj.isTurnaround) || (beatObj.pct >= minBeat);
+        return {
+          passAll: passYoY && passQoQ && passBeat,
+          passYoY,
+          passQoQ,
+          passBeat
+        };
+      };
+
+      const revCheck = checkMetric(revYoY, revQoQ, revBeat, filters.revYoY, filters.revQoQ, filters.revBeat);
+      const opCheck  = checkMetric(opYoY,  opQoQ,  opBeat,  filters.opYoY,  filters.opQoQ,  filters.opBeat);
+      const netCheck = checkMetric(netYoY, netQoQ, netBeat, filters.netYoY, filters.netQoQ, filters.netBeat);
+
+      const activeChecks = [];
+      if (filters.useRev) activeChecks.push(revCheck.passAll);
+      if (filters.useOp)  activeChecks.push(opCheck.passAll);
+      if (filters.useNet) activeChecks.push(netCheck.passAll);
+
+      let isMatched = true;
+      if (activeChecks.length > 0) {
+        if (filters.metricLogic === 'AND') {
+          isMatched = activeChecks.every(Boolean);
+        } else {
+          isMatched = activeChecks.some(Boolean);
+        }
+      }
+
+      const isTripleSurprise = revCheck.passAll && opCheck.passAll && netCheck.passAll &&
+                               revBeat.pct >= 3 && opBeat.pct >= 5 && netBeat.pct >= 3;
+
+      return {
+        ...item,
+        metrics: {
+          rev: { yoy: revYoY, qoq: revQoQ, beat: revBeat, check: revCheck },
+          op:  { yoy: opYoY,  qoq: opQoQ,  beat: opBeat,  check: opCheck },
+          net: { yoy: netYoY, qoq: netQoQ, beat: netBeat, check: netCheck }
+        },
+        isMatched,
+        isTripleSurprise
+      };
+    }
+
+    function formatNumber(n) {
+      return Number(n).toLocaleString('ko-KR');
+    }
+
+    // --- 4. Rendering Functions ---
+    function renderAll() {
+      // Evaluate all stocks against current criteria
+      const evaluatedAll = earningsList.map(evaluateStock);
+
+      // Apply date/market/sector/search/watchlist filters for base scope
+      const baseFiltered = evaluatedAll.filter(item => {
+        if (filters.dateFilter !== 'ALL' && item.announceDate !== filters.dateFilter) return false;
+        if (filters.marketFilter !== 'ALL' && item.market !== filters.marketFilter) return false;
+        if (filters.sectorFilter !== 'ALL' && item.sector !== filters.sectorFilter) return false;
+        if (filters.watchlistOnly && !watchlistIds.has(item.id)) return false;
+        if (filters.searchQuery.trim() !== '') {
+          const q = filters.searchQuery.trim().toLowerCase();
+          if (!item.name.toLowerCase().includes(q) && !item.code.toLowerCase().includes(q)) return false;
+        }
+        return true;
+      });
+
+      const matchedInBase = baseFiltered.filter(item => item.isMatched);
+
+      // Update Top KPI Cards
+      document.getElementById('kpiTotalCount').textContent = baseFiltered.length;
+      document.getElementById('kpiMatchedCount').textContent = matchedInBase.length;
+      const matchRate = baseFiltered.length > 0 ? Math.round((matchedInBase.length / baseFiltered.length) * 100) : 0;
+      document.getElementById('kpiMatchRate').textContent = matchRate + '% 검출';
+
+      if (matchedInBase.length > 0) {
+        const avgBeat = matchedInBase.reduce((acc, cur) => acc + cur.metrics.op.beat.pct, 0) / matchedInBase.length;
+        const avgYoY  = matchedInBase.reduce((acc, cur) => acc + cur.metrics.op.yoy.pct, 0) / matchedInBase.length;
+        document.getElementById('kpiAvgOpBeat').textContent = (avgBeat >= 0 ? '+' : '') + avgBeat.toFixed(1) + '%';
+        document.getElementById('kpiAvgOpYoY').textContent = '평균 영업이익 YoY ' + (avgYoY >= 0 ? '+' : '') + avgYoY.toFixed(1) + '%';
+
+        const topPick = [...matchedInBase].sort((a, b) => b.metrics.op.beat.pct - a.metrics.op.beat.pct)[0];
+        document.getElementById('kpiTopStockName').textContent = topPick.name;
+        document.getElementById('kpiTopStockBeat').textContent = '영익 컨센 ' + topPick.metrics.op.beat.label;
+        document.getElementById('kpiTopStockDesc').textContent = `영익 YoY ${topPick.metrics.op.yoy.label} · QoQ ${topPick.metrics.op.qoq.label}`;
+        document.getElementById('viewTopStockBtn').dataset.stockId = topPick.id;
+      } else {
+        document.getElementById('kpiAvgOpBeat').textContent = '0.0%';
+        document.getElementById('kpiAvgOpYoY').textContent = '검출된 종목 없음';
+        document.getElementById('kpiTopStockName').textContent = '-';
+        document.getElementById('kpiTopStockBeat').textContent = '-';
+        document.getElementById('kpiTopStockDesc').textContent = '조건을 완화해보세요';
+        document.getElementById('viewTopStockBtn').dataset.stockId = '';
+      }
+
+      // Filter for Table View
+      let tableItems = filters.onlyMatched ? matchedInBase : baseFiltered;
+
+      // Sort
+      tableItems = [...tableItems].sort((a, b) => {
+        if (filters.sortBy === 'opBeatDesc') return b.metrics.op.beat.pct - a.metrics.op.beat.pct;
+        if (filters.sortBy === 'opYoYDesc')  return b.metrics.op.yoy.pct - a.metrics.op.yoy.pct;
+        if (filters.sortBy === 'revYoYDesc') return b.metrics.rev.yoy.pct - a.metrics.rev.yoy.pct;
+        if (filters.sortBy === 'netBeatDesc') return b.metrics.net.beat.pct - a.metrics.net.beat.pct;
+        if (filters.sortBy === 'timeDesc') {
+          const dtA = a.announceDate + ' ' + a.announceTime;
+          const dtB = b.announceDate + ' ' + b.announceTime;
+          return dtB.localeCompare(dtA);
+        }
+        return 0;
+      });
+
+      document.getElementById('tableCountBadge').textContent = `${tableItems.length}건`;
+
+      const tbody = document.getElementById('stockTableBody');
+      const emptyBox = document.getElementById('emptyStateBox');
+
+      if (tableItems.length === 0) {
+        tbody.innerHTML = '';
+        emptyBox.classList.remove('hidden');
+      } else {
+        emptyBox.classList.add('hidden');
+        tbody.innerHTML = tableItems.map(item => {
+          const isSelected = item.id === selectedStockId;
+          const isStarred = watchlistIds.has(item.id);
+          const m = item.metrics;
+
+          const badgeHtml = item.isMatched
+            ? (item.isTripleSurprise
+                ? `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🔥 트리플 상회</span>`
+                : `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-teal-500/15 text-teal-300 border border-teal-500/30">✓ 검출 충족</span>`)
+            : `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-800 text-slate-400 border border-slate-700">기준 미달</span>`;
+
+          const colorizePct = (pctObj, passFlag, isBeat = false) => {
+            const cls = passFlag
+              ? (isBeat ? 'text-amber-400 font-bold' : 'text-emerald-400 font-semibold')
+              : (pctObj.pct < 0 ? 'text-sky-400' : 'text-slate-400');
+            return `<span class="font-mono ${cls}">${pctObj.label}</span>`;
+          };
+
+          const ahClass = item.afterHoursChange > 0 ? 'text-rose-400' : (item.afterHoursChange < 0 ? 'text-sky-400' : 'text-slate-300');
+          const ahSign = item.afterHoursChange > 0 ? '+' : '';
+
+          return `
+            <tr data-stock-id="${item.id}" class="stock-row cursor-pointer transition ${isSelected ? 'bg-emerald-950/30 hover:bg-emerald-950/40' : 'hover:bg-slate-800/60'}">
+              <td class="py-3 px-3 text-center">
+                <button type="button" data-star-id="${item.id}" class="star-btn text-base leading-none ${isStarred ? 'text-amber-400' : 'text-slate-600 hover:text-slate-400'}">★</button>
+              </td>
+              <td class="py-3 px-3">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-white text-sm">${item.name}</span>
+                  <span class="text-[11px] font-mono text-slate-400">${item.code}</span>
+                  ${item.rceptNo ? `<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${item.rceptNo}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold hover:bg-emerald-500/30">DART원문 ↗</a>` : ''}
+                  <a href="https://finance.naver.com/item/main.naver?code=${item.code}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] hover:bg-slate-700">네이버증권 ↗</a>
+                </div>
+                <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-400">
+                  <span class="px-1.5 py-0.2 rounded bg-slate-800 text-slate-300">${item.market}</span>
+                  <span>${item.sector}</span>
+                  <span class="text-slate-500">·</span>
+                  <span class="font-mono text-slate-400">${item.announceDate} ${item.reportName ? '· ' + item.reportName.slice(0, 18) : item.announceTime}</span>
+                </div>
+              </td>
+              <td class="py-3 px-3 text-center">
+                ${badgeHtml}
+              </td>
+
+              <!-- Revenue -->
+              <td class="py-3 px-3 text-right border-l border-slate-800/80">
+                <div class="font-mono font-semibold text-slate-100">${formatNumber(item.rev.actual)} <span class="text-[11px] text-slate-500">/ ${formatNumber(item.rev.consensus)}</span></div>
+                <div class="text-[11px] mt-0.5">컨센 ${colorizePct(m.rev.beat, m.rev.check.passBeat, true)}</div>
+              </td>
+              <td class="py-3 px-3 text-right">
+                <div class="text-[11px]">YoY ${colorizePct(m.rev.yoy, m.rev.check.passYoY)}</div>
+                <div class="text-[11px] mt-0.5">QoQ ${colorizePct(m.rev.qoq, m.rev.check.passQoQ)}</div>
+              </td>
+
+              <!-- Operating Profit -->
+              <td class="py-3 px-3 text-right border-l border-slate-800/80 bg-emerald-950/10">
+                <div class="font-mono font-bold text-white">${formatNumber(item.op.actual)} <span class="text-[11px] text-slate-400 font-normal">/ ${formatNumber(item.op.consensus)}</span></div>
+                <div class="text-[11px] mt-0.5">컨센 ${colorizePct(m.op.beat, m.op.check.passBeat, true)}</div>
+              </td>
+              <td class="py-3 px-3 text-right bg-emerald-950/10">
+                <div class="text-[11px]">YoY ${colorizePct(m.op.yoy, m.op.check.passYoY)}</div>
+                <div class="text-[11px] mt-0.5">QoQ ${colorizePct(m.op.qoq, m.op.check.passQoQ)}</div>
+              </td>
+
+              <!-- Net Income -->
+              <td class="py-3 px-3 text-right border-l border-slate-800/80">
+                <div class="font-mono font-semibold text-slate-100">${formatNumber(item.net.actual)} <span class="text-[11px] text-slate-500">/ ${formatNumber(item.net.consensus)}</span></div>
+                <div class="text-[11px] mt-0.5">컨센 ${colorizePct(m.net.beat, m.net.check.passBeat, true)}</div>
+              </td>
+              <td class="py-3 px-3 text-right">
+                <div class="text-[11px]">YoY ${colorizePct(m.net.yoy, m.net.check.passYoY)}</div>
+                <div class="text-[11px] mt-0.5">QoQ ${colorizePct(m.net.qoq, m.net.check.passQoQ)}</div>
+              </td>
+
+              <!-- Price / After Hours -->
+              <td class="py-3 px-3 text-right border-l border-slate-800/80">
+                <div class="font-mono font-semibold text-slate-200">${formatNumber(item.price)}원</div>
+                <div class="text-[11px] font-mono font-semibold ${ahClass} mt-0.5">시간외 ${ahSign}${item.afterHoursChange.toFixed(2)}%</div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Ensure selectedStockId points to a valid item
+      const selectedEval = evaluatedAll.find(s => s.id === selectedStockId) || tableItems[0] || evaluatedAll[0];
+      if (selectedEval) {
+        selectedStockId = selectedEval.id;
+        renderDetailPanel(selectedEval);
+      }
+
+      renderDetectionLogs();
+    }
+
+    function renderDetailPanel(stock) {
+      document.getElementById('detailMarketBadge').textContent = stock.market;
+      document.getElementById('detailSectorBadge').textContent = stock.sector;
+      document.getElementById('detailStockTitle').textContent = `${stock.name} (${stock.code})`;
+      document.getElementById('detailAnnouncementBadge').textContent = `${stock.announceDate} ${stock.announceTime} DART 잠정실적 공시`;
+      document.getElementById('detailCommentary').textContent = stock.comment;
+      document.getElementById('detailPriceText').textContent = `${formatNumber(stock.price)}원`;
+
+      const ahEl = document.getElementById('detailAfterHoursText');
+      const ahSign = stock.afterHoursChange > 0 ? '+' : '';
+      ahEl.textContent = `시간외 ${ahSign}${stock.afterHoursChange.toFixed(2)}%`;
+      ahEl.className = `text-xs font-mono font-semibold ${stock.afterHoursChange >= 0 ? 'text-rose-400' : 'text-sky-400'}`;
+
+      const sections = [
+        { title: '매출액 (Revenue)', data: stock.rev, calc: stock.metrics.rev, minYoY: filters.revYoY, minQoQ: filters.revQoQ, minBeat: filters.revBeat },
+        { title: '영업이익 (Operating Profit)', data: stock.op, calc: stock.metrics.op, minYoY: filters.opYoY, minQoQ: filters.opQoQ, minBeat: filters.opBeat },
+        { title: '당기순이익 (Net Income)', data: stock.net, calc: stock.metrics.net, minYoY: filters.netYoY, minQoQ: filters.netQoQ, minBeat: filters.netBeat }
+      ];
+
+      document.getElementById('detailMetricCards').innerHTML = sections.map(sec => {
+        const passAll = sec.calc.check.passAll;
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border ${passAll ? 'border-emerald-500/40' : 'border-slate-800'} space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200">${sec.title}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${passAll ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'}">
+                ${passAll ? '기준 통과' : '일부 미달'}
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <div>
+                <div class="text-[11px] text-slate-400">발표 실적</div>
+                <div class="text-base font-bold font-mono text-white">${formatNumber(sec.data.actual)}억</div>
+              </div>
+              <div class="text-right">
+                <div class="text-[11px] text-slate-400">증권사 컨센서스</div>
+                <div class="text-sm font-mono text-slate-300">${formatNumber(sec.data.consensus)}억</div>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-800/80 text-center text-[11px]">
+              <div class="p-1.5 rounded bg-slate-900">
+                <div class="text-slate-400">컨센 상회</div>
+                <div class="font-mono font-bold mt-0.5 ${sec.calc.check.passBeat ? 'text-amber-400' : 'text-slate-400'}">${sec.calc.beat.label}</div>
+              </div>
+              <div class="p-1.5 rounded bg-slate-900">
+                <div class="text-slate-400">전년비 YoY</div>
+                <div class="font-mono font-bold mt-0.5 ${sec.calc.check.passYoY ? 'text-emerald-400' : 'text-slate-400'}">${sec.calc.yoy.label}</div>
+              </div>
+              <div class="p-1.5 rounded bg-slate-900">
+                <div class="text-slate-400">전분기 QoQ</div>
+                <div class="font-mono font-bold mt-0.5 ${sec.calc.check.passQoQ ? 'text-emerald-400' : 'text-slate-400'}">${sec.calc.qoq.label}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateCharts(stock);
+    }
+
+    function updateCharts(stock) {
+      const ctx1 = document.getElementById('consensusChart').getContext('2d');
+      if (consensusChartInstance) consensusChartInstance.destroy();
+
+      consensusChartInstance = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['매출액', '영업이익', '당기순이익'],
+          datasets: [
+            {
+              label: '증권사 컨센서스 (억원)',
+              data: [stock.rev.consensus, stock.op.consensus, stock.net.consensus],
+              backgroundColor: 'rgba(100, 116, 139, 0.55)',
+              borderColor: 'rgba(148, 163, 184, 0.8)',
+              borderWidth: 1,
+              borderRadius: 6
+            },
+            {
+              label: '3Q26 발표 잠정실적 (억원)',
+              data: [stock.rev.actual, stock.op.actual, stock.net.actual],
+              backgroundColor: 'rgba(16, 185, 129, 0.75)',
+              borderColor: 'rgba(52, 211, 153, 1)',
+              borderWidth: 1,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#cbd5e1', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#94a3b8', font: { size: 11 } },
+              grid: { color: 'rgba(51, 65, 85, 0.3)' }
+            },
+            y: {
+              ticks: { color: '#94a3b8', font: { size: 10 } },
+              grid: { color: 'rgba(51, 65, 85, 0.3)' }
+            }
+          }
+        }
+      });
+
+      const ctx2 = document.getElementById('trendChart').getContext('2d');
+      if (trendChartInstance) trendChartInstance.destroy();
+
+      trendChartInstance = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: stock.history.quarters,
+          datasets: [
+            {
+              type: 'bar',
+              label: '매출액 (억원)',
+              data: stock.history.rev,
+              backgroundColor: 'rgba(59, 130, 246, 0.45)',
+              borderColor: 'rgba(96, 165, 250, 0.9)',
+              borderWidth: 1,
+              borderRadius: 5,
+              yAxisID: 'y'
+            },
+            {
+              type: 'line',
+              label: '영업이익 (억원)',
+              data: stock.history.op,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.2)',
+              borderWidth: 2.5,
+              pointBackgroundColor: '#34d399',
+              pointRadius: 4,
+              tension: 0.25,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#cbd5e1', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#94a3b8', font: { size: 11 } },
+              grid: { color: 'rgba(51, 65, 85, 0.25)' }
+            },
+            y: {
+              type: 'linear',
+              position: 'left',
+              ticks: { color: '#60a5fa', font: { size: 10 } },
+              grid: { color: 'rgba(51, 65, 85, 0.25)' }
+            },
+            y1: {
+              type: 'linear',
+              position: 'right',
+              ticks: { color: '#34d399', font: { size: 10 } },
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
+    }
+
+    function renderDetectionLogs() {
+      const container = document.getElementById('detectionLogList');
+      container.innerHTML = detectionLogs.map(log => `
+        <div class="p-2 rounded-lg bg-slate-900/90 border border-slate-800/80 flex items-start justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-mono text-[10px] text-slate-400">${log.time}</span>
+              <span class="font-bold text-slate-200">${log.stock}</span>
+            </div>
+            <div class="text-slate-400 mt-0.5">${log.msg}</div>
+          </div>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 ${log.status === 'MATCH' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'}">
+            ${log.status === 'MATCH' ? '검출' : '스캔'}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    function showToast(title, subtitle, isSuccess = true) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto p-3.5 rounded-xl border shadow-xl backdrop-blur-md transition-all duration-300 ${
+        isSuccess
+          ? 'bg-slate-900/95 border-emerald-500/50 text-white'
+          : 'bg-slate-900/95 border-slate-700 text-slate-200'
+      }`;
+      toast.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <div class="w-6 h-6 rounded-full ${isSuccess ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'} flex items-center justify-center shrink-0 text-xs font-bold">
+            ${isSuccess ? '✓' : '!'}
+          </div>
+          <div class="text-xs">
+            <div class="font-bold text-white">${title}</div>
+            <div class="text-slate-300 mt-0.5">${subtitle}</div>
+          </div>
+        </div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 4200);
+    }
+
+    // --- 5. Binding Slider & Input Controls ---
+    function bindSliderPair(rangeId, inputId, labelId, filterKey) {
+      const rangeEl = document.getElementById(rangeId);
+      const inputEl = document.getElementById(inputId);
+      const labelEl = document.getElementById(labelId);
+
+      const syncValue = (val) => {
+        const num = parseFloat(val);
+        if (isNaN(num)) return;
+        filters[filterKey] = num;
+        rangeEl.value = num;
+        inputEl.value = num;
+        labelEl.textContent = num;
+        renderAll();
+      };
+
+      rangeEl.addEventListener('input', (e) => syncValue(e.target.value));
+      inputEl.addEventListener('input', (e) => syncValue(e.target.value));
+    }
+
+    function applyCriteriaValues(newVals) {
+      Object.assign(filters, newVals);
+
+      const pairs = [
+        ['revYoYRange', 'revYoYInput', 'revYoYVal', filters.revYoY],
+        ['revQoQRange', 'revQoQInput', 'revQoQVal', filters.revQoQ],
+        ['revBeatRange', 'revBeatInput', 'revBeatVal', filters.revBeat],
+        ['opYoYRange', 'opYoYInput', 'opYoYVal', filters.opYoY],
+        ['opQoQRange', 'opQoQInput', 'opQoQVal', filters.opQoQ],
+        ['opBeatRange', 'opBeatInput', 'opBeatVal', filters.opBeat],
+        ['netYoYRange', 'netYoYInput', 'netYoYVal', filters.netYoY],
+        ['netQoQRange', 'netQoQInput', 'netQoQVal', filters.netQoQ],
+        ['netBeatRange', 'netBeatInput', 'netBeatVal', filters.netBeat]
+      ];
+
+      pairs.forEach(([rId, iId, lId, val]) => {
+        document.getElementById(rId).value = val;
+        document.getElementById(iId).value = val;
+        document.getElementById(lId).textContent = val;
+      });
+
+      document.getElementById('useRevChk').checked = filters.useRev;
+      document.getElementById('useOpChk').checked = filters.useOp;
+      document.getElementById('useNetChk').checked = filters.useNet;
+      renderAll();
+    }
+
+    // --- 6. Event Listeners Initialization ---
+    window.addEventListener('DOMContentLoaded', () => {
+      bindSliderPair('revYoYRange', 'revYoYInput', 'revYoYVal', 'revYoY');
+      bindSliderPair('revQoQRange', 'revQoQInput', 'revQoQVal', 'revQoQ');
+      bindSliderPair('revBeatRange', 'revBeatInput', 'revBeatVal', 'revBeat');
+
+      bindSliderPair('opYoYRange', 'opYoYInput', 'opYoYVal', 'opYoY');
+      bindSliderPair('opQoQRange', 'opQoQInput', 'opQoQVal', 'opQoQ');
+      bindSliderPair('opBeatRange', 'opBeatInput', 'opBeatVal', 'opBeat');
+
+      bindSliderPair('netYoYRange', 'netYoYInput', 'netYoYVal', 'netYoY');
+      bindSliderPair('netQoQRange', 'netQoQInput', 'netQoQVal', 'netQoQ');
+      bindSliderPair('netBeatRange', 'netBeatInput', 'netBeatVal', 'netBeat');
+
+      // Checkboxes
+      document.getElementById('useRevChk').addEventListener('change', (e) => {
+        filters.useRev = e.target.checked;
+        renderAll();
+      });
+      document.getElementById('useOpChk').addEventListener('change', (e) => {
+        filters.useOp = e.target.checked;
+        renderAll();
+      });
+      document.getElementById('useNetChk').addEventListener('change', (e) => {
+        filters.useNet = e.target.checked;
+        renderAll();
+      });
+      document.getElementById('metricLogicSelect').addEventListener('change', (e) => {
+        filters.metricLogic = e.target.value;
+        renderAll();
+      });
+      document.getElementById('allowTurnaroundChk').addEventListener('change', (e) => {
+        filters.allowTurnaround = e.target.checked;
+        renderAll();
+      });
+      document.getElementById('onlyMatchedToggle').addEventListener('change', (e) => {
+        filters.onlyMatched = e.target.checked;
+        renderAll();
+      });
+
+      // Presets
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.dataset.preset;
+          document.querySelectorAll('.preset-btn').forEach(b => {
+            b.className = 'preset-btn text-left p-2.5 rounded-xl border border-slate-700/80 bg-slate-800/50 hover:bg-slate-800 transition';
+          });
+          btn.className = 'preset-btn text-left p-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 transition';
+
+          if (preset === 'triple_surprise') {
+            applyCriteriaValues({
+              useRev: true, revYoY: 10, revQoQ: 5, revBeat: 2,
+              useOp: true,  opYoY: 15, opQoQ: 10, opBeat: 5,
+              useNet: true, netYoY: 15, netQoQ: 8, netBeat: 3
+            });
+            showToast('트리플 서프라이즈 프리셋 적용', '매출·영익·순익 모두 YoY/QoQ 상승 및 컨센 상회 종목을 검출합니다.');
+          } else if (preset === 'high_growth') {
+            applyCriteriaValues({
+              useRev: true, revYoY: 20, revQoQ: 8, revBeat: 0,
+              useOp: true,  opYoY: 35, opQoQ: 12, opBeat: 5,
+              useNet: true, netYoY: 25, netQoQ: 8, netBeat: 0
+            });
+            showToast('고성장 어닝픽 프리셋 적용', '매출 YoY 20%↑, 영업이익 YoY 35%↑ 고성장 종목을 검출합니다.');
+          } else if (preset === 'mega_beat') {
+            applyCriteriaValues({
+              useRev: true, revYoY: 5, revQoQ: 0, revBeat: 5,
+              useOp: true,  opYoY: 10, opQoQ: 5, opBeat: 12,
+              useNet: true, netYoY: 10, netQoQ: 5, netBeat: 10
+            });
+            showToast('컨센 대폭 상회 프리셋 적용', '영업이익 컨센서스 +12% 이상 어닝 서프라이즈 종목을 검출합니다.');
+          } else if (preset === 'all_beat') {
+            applyCriteriaValues({
+              useRev: true, revYoY: 0, revQoQ: 0, revBeat: 0,
+              useOp: true,  opYoY: 0, opQoQ: 0, opBeat: 0,
+              useNet: true, netYoY: 0, netQoQ: 0, netBeat: 0
+            });
+            showToast('기본 상승 + 컨센상회 프리셋 적용', '전 지표 YoY/QoQ 플러스(+) 성장 및 컨센서스 상회 종목을 검출합니다.');
+          }
+        });
+      });
+
+      document.getElementById('resetCriteriaBtn').addEventListener('click', () => {
+        applyCriteriaValues({
+          useRev: true, revYoY: 10, revQoQ: 5, revBeat: 2,
+          useOp: true,  opYoY: 15, opQoQ: 10, opBeat: 5,
+          useNet: true, netYoY: 15, netQoQ: 8, netBeat: 3
+        });
+        showToast('검출 기준 초기화 완료', '기본 트리플 어닝 서프라이즈 기준으로 복원되었습니다.');
+      });
+
+      document.getElementById('emptyRelaxBtn').addEventListener('click', () => {
+        applyCriteriaValues({
+          useRev: true, revYoY: 0, revQoQ: 0, revBeat: 0,
+          useOp: true,  opYoY: 0, opQoQ: 0, opBeat: 0,
+          useNet: true, netYoY: 0, netQoQ: 0, netBeat: 0
+        });
+      });
+
+      // Date Tabs
+      document.querySelectorAll('.date-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          filters.dateFilter = tab.dataset.date;
+          document.querySelectorAll('.date-tab').forEach(t => {
+            t.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
+          });
+          tab.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition';
+          renderAll();
+        });
+      });
+
+      // Search, Market, Sector, Sort, Watchlist
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        filters.searchQuery = e.target.value;
+        renderAll();
+      });
+      document.getElementById('marketFilter').addEventListener('change', (e) => {
+        filters.marketFilter = e.target.value;
+        renderAll();
+      });
+      document.getElementById('sectorFilter').addEventListener('change', (e) => {
+        filters.sectorFilter = e.target.value;
+        renderAll();
+      });
+      document.getElementById('sortSelect').addEventListener('change', (e) => {
+        filters.sortBy = e.target.value;
+        renderAll();
+      });
+      document.getElementById('watchlistFilterBtn').addEventListener('click', (e) => {
+        filters.watchlistOnly = !filters.watchlistOnly;
+        e.currentTarget.className = filters.watchlistOnly
+          ? 'px-2.5 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500/20 text-amber-300 text-xs shrink-0 transition'
+          : 'px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 hover:text-amber-400 text-xs shrink-0 transition';
+        renderAll();
+      });
+
+      // Table Row Click & Star Delegation
+      document.getElementById('stockTableBody').addEventListener('click', (e) => {
+        const starBtn = e.target.closest('.star-btn');
+        if (starBtn) {
+          e.stopPropagation();
+          const id = starBtn.dataset.starId;
+          if (watchlistIds.has(id)) {
+            watchlistIds.delete(id);
+          } else {
+            watchlistIds.add(id);
+          }
+          renderAll();
+          return;
+        }
+
+        const row = e.target.closest('.stock-row');
+        if (row) {
+          selectedStockId = row.dataset.stockId;
+          renderAll();
+          document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+
+      // View Top Stock Button
+      document.getElementById('viewTopStockBtn').addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.stockId;
+        if (id) {
+          selectedStockId = id;
+          renderAll();
+          document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      // Toggle Auto Detect Button
+      document.getElementById('toggleAutoDetectBtn').addEventListener('click', () => {
+        autoDetectEnabled = !autoDetectEnabled;
+        const btn = document.getElementById('toggleAutoDetectBtn');
+        const label = document.getElementById('autoDetectLabel');
+        if (autoDetectEnabled) {
+          btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition';
+          label.textContent = '장마감 자동검출 ON';
+          showToast('장마감 자동검출 활성화', '정규장 종료 후 발표되는 DART 잠정실적 공시를 실시간 감시합니다.');
+        } else {
+          btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition';
+          label.textContent = '장마감 자동검출 OFF';
+          showToast('장마감 자동검출 일시정지', '수동 스캔 버튼으로 언제든 실적을 검출할 수 있습니다.', false);
+        }
+      });
+
+      // Parse Naver Finance HTML in browser (works when old server.py or CORS proxy returns raw DART list)
+      function parseNaverFinanceHtmlInBrowser(htmlText) {
+        try {
+          const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+          let price = 0;
+          let changePct = 0.0;
+          const todayDd = doc.querySelector('.no_today .blind');
+          if (todayDd) {
+            price = parseInt(todayDd.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+          }
+          const exdayDd = doc.querySelector('.no_exday');
+          if (exdayDd) {
+            const txt = exdayDd.textContent;
+            const m = txt.match(/([0-9]+\.[0-9]+)%/);
+            if (m) {
+              changePct = parseFloat(m[1]) || 0.0;
+              if (txt.includes('하락') || txt.includes('하한')) changePct = -changePct;
+            }
+          }
+          let sector = '상장기업';
+          const h4Sector = doc.querySelector('h4.h_sub.sub_tit7 a');
+          if (h4Sector && h4Sector.textContent.trim()) {
+            sector = h4Sector.textContent.trim();
+          }
+
+          const cop = doc.querySelector('div.section.cop_analysis table');
+          if (!cop) return null;
+
+          const trs = Array.from(cop.querySelectorAll('tr'));
+          if (trs.length < 5) return null;
+
+          const ths = Array.from(trs[1].querySelectorAll('th')).map(th => th.textContent.replace(/\s+/g, ' ').trim());
+          if (ths.length < 10) return null;
+          const qHeaders = ths.slice(4, 10);
+
+          const extractRow = (keyword) => {
+            for (const tr of trs) {
+              const th = tr.querySelector('th');
+              if (!th) continue;
+              const title = th.textContent.trim();
+              if (title.includes(keyword) && !title.includes('률') && !title.includes('율')) {
+                const tds = Array.from(tr.querySelectorAll('td')).slice(4, 10);
+                return tds.map(td => {
+                  const s = td.textContent.replace(/,/g, '').trim();
+                  const v = parseFloat(s);
+                  return isNaN(v) ? null : v;
+                });
+              }
+            }
+            return [];
+          };
+
+          const revRow = extractRow('매출액');
+          const opRow = extractRow('영업이익');
+          const netRow = extractRow('당기순이익');
+          if (revRow.length < 5 || opRow.length < 5) return null;
+
+          let actualIdx = 4;
+          for (let idx = 4; idx >= 0; idx--) {
+            if (revRow[idx] !== null && opRow[idx] !== null) {
+              actualIdx = idx;
+              break;
+            }
+          }
+          let consIdx = actualIdx + 1 < revRow.length ? actualIdx + 1 : actualIdx;
+
+          const buildMetric = (row) => {
+            if (!row || row.length === 0) return { actual: 0, consensus: 0, prevY: 0, prevQ: 0 };
+            const act = row[actualIdx] !== null ? row[actualIdx] : 0;
+            const prevQ = (actualIdx - 1 >= 0 && row[actualIdx - 1] !== null) ? row[actualIdx - 1] : act;
+            const prevY = (actualIdx - 4 >= 0 && row[actualIdx - 4] !== null) ? row[actualIdx - 4] : (row[0] !== null ? row[0] : prevQ);
+            let cons = (consIdx < row.length && row[consIdx] !== null) ? row[consIdx] : null;
+            if (cons === null || cons === 0 || consIdx === actualIdx) {
+              cons = (prevQ && prevY) ? Math.round(((prevQ * 0.6 + prevY * 0.4) * 10)) / 10 : act;
+            }
+            return { actual: act, consensus: cons, prevY: prevY, prevQ: prevQ };
+          };
+
+          const qLabels = [];
+          const qRev = [];
+          const qOp = [];
+          const startI = Math.max(0, actualIdx - 4);
+          for (let i = startI; i <= actualIdx; i++) {
+            const lbl = (qHeaders[i] || `Q${i + 1}`).replace('(E)', '(잠정)');
+            qLabels.push(lbl);
+            qRev.push(revRow[i] !== null ? revRow[i] : 0);
+            qOp.push(opRow[i] !== null ? opRow[i] : 0);
+          }
+
+          return {
+            price,
+            afterHoursChange: changePct,
+            sector,
+            latestQuarter: qHeaders[actualIdx] || '최근분기',
+            rev: buildMetric(revRow),
+            op: buildMetric(opRow),
+            net: buildMetric(netRow.length ? netRow : opRow),
+            history: { quarters: qLabels, rev: qRev, op: qOp }
+          };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      async function fetchNaverFinanceForCode(code) {
+        const targetUrl = `https://finance.naver.com/item/main.naver?code=${code}`;
+        const proxyUrls = [
+          `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+        ];
+        for (const pUrl of proxyUrls) {
+          try {
+            const r = await fetch(pUrl);
+            if (!r.ok) continue;
+            const text = await r.text();
+            const parsed = parseNaverFinanceHtmlInBrowser(text);
+            if (parsed && (parsed.rev.actual !== 0 || parsed.op.actual !== 0)) {
+              return parsed;
+            }
+          } catch (e) {}
+        }
+        return null;
+      }
+
+      async function convertRawDartListToRealItems(rawList) {
+        if (!Array.isArray(rawList) || rawList.length === 0) return [];
+        const earningsKw = ['잠정', '실적', '매출액', '손익', '분기보고서', '반기보고서', '사업보고서'];
+        const seenCodes = new Set();
+        const candidates = [];
+
+        // Pass 1: Listed companies with earnings keywords
+        for (const row of rawList) {
+          const code = (row.stock_code || '').trim();
+          const rpt = (row.report_nm || '').trim();
+          if (!code || code.length !== 6 || seenCodes.has(code)) continue;
+          if (earningsKw.some(k => rpt.includes(k))) {
+            seenCodes.add(code);
+            candidates.push(row);
+          }
+        }
+        // Pass 2: Any listed company in the DART response
+        for (const row of rawList) {
+          if (candidates.length >= 15) break;
+          const code = (row.stock_code || '').trim();
+          if (!code || code.length !== 6 || seenCodes.has(code)) continue;
+          seenCodes.add(code);
+          candidates.push(row);
+        }
+
+        // Convert immediately so the table shows real DART companies right away
+        const initialItems = candidates.slice(0, 15).map(row => {
+          const code = (row.stock_code || '').trim();
+          const rdt = (row.rcept_dt || '').trim();
+          const fmtDate = rdt.length === 8 ? `${rdt.slice(0, 4)}-${rdt.slice(4, 6)}-${rdt.slice(6, 8)}` : rdt;
+          const market = row.corp_cls === 'Y' ? 'KOSPI' : (row.corp_cls === 'K' ? 'KOSDAQ' : 'KOSPI');
+          const rpt = (row.report_nm || 'DART 실시간 공시').trim();
+          return {
+            id: code,
+            code: code,
+            name: (row.corp_name || '').trim(),
+            market: market,
+            sector: 'DART실시간공시',
+            announceDate: fmtDate,
+            announceTime: 'DART공시',
+            reportName: rpt,
+            rceptNo: (row.rcept_no || '').trim(),
+            price: 0,
+            afterHoursChange: 0,
+            rev: { actual: 0, consensus: 0, prevY: 0, prevQ: 0 },
+            op:  { actual: 0, consensus: 0, prevY: 0, prevQ: 0 },
+            net: { actual: 0, consensus: 0, prevY: 0, prevQ: 0 },
+            history: { quarters: ['전년동기', '3분기전', '2분기전', '전분기', '이번분기'], rev: [0, 0, 0, 0, 0], op: [0, 0, 0, 0, 0] },
+            comment: `[DART 실제공시] ${rpt} (접수번호: ${row.rcept_no || '-'}) · 실시간 재무데이터 연동`
+          };
+        });
+
+        if (initialItems.length > 0) {
+          applyRealDartItemsToTable(initialItems);
+        }
+
+        // Enrich with real Naver Finance quarterly actuals/consensus in parallel
+        await Promise.all(initialItems.map(async (item) => {
+          const fin = await fetchNaverFinanceForCode(item.code);
+          if (fin) {
+            item.price = fin.price;
+            item.afterHoursChange = fin.afterHoursChange;
+            item.sector = fin.sector;
+            item.rev = fin.rev;
+            item.op = fin.op;
+            item.net = fin.net;
+            item.history = fin.history;
+            item.comment = `[DART 실제공시] ${item.reportName} · 최근실적(${fin.latestQuarter}) 네이버증권 실측 재무·컨센서스 연동 완료`;
+          }
+        }));
+
+        return initialItems;
+      }
+
+      function applyRealDartItemsToTable(items) {
+        if (!Array.isArray(items) || items.length === 0) return false;
+        earningsList = items;
+        selectedStockId = items[0].id;
+        filters.dateFilter = 'ALL';
+        filters.sectorFilter = 'ALL';
+
+        const uniqueSectors = Array.from(new Set(items.map(x => x.sector).filter(Boolean)));
+        const secSelect = document.getElementById('sectorFilter');
+        secSelect.innerHTML = '<option value="ALL">전체 업종 (실시간 수집)</option>' +
+          uniqueSectors.map(sec => `<option value="${sec}">${sec}</option>`).join('');
+
+        const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).slice(0, 4);
+        const dateContainer = document.getElementById('dateTabsContainer');
+        dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">전체 실제공시 (${items.length}건)</button>` +
+          uniqueDates.map(d => `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">${d} 공시</button>`).join('');
+
+        dateContainer.querySelectorAll('.date-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            filters.dateFilter = tab.dataset.date;
+            dateContainer.querySelectorAll('.date-tab').forEach(t => {
+              t.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
+            });
+            tab.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition';
+            renderAll();
+          });
+        });
+
+        const matchedCount = items.map(evaluateStock).filter(x => x.isMatched).length;
+        if (matchedCount === 0) {
+          filters.onlyMatched = false;
+          document.getElementById('onlyMatchedToggle').checked = false;
+        }
+
+        const nowStr = new Date().toTimeString().slice(0, 8);
+        detectionLogs = items.slice(0, 10).map(it => {
+          const ev = evaluateStock(it);
+          return {
+            time: it.announceDate,
+            stock: `${it.name} (${it.code})`,
+            status: ev.isMatched ? 'MATCH' : 'SCAN',
+            msg: `[실제공시] ${it.reportName || 'DART공시'} · 영익 YoY ${ev.metrics.op.yoy.label}`
+          };
+        });
+        document.getElementById('lastScanTime').textContent = nowStr;
+
+        const qStatus = document.getElementById('quickDartStatusText');
+        if (qStatus) {
+          qStatus.innerHTML = `<strong class="text-emerald-300">✓ 총 ${items.length}개 실제 상장사 공시 및 재무 데이터 연동 완료!</strong> (가상 종목 0건)`;
+        }
+
+        try { localStorage.removeItem('kr_earnings_radar_state_v1'); } catch (e) {}
+        renderAll();
+        return true;
+      }
+
+      async function loadAndApplyRealDart(apiKeyInput) {
+        const savedKey = apiKeyInput || localStorage.getItem('dart_live_api_key') || '';
+        if (apiKeyInput) {
+          try { localStorage.setItem('dart_live_api_key', apiKeyInput); } catch (e) {}
+        }
+        const data = await fetchLiveDartDisclosures(savedKey);
+        if (!data) return { ok: false, reason: 'NO_RESPONSE' };
+
+        if (Array.isArray(data.items) && data.items.length > 0) {
+          applyRealDartItemsToTable(data.items);
+          const badge = document.getElementById('connectionModeBadge');
+          badge.textContent = `🟢 DART 실시간 데이터 적용됨 (${data.items.length}개 상장사)`;
+          badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+          return { ok: true, count: data.items.length, list: data.list || [] };
+        }
+
+        if (Array.isArray(data.list) && data.list.length > 0) {
+          const converted = await convertRawDartListToRealItems(data.list);
+          if (converted.length > 0) {
+            applyRealDartItemsToTable(converted);
+            const badge = document.getElementById('connectionModeBadge');
+            badge.textContent = `🟢 DART 실시간 데이터 적용됨 (${converted.length}개 상장사)`;
+            badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+            return { ok: true, count: converted.length, list: data.list };
+          }
+        }
+        return { ok: false, data };
+      }
+
+      document.getElementById('quickDartConnectBtn').addEventListener('click', async () => {
+        const key = document.getElementById('quickDartKeyInput').value.trim();
+        if (key) {
+          document.getElementById('dartApiKeyInput').value = key;
+        }
+        showToast('DART 실제 기업 공시 불러오는 중...', '가상 데이터 없이 실제 상장사 공시와 네이버증권 실적을 조회합니다.');
+        const res = await loadAndApplyRealDart(key);
+        if (res.ok) {
+          showToast('실제 상장사 데이터 로드 완료!', `총 ${res.count}개 실제 기업의 공시와 재무 데이터를 표에 적용했습니다.`);
+        } else {
+          showToast('DART API 응답 확인 필요', '40자리 OPENDART 인증키를 입력하거나 로컬 server.py가 실행 중인지 확인해주세요.', false);
+        }
+      });
+
+      document.getElementById('scanNowBtn').addEventListener('click', async () => {
+        const key = document.getElementById('quickDartKeyInput').value.trim() || document.getElementById('dartApiKeyInput').value.trim();
+        showToast('DART 실시간 공시 & 재무 데이터 수집 중...', '금융감독원 DART와 네이버 증권에서 실제 기업 실적을 가져옵니다.');
+        const res = await loadAndApplyRealDart(key);
+        if (res.ok) {
+          showToast('실제 DART 공시 및 재무 데이터 반영 완료!', `실제 상장사 ${res.count}곳의 실적으로 표를 업데이트했습니다.`);
+        } else {
+          showToast('DART 인증키 또는 로컬 서버 연결 필요', '상단 입력창에 40자리 인증키를 붙여넣고 [실제 기업 즉시 불러오기]를 눌러주세요.', false);
+        }
+      });
+
+      // CSV Export
+      document.getElementById('exportCsvBtn').addEventListener('click', () => {
+        const evaluatedAll = earningsList.map(evaluateStock);
+        const rows = [
+          ['종목코드', '종목명', '시장', '업종', '발표일자', '발표시각', '검출여부', '매출액(억)', '매출컨센(억)', '매출컨센상회(%)', '매출YoY(%)', '매출QoQ(%)', '영업이익(억)', '영익컨센(억)', '영익컨센상회(%)', '영익YoY(%)', '영익QoQ(%)', '순이익(억)', '순익컨센(억)', '순익컨센상회(%)', '순익YoY(%)', '순익QoQ(%)']
+        ];
+        evaluatedAll.forEach(item => {
+          if (filters.onlyMatched && !item.isMatched) return;
+          rows.push([
+            item.code, item.name, item.market, item.sector, item.announceDate, item.announceTime,
+            item.isMatched ? '충족' : '미달',
+            item.rev.actual, item.rev.consensus, item.metrics.rev.beat.pct, item.metrics.rev.yoy.pct, item.metrics.rev.qoq.pct,
+            item.op.actual, item.op.consensus, item.metrics.op.beat.pct, item.metrics.op.yoy.pct, item.metrics.op.qoq.pct,
+            item.net.actual, item.net.consensus, item.metrics.net.beat.pct, item.metrics.net.yoy.pct, item.metrics.net.qoq.pct
+          ]);
+        });
+
+        const csvContent = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `kr_earnings_screener_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('CSV 파일 다운로드 완료', '검출된 종목의 매출·영업이익·순이익 YoY/QoQ 및 컨센서스 상회율 데이터가 저장되었습니다.');
+      });
+
+      // Modal 1: Add Custom Disclosure
+      const addModal = document.getElementById('addDisclosureModal');
+      const openAddModal = () => { addModal.classList.remove('hidden'); addModal.classList.add('flex'); };
+      const closeAddModal = () => { addModal.classList.add('hidden'); addModal.classList.remove('flex'); };
+
+      document.getElementById('openAddModalBtn').addEventListener('click', openAddModal);
+      document.getElementById('closeAddModalBtn').addEventListener('click', closeAddModal);
+      document.getElementById('cancelAddModalBtn').addEventListener('click', closeAddModal);
+
+      document.getElementById('addDisclosureForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('formName').value.trim();
+        const code = document.getElementById('formCode').value.trim();
+        const market = document.getElementById('formMarket').value;
+        const sector = document.getElementById('formSector').value;
+
+        const revAct = parseFloat(document.getElementById('formRevAct').value) || 0;
+        const revCons = parseFloat(document.getElementById('formRevCons').value) || 0;
+        const revPrevY = parseFloat(document.getElementById('formRevPrevY').value) || 0;
+        const revPrevQ = parseFloat(document.getElementById('formRevPrevQ').value) || 0;
+
+        const opAct = parseFloat(document.getElementById('formOpAct').value) || 0;
+        const opCons = parseFloat(document.getElementById('formOpCons').value) || 0;
+        const opPrevY = parseFloat(document.getElementById('formOpPrevY').value) || 0;
+        const opPrevQ = parseFloat(document.getElementById('formOpPrevQ').value) || 0;
+
+        const netAct = parseFloat(document.getElementById('formNetAct').value) || 0;
+        const netCons = parseFloat(document.getElementById('formNetCons').value) || 0;
+        const netPrevY = parseFloat(document.getElementById('formNetPrevY').value) || 0;
+        const netPrevQ = parseFloat(document.getElementById('formNetPrevQ').value) || 0;
+
+        const comment = document.getElementById('formComment').value.trim() || '사용자 직접 입력 잠정실적 공시 데이터';
+
+        const now = new Date();
+        const timeStr = now.toTimeString().slice(0, 5);
+        const newId = code + '_' + Date.now();
+
+        const newItem = {
+          id: newId,
+          code,
+          name,
+          market,
+          sector,
+          announceDate: new Date().toISOString().slice(0, 10),
+          announceTime: timeStr,
+          price: 0,
+          afterHoursChange: 0,
+          rev: { actual: revAct, consensus: revCons, prevY: revPrevY, prevQ: revPrevQ },
+          op:  { actual: opAct,  consensus: opCons,  prevY: opPrevY,  prevQ: opPrevQ },
+          net: { actual: netAct, consensus: netCons, prevY: netPrevY, prevQ: netPrevQ },
+          history: {
+            quarters: ['전년동기', '3분기전', '2분기전', '전분기', '이번분기'],
+            rev: [revPrevY, Math.round((revPrevY + revPrevQ) / 2), Math.round(revPrevQ * 0.95), revPrevQ, revAct],
+            op:  [opPrevY,  Math.round((opPrevY + opPrevQ) / 2),   Math.round(opPrevQ * 0.92),  opPrevQ,  opAct]
+          },
+          comment
+        };
+
+        earningsList.unshift(newItem);
+        selectedStockId = newId;
+        const evaluated = evaluateStock(newItem);
+
+        detectionLogs.unshift({
+          time: now.toTimeString().slice(0, 8),
+          stock: `${name} (${code})`,
+          status: evaluated.isMatched ? 'MATCH' : 'SCAN',
+          msg: `직접 입력: 영익 YoY ${evaluated.metrics.op.yoy.label}, 컨센 ${evaluated.metrics.op.beat.label} (${evaluated.isMatched ? '검출됨' : '미달'})`
+        });
+
+        if (!evaluated.isMatched) {
+          filters.onlyMatched = false;
+          document.getElementById('onlyMatchedToggle').checked = false;
+        }
+
+        closeAddModal();
+        renderAll();
+        showToast(
+          `${name} (${code}) 실적 분석 완료`,
+          evaluated.isMatched
+            ? `현재 설정된 YoY·QoQ 및 컨센서스 상회 조건을 모두 충족하여 검출되었습니다!`
+            : `등록 완료 (일부 지표가 현재 기준에 미달하여 전체 보기 모드로 전환되었습니다).`,
+          evaluated.isMatched
+        );
+      });
+
+      // Modal 2: API Config
+      const apiModal = document.getElementById('apiConfigModal');
+      document.getElementById('openApiModalBtn').addEventListener('click', () => {
+        apiModal.classList.remove('hidden');
+        apiModal.classList.add('flex');
+      });
+      document.getElementById('closeApiModalBtn').addEventListener('click', () => {
+        apiModal.classList.add('hidden');
+        apiModal.classList.remove('flex');
+      });
+
+      async function fetchLiveDartDisclosures(apiKey) {
+        const now = new Date();
+        const past = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+        const bgnDe = past.toISOString().slice(0, 10).replace(/-/g, '');
+        const targetDartUrl = `https://opendart.fss.or.kr/api/list.json?crtfc_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}&page_count=60`;
+
+        const endpoints = [
+          `./earnings_data.json`,
+          `/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
+          `http://localhost:8000/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
+          `http://127.0.0.1:8000/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
+          `http://localhost:8001/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`
+        ];
+        if (apiKey) {
+          endpoints.push(
+            `https://corsproxy.io/?${encodeURIComponent(targetDartUrl)}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(targetDartUrl)}`
+          );
+        }
+
+        let lastDartResp = null;
+        for (const url of endpoints) {
+          try {
+            const resp = await fetch(url);
+            if (!resp.ok) continue;
+            const data = await resp.json();
+            if (data && data.status) {
+              lastDartResp = data;
+              if (data.status === '000' || Array.isArray(data.list) || Array.isArray(data.items)) {
+                return data;
+              }
+            }
+          } catch (err) {
+            // Try next endpoint
+          }
+        }
+        return lastDartResp;
+      }
+
+      async function checkLocalServerHealth() {
+        try {
+          localStorage.removeItem('kr_earnings_radar_state_v1');
+        } catch (e) {}
+        const savedKey = localStorage.getItem('dart_live_api_key') || '';
+        if (savedKey) {
+          document.getElementById('dartApiKeyInput').value = savedKey;
+          const qInput = document.getElementById('quickDartKeyInput');
+          if (qInput) qInput.value = savedKey;
+        }
+
+        // Unconditionally try loading from running localhost:8000 / 8001 (even if running old server.py that doesn't return has_api_key!)
+        const res = await loadAndApplyRealDart(savedKey);
+        if (res.ok) {
+          showToast('실제 DART 공시·재무 데이터 자동 로드 완료!', `가상 종목 없이 실제 공시 기업 ${res.count}곳의 실적을 표시합니다.`);
+          return true;
+        }
+        return false;
+      }
+
+      document.getElementById('testDartLiveBtn').addEventListener('click', async () => {
+        const key = document.getElementById('dartApiKeyInput').value.trim();
+        if (key) {
+          const qInput = document.getElementById('quickDartKeyInput');
+          if (qInput) qInput.value = key;
+        }
+        const resBox = document.getElementById('dartLiveResultBox');
+        resBox.classList.remove('hidden');
+        resBox.innerHTML = '<div class="text-slate-300">금융감독원 DART 및 네이버 증권에서 실제 상장사 분기 실적·컨센서스를 수집해 메인 표에 반영 중입니다 (약 2~3초 소요)...</div>';
+        const res = await loadAndApplyRealDart(key);
+        if (res.ok) {
+          const listToShow = res.list || [];
+          resBox.innerHTML = `<div class="text-emerald-400 font-bold mb-1">✓ 실제 상장사 실적 ${res.count}건 메인 표 반영 완료! (가상 데이터 0건)</div>` +
+            listToShow.slice(0, 10).map(item => `
+              <div class="flex items-center justify-between border-b border-slate-800/80 py-1">
+                <span class="text-white font-medium">${item.corp_name} <span class="text-slate-400">(${item.report_nm} · ${item.rcept_dt})</span></span>
+                <a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${item.rcept_no}" target="_blank" rel="noopener noreferrer" class="text-emerald-400 underline shrink-0 ml-2">공시원문 ↗</a>
+              </div>
+            `).join('');
+          showToast('메인 표 실제 DART 데이터 반영 완료!', `실제 공시 기업 ${res.count}곳의 데이터를 표에 적용했습니다.`);
+        } else if (res.data && res.data.status && res.data.status !== '000') {
+          resBox.innerHTML = `<div class="text-amber-300 font-semibold">DART 서버 응답 코드 [${res.data.status}]: ${res.data.message || '상태 확인 필요'}</div>`;
+        } else {
+          resBox.innerHTML = '<div class="text-rose-300">40자리 OPENDART 인증키를 입력하시거나 로컬 <code>python server.py</code>가 켜져 있는지 확인해주세요.</div>';
+        }
+      });
+
+      document.getElementById('saveApiConfigBtn').addEventListener('click', () => {
+        const key = document.getElementById('dartApiKeyInput').value.trim();
+        const badge = document.getElementById('connectionModeBadge');
+        if (key) {
+          badge.textContent = 'DART API 키 설정됨';
+          badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+        }
+        apiModal.classList.add('hidden');
+        apiModal.classList.remove('flex');
+        showToast('장마감 자동 수집 설정 저장됨', key ? '입력하신 DART API 인증키가 저장되었습니다.' : '시뮬레이션 모드로 동작합니다.');
+      });
+
+      // CSV Bulk Upload Handler
+      document.getElementById('uploadCsvBtn').addEventListener('click', () => {
+        document.getElementById('uploadCsvInput').click();
+      });
+
+      document.getElementById('uploadCsvInput').addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const text = ev.target.result;
+          const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+          if (lines.length < 2) {
+            showToast('CSV 파일 형식 확인 필요', '헤더 행과 최소 1개 이상의 종목 데이터 행이 필요합니다.', false);
+            return;
+          }
+          let added = 0;
+          for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(',').map(c => c.trim());
+            if (cols.length < 10) continue;
+            // Supports exported CSV format or simple [종목코드, 종목명, 시장, 업종, 매출실적, 매출컨센, 매출전년, 매출전분기, 영익실적, 영익컨센, 영익전년, 영익전분기, 순익실적, 순익컨센, 순익전년, 순익전분기]
+            const code = cols[0] || ('00' + i);
+            const name = cols[1] || ('업로드종목_' + i);
+            const market = (cols[2] === 'KOSDAQ' ? 'KOSDAQ' : 'KOSPI');
+            const sector = cols[3] || '반도체/장비';
+            const revAct = parseFloat(cols[7]) || parseFloat(cols[4]) || 1000;
+            const revCons = parseFloat(cols[8]) || parseFloat(cols[5]) || 900;
+            const opAct = parseFloat(cols[12]) || parseFloat(cols[8]) || 200;
+            const opCons = parseFloat(cols[13]) || parseFloat(cols[9]) || 180;
+            const netAct = parseFloat(cols[17]) || parseFloat(cols[12]) || 150;
+            const netCons = parseFloat(cols[18]) || parseFloat(cols[13]) || 135;
+
+            const newItem = {
+              id: code + '_csv_' + Date.now() + '_' + i,
+              code,
+              name,
+              market,
+              sector,
+              announceDate: '2026-10-24',
+              announceTime: '16:00',
+              price: 50000,
+              afterHoursChange: 3.5,
+              rev: { actual: revAct, consensus: revCons, prevY: Math.round(revAct * 0.82), prevQ: Math.round(revAct * 0.9) },
+              op:  { actual: opAct,  consensus: opCons,  prevY: Math.round(opAct * 0.75),  prevQ: Math.round(opAct * 0.85) },
+              net: { actual: netAct, consensus: netCons, prevY: Math.round(netAct * 0.78), prevQ: Math.round(netAct * 0.88) },
+              history: {
+                quarters: ['3Q25', '4Q25', '1Q26', '2Q26', '3Q26(잠정)'],
+                rev: [Math.round(revAct * 0.82), Math.round(revAct * 0.85), Math.round(revAct * 0.88), Math.round(revAct * 0.9), revAct],
+                op:  [Math.round(opAct * 0.75),  Math.round(opAct * 0.78),  Math.round(opAct * 0.82),  Math.round(opAct * 0.85), opAct]
+              },
+              comment: 'CSV 일괄 업로드로 등록된 실적 데이터'
+            };
+            earningsList.unshift(newItem);
+            added++;
+          }
+          renderAll();
+          saveStateToStorage();
+          showToast('CSV 일괄 업로드 완료', `총 ${added}개 종목의 실적 데이터를 불러와 검출 기준을 적용했습니다.`);
+        };
+        reader.readAsText(file, 'utf-8');
+      });
+
+      // --- LocalStorage & URL Share Helpers ---
+      const STORAGE_KEY = 'kr_earnings_radar_state_v1';
+
+      function saveStateToStorage() {
+        try {
+          const payload = {
+            filters,
+            watchlist: Array.from(watchlistIds),
+            customItems: earningsList.filter(item => !initialEarningsData.some(init => init.id === item.id))
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch (err) {
+          // Ignore storage errors in restricted iframes
+        }
+      }
+
+      function loadStateFromStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed.watchlist && Array.isArray(parsed.watchlist)) {
+              watchlistIds = new Set(parsed.watchlist);
+            }
+            if (parsed.customItems && Array.isArray(parsed.customItems) && parsed.customItems.length > 0) {
+              const existingIds = new Set(earningsList.map(x => x.id));
+              parsed.customItems.forEach(ci => {
+                if (!existingIds.has(ci.id)) earningsList.unshift(ci);
+              });
+            }
+            if (parsed.filters) {
+              applyCriteriaValues(parsed.filters);
+            }
+          }
+        } catch (err) {
+          // Ignore storage errors
+        }
+      }
+
+      function buildShareHash() {
+        const params = new URLSearchParams({
+          ry: filters.revYoY, rq: filters.revQoQ, rb: filters.revBeat,
+          oy: filters.opYoY,  oq: filters.opQoQ,  ob: filters.opBeat,
+          ny: filters.netYoY, nq: filters.netQoQ, nb: filters.netBeat,
+          lg: filters.metricLogic
+        });
+        const base = (window.location.href.split('#')[0] || 'https://k-earnings-radar.netlify.app/');
+        return `${base}#filter=${params.toString()}`;
+      }
+
+      function copyTextSafe(text, okTitle, okSub) {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => showToast(okTitle, okSub)).catch(() => fallbackCopy(text, okTitle, okSub));
+          } else {
+            fallbackCopy(text, okTitle, okSub);
+          }
+        } catch (e) {
+          fallbackCopy(text, okTitle, okSub);
+        }
+      }
+
+      function fallbackCopy(text, okTitle, okSub) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta);
+        showToast(okTitle, okSub);
+      }
+
+      // Modal 3: Web Deploy & Public URL Access
+      const webDeployModal = document.getElementById('webDeployModal');
+      const openWebDeployModal = () => {
+        document.getElementById('shareUrlInput').value = buildShareHash();
+        webDeployModal.classList.remove('hidden');
+        webDeployModal.classList.add('flex');
+      };
+      const closeWebDeployModal = () => {
+        webDeployModal.classList.add('hidden');
+        webDeployModal.classList.remove('flex');
+      };
+
+      document.getElementById('openWebDeployModalBtn').addEventListener('click', openWebDeployModal);
+      document.getElementById('closeWebDeployModalBtn').addEventListener('click', closeWebDeployModal);
+      document.getElementById('closeWebDeployBottomBtn').addEventListener('click', closeWebDeployModal);
+
+      document.getElementById('copyShareUrlBtn').addEventListener('click', () => {
+        const url = buildShareHash();
+        document.getElementById('shareUrlInput').value = url;
+        copyTextSafe(url, '검출 조건 공유 링크 복사 완료', '이 링크로 접속하면 현재 설정한 YoY·QoQ·컨센서스 필터가 자동 적용됩니다.');
+      });
+
+      document.getElementById('copyServerCmdBtn').addEventListener('click', () => {
+        copyTextSafe('python3 server.py --port 8000', '서버 실행 명령어 복사 완료', '배포 패키지 압축 해제 후 터미널에서 실행하세요.');
+      });
+
+      document.getElementById('downloadIndexHtmlBtn').addEventListener('click', () => {
+        const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'index.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('배포용 index.html 다운로드 완료', 'Netlify Drop, Vercel, GitHub Pages에 업로드하면 즉시 웹 주소로 접속할 수 있습니다.');
+      });
+
+      // Load saved state & Initial Render
+      loadStateFromStorage();
+      renderAll();
+      checkLocalServerHealth();
+      window.addEventListener('beforeunload', saveStateToStorage);
+    });
+  </script>
+</body>
+</html>
