@@ -470,7 +470,7 @@
             <!-- Only Matched Switch & Export -->
             <div class="flex items-center gap-2.5">
               <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 cursor-pointer">
-                <input id="onlyMatchedToggle" type="checkbox" checked class="rounded bg-slate-900 border-emerald-500 text-emerald-500 focus:ring-0" />
+                <input id="onlyMatchedToggle" type="checkbox" class="rounded bg-slate-900 border-emerald-500 text-emerald-500 focus:ring-0" />
                 <span class="text-xs font-semibold text-emerald-300">검출 조건 통과 종목만 보기</span>
               </label>
 
@@ -522,11 +522,11 @@
 
             <div class="flex items-center gap-1.5">
               <select id="sortSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                <option value="timeDesc" selected>정렬: 최근 발표시각 순 (10/26 최신순)</option>
                 <option value="opBeatDesc">정렬: 영업이익 컨센상회율 ↓</option>
                 <option value="opYoYDesc">정렬: 영업이익 YoY 상승률 ↓</option>
                 <option value="revYoYDesc">정렬: 매출액 YoY 상승률 ↓</option>
                 <option value="netBeatDesc">정렬: 순이익 컨센상회율 ↓</option>
-                <option value="timeDesc">정렬: 최근 발표시각 순</option>
               </select>
               <button id="watchlistFilterBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 hover:text-amber-400 text-xs shrink-0 transition" title="관심종목만 보기">
                 ★
@@ -2340,6 +2340,57 @@
             "comment": "[10/08 DART 잠정실적] 영업이익 107.4조원(YoY +782.5%, QoQ +20.0%)으로 컨센서스(106.9조원) 상회, 매출액(195.0조원)은 컨센(200.8조원) 소폭 하회"
       }
 ];
+    const simulatedIncomingPool = [];
+
+    // --- 2. Application State ---
+    let earningsList = [...initialEarningsData];
+    let simulatedPoolIndex = 0;
+    let selectedStockId = '024110';
+    let watchlistIds = new Set(['024110', '118000', '086790', '114810', '028050', '010120']);
+    let autoDetectEnabled = true;
+
+    let filters = {
+      useRev: true,
+      revYoY: 0,
+      revQoQ: 0,
+      revBeat: 0,
+
+      useOp: true,
+      opYoY: 0,
+      opQoQ: 0,
+      opBeat: 0,
+
+      useNet: true,
+      netYoY: 0,
+      netQoQ: 0,
+      netBeat: 0,
+
+      metricLogic: 'AND',
+      allowTurnaround: true,
+      onlyMatched: false,
+      dateFilter: 'ALL',
+      marketFilter: 'ALL',
+      sectorFilter: 'ALL',
+      searchQuery: '',
+      sortBy: 'timeDesc',
+      watchlistOnly: false
+    };
+
+    let detectionLogs = [
+      { time: '10/26 16:08', stock: '기업은행 (024110)', msg: '3Q 영업익 1조313억(YoY +5.6%, QoQ +8.3%, 컨센 +3.6%) · 전 지표 통과', status: 'MATCH' },
+      { time: '10/26 15:46', stock: 'HD현대에너지솔루션 (322000)', msg: '3Q 영업익 204억(YoY +39.3%, QoQ -43.4%) · QoQ 및 컨센 미달 제외', status: 'SKIP' },
+      { time: '10/26 15:14', stock: 'NH투자증권 (005940)', msg: '3Q 영업익 5,211억(YoY +33.2%, 컨센 +2.1% 상회) · QoQ 감소로 제외', status: 'SKIP' },
+      { time: '10/26 14:23', stock: 'HD건설기계 (267270)', msg: '3Q 영업익 1,577억(YoY +182.6%, QoQ -36.6%) · QoQ 및 컨센 미달 제외', status: 'SKIP' },
+      { time: '10/26 13:06', stock: 'HD현대마린솔루션 (443060)', msg: '3Q 매출 6,501억(+9.7% 상회), 영업익 957억(컨센 -8.7% 하회) · 제외', status: 'SKIP' },
+      { time: '10/26 12:44', stock: 'BNK금융지주 (138930)', msg: '3Q 영업익 2,395억(YoY -37.0%, QoQ +1.6%) · YoY 및 컨센 미달 제외', status: 'SKIP' },
+      { time: '10/26 12:05', stock: '메타케어 (118000)', msg: '3Q 영업익 11.4억(YoY +861.3%, QoQ +43.7%) · 전 지표 고성장 통과', status: 'MATCH' },
+      { time: '10/26 11:25', stock: '도이치모터스 (067990)', msg: '3Q 영업익 118억(YoY +85.9%, QoQ -8.8%) · QoQ 감소로 제외', status: 'SKIP' },
+      { time: '10/23 15:35', stock: '하나금융지주 (086790)', msg: '3Q 영업익 1조6,850억(YoY +11.2%, QoQ +8.4%, 컨센 +6.0%) · 통과', status: 'MATCH' },
+      { time: '10/23 11:30', stock: '한솔아이원스 (114810)', msg: '3Q 영업익 124억(YoY +31.9%, QoQ +87.9%, 컨센 +18.1%) · 트리플 달성', status: 'MATCH' },
+      { time: '10/22 08:20', stock: '삼성E&A (028050)', msg: '3Q 영업익 5,006억(컨센 +98.2% 상회) · 트리플 서프라이즈 검출', status: 'MATCH' },
+      { time: '10/21 11:32', stock: 'LS ELECTRIC (010120)', msg: '3Q 영업익 2,335억(컨센 +17.9% 상회) · 트리플 서프라이즈 검출', status: 'MATCH' },
+      { time: '10/08 08:30', stock: '삼성전자 (005930)', msg: '3Q 영업익 107.4조(YoY +782.5%, QoQ +20.0%) · 컨센 상회', status: 'MATCH' }
+    ];
 
     // Chart instances
     let consensusChartInstance = null;
@@ -3252,7 +3303,7 @@
         initialEarningsData.forEach(initIt => {
           if (!mergedMap.has(initIt.code)) mergedMap.set(initIt.code, initIt);
         });
-        const mergedList = Array.from(mergedMap.values()).sort((a, b) => (b.announceDate || '').localeCompare(a.announceDate || ''));
+        const mergedList = Array.from(mergedMap.values()).sort((a, b) => ((b.announceDate || '') + ' ' + (b.announceTime || '')).localeCompare((a.announceDate || '') + ' ' + (a.announceTime || '')));
         if (mergedList.length === 0) return false;
         earningsList = mergedList;
         items = mergedList;
@@ -3268,7 +3319,7 @@
         const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).slice(0, 4);
         const dateContainer = document.getElementById('dateTabsContainer');
         dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">전체 실제공시 (${items.length}건)</button>` +
-          uniqueDates.map(d => `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">${d} 공시</button>`).join('');
+          uniqueDates.map(d => `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium ${d === '2026-10-26' ? 'bg-slate-800 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-300'} hover:bg-slate-700 transition">${d === '2026-10-26' ? '오늘 발표 (10/26)' : d + ' 공시'}</button>`).join('');
 
         dateContainer.querySelectorAll('.date-tab').forEach(tab => {
           tab.addEventListener('click', () => {
@@ -3674,7 +3725,7 @@
       });
 
       // --- LocalStorage & URL Share Helpers ---
-      const STORAGE_KEY = 'kr_earnings_radar_state_v1';
+      const STORAGE_KEY = 'kr_earnings_radar_state_v3_1026';
 
       function saveStateToStorage() {
         try {
@@ -3789,6 +3840,7 @@
 
       // Load saved state & Initial Render
       loadStateFromStorage();
+      applyCriteriaValues(filters);
       renderAll();
       checkLocalServerHealth();
       // Daily 16:00 and 19:00 KST Auto-Detection Scheduler
