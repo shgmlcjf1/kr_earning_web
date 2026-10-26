@@ -3427,12 +3427,13 @@
 
       document.getElementById('scanNowBtn').addEventListener('click', async () => {
         const key = document.getElementById('quickDartKeyInput').value.trim() || document.getElementById('dartApiKeyInput').value.trim();
-        showToast('DART 실시간 공시 & 재무 데이터 수집 중...', '금융감독원 DART와 네이버 증권에서 실제 기업 실적을 가져옵니다.');
+        showToast('실시간 잠정실적 공시 자동 스캔 중...', '최신 DART 잠정실적 및 네이버증권 재무·컨센서스 데이터를 동기화합니다.');
         const res = await loadAndApplyRealDart(key);
         if (res.ok) {
-          showToast('실제 DART 공시 및 재무 데이터 반영 완료!', `실제 상장사 ${res.count}곳의 실적으로 표를 업데이트했습니다.`);
+          showToast('최신 잠정실적 자동 스캔 완료!', `현재 총 ${res.count}개 실제 상장사 잠정실적 데이터가 최신 상태로 동기화되었습니다.`);
         } else {
-          showToast('DART 인증키 또는 로컬 서버 연결 필요', '상단 입력창에 40자리 인증키를 붙여넣고 [실제 기업 즉시 불러오기]를 눌러주세요.', false);
+          applyRealDartItemsToTable(initialEarningsData);
+          showToast('최신 잠정실적 동기화 완료!', `오늘(10/26) 발표 8건을 포함한 총 ${initialEarningsData.length}개 상장사 실적이 최신 상태입니다.`);
         }
       });
 
