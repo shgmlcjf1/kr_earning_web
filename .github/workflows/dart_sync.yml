@@ -2,7 +2,7 @@ name: Daily DART Earnings Sync
 
 on:
   schedule:
-    # 평일 한국시간 오후 4시(16:00 KST = UTC 07:00) 및 오후 7시(19:00 KST = UTC 10:00) 자동 실행
+    # 평일 오후 4시(16:00 KST = 07:00 UTC) 및 오후 7시(19:00 KST = 10:00 UTC) 자동 실행
     - cron: '0 7,10 * * 1-5'
   workflow_dispatch:
 
@@ -21,28 +21,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Fetch Real-Time DART & Naver Finance Data (16:00 & 19:00 KST)
+      - name: Run DART + Naver Finance Earnings Sync
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
-          python3 -c "
-          import json, os, server
-          key = os.environ.get('DART_API_KEY', '').strip()
-          if key:
-              data = server.build_real_earnings_dataset(key)
-              with open('earnings_data.json', 'w', encoding='utf-8') as f:
-                  json.dump(data, f, ensure_ascii=False, indent=2)
-              print('Saved earnings_data.json:', data.get('count', 0))
-          else:
-              raise RuntimeError('DART_API_KEY secret이 설정되지 않았습니다.')
-          "
+          python server.py --sync-once
 
       - name: Commit and Push updated earnings_data.json
         run: |
-          if [ -f earnings_data.json ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add earnings_data.json
-            git diff --staged --quiet || git commit -m "chore: update DART earnings data (16:00 / 19:00 KST)"
-            git push
-          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add earnings_data.json
+          git diff --staged --quiet || git commit -m "Auto-update DART earnings data (16:00 / 19:00 KST)"
+          git push
