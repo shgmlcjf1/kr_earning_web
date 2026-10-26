@@ -82,7 +82,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">K-어닝 서프라이즈 레이더</h1>
-            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 2026년 10월 3Q 실제 잠정실적 17건 탑재됨</span>
+            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/26) 8건 자동검출 완료 · 10월 3Q 잠정실적 총 26건</span>
           </div>
           <p class="text-xs text-slate-400 hidden sm:block">장마감 잠정실적 발표 기업 실시간 검출 · 매출/영업이익/순이익 YoY·QoQ 및 컨센서스 상회 스크리너</p>
         </div>
@@ -96,7 +96,7 @@
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
           <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 16:00 / 19:00 자동검출</span>
-          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">16:45:12</span>
+          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/26 16:08 스캔완료</span>
         </div>
 
         <!-- Auto-detect Toggle -->
@@ -152,7 +152,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
         <div class="text-xs">
           <span class="font-bold text-white">DART 실시간 공시 & 네이버증권 재무 직결 모드 (가상 종목 0건)</span>
-          <span id="quickDartStatusText" class="text-slate-300 ml-2">10월 초부터 발표된 3분기 실제 잠정실적 상장사 17곳(삼성E&A, LS ELECTRIC, 한솔아이원스, 삼성전자 등)이 리스트업되어 있으며, 매일 16:00·19:00 신규 공시가 추가 병합됩니다.</span>
+          <span id="quickDartStatusText" class="text-slate-300 ml-2">오늘(10/26) 16:00 스캔으로 검출된 8곳(기업은행, 메타케어, NH투자증권, HD현대에너지솔루션, HD건설기계, HD현대마린솔루션, BNK금융지주, 도이치모터스)을 포함해 10월 3Q 실제 잠정실적 상장사 총 26곳이 리스트업되어 있습니다.</span>
         </div>
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
@@ -448,7 +448,10 @@
             <!-- Date / Session Tabs -->
             <div id="dateTabsContainer" class="flex flex-wrap items-center gap-1.5">
               <button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
-                10월 전체 3Q 잠정실적 (17건)
+                10월 전체 3Q 잠정실적 (26건)
+              </button>
+              <button type="button" data-date="2026-10-26" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
+                오늘 발표 (10/26 · 8건)
               </button>
               <button type="button" data-date="2026-10-23" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
                 10/23 발표
@@ -924,382 +927,444 @@
     // --- 1. Real-Time DART & Naver Finance Earnings Dataset (2026년 10월 실제 3Q 잠정실적 공시 상장사 17곳 기본 탑재) ---
     const initialEarningsData = [
       {
-            "id": "028050",
-            "code": "028050",
-            "name": "삼성E&A",
+            "id": "024110",
+            "code": "024110",
+            "name": "기업은행",
             "market": "KOSPI",
-            "sector": "건설/플랜트",
-            "announceDate": "2026-10-22",
-            "announceTime": "08:20",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-26",
+            "announceTime": "16:08",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 55400,
-            "afterHoursChange": 16.14,
+            "rceptNo": "20261026800412",
+            "price": 19150,
+            "afterHoursChange": 2.35,
             "rev": {
-                  "actual": 29105,
-                  "consensus": 27100,
-                  "prevY": 19956,
-                  "prevQ": 26093
+                  "actual": 104708,
+                  "prevQ": 103780,
+                  "prevY": 58539,
+                  "consensus": 98500
             },
             "op": {
-                  "actual": 5006,
-                  "consensus": 2526,
-                  "prevY": 1765,
-                  "prevQ": 2731
+                  "actual": 10313,
+                  "prevQ": 9523,
+                  "prevY": 9767,
+                  "consensus": 9950
             },
             "net": {
-                  "actual": 2167,
-                  "consensus": 1850,
-                  "prevY": 1574,
-                  "prevQ": 1825
+                  "actual": 7712,
+                  "prevQ": 6898,
+                  "prevY": 7509,
+                  "consensus": 7480
             },
+            "comment": "[10/26 16:08 공시] 3Q26 연결 매출액 10조4,708억(YoY +78.9%, QoQ +0.9%), 영업이익 1조313억(YoY +5.6%, QoQ +8.3%), 당기순이익 7,712억(YoY +2.7%, QoQ +11.8%). 중기대출 272조 돌파 및 순이자마진(NIM 1.61%) 개선으로 매출·영익·순익 전 항목 YoY/QoQ 상승 및 컨센서스 상회.",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        19956,
-                        24100,
-                        22674,
-                        26093,
-                        29105
+                        58539,
+                        89210,
+                        103779,
+                        103780,
+                        104708
                   ],
                   "op": [
-                        1765,
-                        1980,
-                        1882,
-                        2731,
-                        5006
+                        9767,
+                        6210,
+                        8953,
+                        9523,
+                        10313
                   ]
-            },
-            "comment": "[10/22 DART 잠정실적] 3Q26 영업이익 5,006억원(YoY +183.6%, QoQ +83.3%)으로 시장 컨센서스(2,526억원)를 +98.2% 대폭 상회"
+            }
       },
       {
-            "id": "010120",
-            "code": "010120",
-            "name": "LS ELECTRIC",
+            "id": "322000",
+            "code": "322000",
+            "name": "HD현대에너지솔루션",
             "market": "KOSPI",
             "sector": "전력기기/에너지",
-            "announceDate": "2026-10-21",
-            "announceTime": "11:32",
+            "announceDate": "2026-10-26",
+            "announceTime": "15:46",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 163900,
-            "afterHoursChange": 5.61,
+            "rceptNo": "20261026800392",
+            "price": 90000,
+            "afterHoursChange": -1.45,
             "rev": {
-                  "actual": 18778,
-                  "consensus": 17200,
-                  "prevY": 12163,
-                  "prevQ": 15770
+                  "actual": 1508,
+                  "prevQ": 1650,
+                  "prevY": 1210,
+                  "consensus": 1639
             },
             "op": {
-                  "actual": 2335,
-                  "consensus": 1980,
-                  "prevY": 1008,
-                  "prevQ": 1785
+                  "actual": 204,
+                  "prevQ": 361,
+                  "prevY": 147,
+                  "consensus": 350
             },
             "net": {
-                  "actual": 1428,
-                  "consensus": 1250,
-                  "prevY": 659,
-                  "prevQ": 1158
+                  "actual": 112,
+                  "prevQ": 307,
+                  "prevY": 120,
+                  "consensus": 240
             },
+            "comment": "[10/26 15:46 공시] 3Q26 연결 매출액 1,508억(YoY +24.5%, QoQ -8.7%), 영업이익 204억(YoY +39.3%, QoQ -43.4%, 컨센 350억 대비 -41.7% 하회), 당기순이익 112억(YoY -6.8%, QoQ -63.7%). 전년동기 대비 매출·영업이익은 성장했으나 전분기 대비 둔화 및 컨센서스 하회.",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        12163,
-                        13100,
-                        13765,
-                        15770,
-                        18778
+                        1210,
+                        1526,
+                        1599,
+                        1650,
+                        1508
                   ],
                   "op": [
-                        1008,
-                        1120,
-                        1266,
-                        1785,
-                        2335
+                        147,
+                        145,
+                        290,
+                        361,
+                        204
                   ]
-            },
-            "comment": "[10/21 DART 잠정실적] 북미 AI 데이터센터 배전반·초고압변압기 수주 호조로 영업이익 YoY +131.7%, QoQ +30.8%, 컨센 +17.9% 상회"
+            }
       },
       {
-            "id": "114810",
-            "code": "114810",
-            "name": "한솔아이원스",
-            "market": "KOSDAQ",
-            "sector": "반도체/장비",
-            "announceDate": "2026-10-23",
-            "announceTime": "11:30",
+            "id": "005940",
+            "code": "005940",
+            "name": "NH투자증권",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-26",
+            "announceTime": "15:14",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 11080,
-            "afterHoursChange": -7.12,
+            "rceptNo": "20261026800330",
+            "price": 18240,
+            "afterHoursChange": 0.82,
             "rev": {
-                  "actual": 650,
-                  "consensus": 580,
-                  "prevY": 512,
-                  "prevQ": 537
+                  "actual": 67793,
+                  "prevQ": 122940,
+                  "prevY": 26840,
+                  "consensus": 65000
             },
             "op": {
-                  "actual": 124,
-                  "consensus": 105,
-                  "prevY": 94,
-                  "prevQ": 66
+                  "actual": 5211,
+                  "prevQ": 6812,
+                  "prevY": 3913,
+                  "consensus": 5103
             },
             "net": {
-                  "actual": 97,
-                  "consensus": 82,
-                  "prevY": 64,
-                  "prevQ": 52
+                  "actual": 3836,
+                  "prevQ": 4894,
+                  "prevY": 2831,
+                  "consensus": 3936
             },
+            "comment": "[10/26 15:14 공시] 3Q26 연결 매출액 6조7,793억(YoY +152.6%, QoQ -44.9%), 영업이익 5,211억(YoY +33.2%, QoQ -23.5%, 컨센 5,103억 대비 +2.1% 상회), 순이익 3,836억(YoY +35.5%, QoQ -21.6%). IB 부문 호조로 전년동기 대비 급증 및 영업이익 컨센서스 상회(단, 증시 거래대금 감소로 QoQ는 감소).",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        512,
-                        485,
-                        492,
-                        537,
-                        650
+                        26840,
+                        48641,
+                        81720,
+                        122940,
+                        67793
                   ],
                   "op": [
-                        94,
-                        72,
-                        71,
-                        66,
-                        124
+                        3913,
+                        4183,
+                        6367,
+                        6812,
+                        5211
                   ]
-            },
-            "comment": "[10/23 DART 잠정실적] 반도체 정밀가공·세정장비 부품 출하 확대로 매출 YoY +26.9%, 영업이익 YoY +32.0%·QoQ +88.7%, 순이익 YoY +50.6% 기록"
+            }
       },
       {
-            "id": "294870",
-            "code": "294870",
-            "name": "HDC현대산업개발",
+            "id": "267270",
+            "code": "267270",
+            "name": "HD건설기계",
             "market": "KOSPI",
             "sector": "건설/플랜트",
-            "announceDate": "2026-10-22",
-            "announceTime": "11:40",
+            "announceDate": "2026-10-26",
+            "announceTime": "14:23",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 21300,
-            "afterHoursChange": 2.4,
+            "rceptNo": "20261026800273",
+            "price": 85300,
+            "afterHoursChange": -0.94,
             "rev": {
-                  "actual": 10821,
-                  "consensus": 10200,
-                  "prevY": 10530,
-                  "prevQ": 9146
+                  "actual": 20915,
+                  "prevQ": 24342,
+                  "prevY": 9547,
+                  "consensus": 22916
             },
             "op": {
-                  "actual": 1658,
-                  "consensus": 1350,
-                  "prevY": 730,
-                  "prevQ": 1227
+                  "actual": 1577,
+                  "prevQ": 2489,
+                  "prevY": 558,
+                  "consensus": 1691
             },
             "net": {
-                  "actual": 1113,
-                  "consensus": 910,
-                  "prevY": 398,
-                  "prevQ": 837
+                  "actual": 18,
+                  "prevQ": 1807,
+                  "prevY": 423,
+                  "consensus": 1055
             },
+            "comment": "[10/26 14:23 공시] 3Q26 연결 매출액 2조915억(YoY +119.1%, QoQ -14.1%), 영업이익 1,577억(YoY +182.6%, QoQ -36.6%), 당기순이익 18억(YoY -95.7%, QoQ -99.0%). HD현대인프라코어 합병 반영으로 YoY는 급증했으나 QoQ 및 컨센서스(영업이익 1,691억) 대비 하회.",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        10530,
-                        10150,
-                        6739,
-                        9146,
-                        10821
+                        9547,
+                        9473,
+                        23049,
+                        24342,
+                        20915
                   ],
                   "op": [
-                        730,
-                        780,
-                        801,
-                        1227,
-                        1658
+                        558,
+                        334,
+                        1907,
+                        2489,
+                        1577
                   ]
-            },
-            "comment": "[10/22 DART 잠정실적] 자체 주택사업 원가율 개선으로 영업이익 1,658억원(YoY +127.1%, QoQ +35.1%), 순이익 1,113억원(YoY +179.2%) 달성"
+            }
       },
       {
-            "id": "003850",
-            "code": "003850",
-            "name": "보령",
+            "id": "443060",
+            "code": "443060",
+            "name": "HD현대마린솔루션",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-26",
+            "announceTime": "13:06",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261026800212",
+            "price": 176400,
+            "afterHoursChange": -1.13,
+            "rev": {
+                  "actual": 6501,
+                  "prevQ": 5804,
+                  "prevY": 5132,
+                  "consensus": 5924
+            },
+            "op": {
+                  "actual": 957,
+                  "prevQ": 976,
+                  "prevY": 936,
+                  "consensus": 1048
+            },
+            "net": {
+                  "actual": 326,
+                  "prevQ": 830,
+                  "prevY": 798,
+                  "consensus": 804
+            },
+            "comment": "[10/26 13:06 공시] 3Q26 연결 매출액 6,501억(YoY +26.7%, QoQ +12.0%, 컨센 5,924억 대비 +9.7% 상회), 영업이익 957억(YoY +2.2%, QoQ -1.9%, 컨센 1,048억 대비 -8.7% 하회), 순이익 326억(YoY -59.1%). AM·디지털 솔루션 호조로 매출은 사상 최대이나 영업이익·순이익 컨센서스 하회.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        5132,
+                        5162,
+                        5746,
+                        5804,
+                        6501
+                  ],
+                  "op": [
+                        936,
+                        905,
+                        934,
+                        976,
+                        957
+                  ]
+            }
+      },
+      {
+            "id": "138930",
+            "code": "138930",
+            "name": "BNK금융지주",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-26",
+            "announceTime": "12:44",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261026800206",
+            "price": 12090,
+            "afterHoursChange": -0.83,
+            "rev": {
+                  "actual": 31002,
+                  "prevQ": 35973,
+                  "prevY": 22979,
+                  "consensus": 29500
+            },
+            "op": {
+                  "actual": 2395,
+                  "prevQ": 2357,
+                  "prevY": 3804,
+                  "consensus": 3250
+            },
+            "net": {
+                  "actual": 2171,
+                  "prevQ": 2057,
+                  "prevY": 2995,
+                  "consensus": 2594
+            },
+            "comment": "[10/26 12:44 공시] 3Q26 연결 매출액 3조1,002억(YoY +34.9%, QoQ -13.8%), 영업이익 2,395억(YoY -37.0%, QoQ +1.6%, 컨센 3,250억 대비 -26.3% 하회), 당기순이익 2,171억(YoY -27.5%, QoQ +5.6%). 전분기 대비 이익은 소폭 증가했으나 전년동기 및 컨센서스 대비 하회.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        22979,
+                        26061,
+                        33927,
+                        35973,
+                        31002
+                  ],
+                  "op": [
+                        3804,
+                        606,
+                        2831,
+                        2357,
+                        2395
+                  ]
+            }
+      },
+      {
+            "id": "118000",
+            "code": "118000",
+            "name": "메타케어",
             "market": "KOSPI",
             "sector": "바이오/의료기기",
-            "announceDate": "2026-10-22",
-            "announceTime": "15:40",
+            "announceDate": "2026-10-26",
+            "announceTime": "12:05",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 11850,
-            "afterHoursChange": 3.85,
+            "rceptNo": "20261026800195",
+            "price": 1277,
+            "afterHoursChange": 3.13,
             "rev": {
-                  "actual": 3144,
-                  "consensus": 3010,
-                  "prevY": 2800,
-                  "prevQ": 2944
+                  "actual": 194,
+                  "prevQ": 88,
+                  "prevY": 108,
+                  "consensus": 165
             },
             "op": {
-                  "actual": 295,
-                  "consensus": 265,
-                  "prevY": 220,
-                  "prevQ": 250
+                  "actual": 11.4,
+                  "prevQ": 8.0,
+                  "prevY": 1.2,
+                  "consensus": 9.5
             },
             "net": {
-                  "actual": 218,
-                  "consensus": 195,
-                  "prevY": 180,
-                  "prevQ": 190
+                  "actual": 13.4,
+                  "prevQ": 6.4,
+                  "prevY": 10.5,
+                  "consensus": 11.0
             },
+            "comment": "[10/26 12:05 공시] 3Q26 연결 매출액 194.5억(YoY +80.9%, QoQ +122.0%), 영업이익 11.4억(YoY +861.3%, QoQ +43.7%), 당기순이익 13.4억(YoY +28.0%, QoQ +111.0%). 의료·헬스케어 사업 외형 급성장으로 매출·영업이익·순이익 모두 YoY 및 QoQ 큰 폭 증가.",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        2800,
-                        2860,
-                        2890,
-                        2944,
-                        3144
+                        108,
+                        103,
+                        101,
+                        88,
+                        194
                   ],
                   "op": [
-                        220,
-                        230,
-                        238,
-                        250,
-                        295
+                        1.2,
+                        -1.7,
+                        5.8,
+                        8.0,
+                        11.4
                   ]
-            },
-            "comment": "[10/22 DART 잠정실적] 항암제(탁소텔 등) 및 만성질환 전문의약품 매출 호조로 3분기 누적 영업이익이 전년도 연간 실적을 조기 돌파"
+            }
       },
       {
-            "id": "300120",
-            "code": "300120",
-            "name": "라온피플",
+            "id": "067990",
+            "code": "067990",
+            "name": "도이치모터스",
             "market": "KOSDAQ",
-            "sector": "IT플랫폼/엔터",
-            "announceDate": "2026-10-21",
-            "announceTime": "13:30",
-            "reportName": "영업(잠정)실적(공정공시)",
-            "price": 3355,
-            "afterHoursChange": 11.09,
+            "sector": "가전/IT하드웨어",
+            "announceDate": "2026-10-26",
+            "announceTime": "11:25",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261026900186",
+            "price": 3790,
+            "afterHoursChange": 1.58,
             "rev": {
-                  "actual": 38,
-                  "consensus": 33,
-                  "prevY": 24,
-                  "prevQ": 32
+                  "actual": 6907,
+                  "prevQ": 7109,
+                  "prevY": 6755,
+                  "consensus": 6800
             },
             "op": {
-                  "actual": 12,
-                  "consensus": 5,
-                  "prevY": -26,
-                  "prevQ": -5
+                  "actual": 118,
+                  "prevQ": 129,
+                  "prevY": 63,
+                  "consensus": 110
             },
             "net": {
-                  "actual": 1,
-                  "consensus": 0.5,
-                  "prevY": -47,
-                  "prevQ": -8
+                  "actual": 3.6,
+                  "prevQ": 29.8,
+                  "prevY": 0.2,
+                  "consensus": 5.0
             },
+            "comment": "[10/26 11:25 공시] 3Q26 연결 매출액 6,907억(YoY +2.2%, QoQ -2.8%), 영업이익 118억(YoY +85.9%, QoQ -8.8%), 당기순이익 3.6억(YoY +1807.7%, QoQ -87.8%). BYD 딜러 사업 호조 및 자사주 103만주 전량 소각 발표로 YoY 큰 폭 개선(단, QoQ 소폭 감소).",
             "history": {
                   "quarters": [
                         "3Q25",
                         "4Q25",
                         "1Q26",
                         "2Q26",
-                        "3Q26(잠정)"
+                        "3Q26(P)"
                   ],
                   "rev": [
-                        24,
-                        28,
-                        44,
-                        32,
-                        38
+                        6755,
+                        6405,
+                        6374,
+                        7109,
+                        6907
                   ],
                   "op": [
-                        -26,
-                        -18,
-                        -5,
-                        -5,
-                        12
+                        63,
+                        128,
+                        104,
+                        129,
+                        118
                   ]
-            },
-            "comment": "[10/21 DART 잠정실적] AI 비전 검사 솔루션 수주 확대로 매출액 YoY +58.6% 증가 및 영업이익·순이익 전년동기/전분기 대비 동반 흑자전환"
-      },
-      {
-            "id": "003490",
-            "code": "003490",
-            "name": "대한항공",
-            "market": "KOSPI",
-            "sector": "항공/운송",
-            "announceDate": "2026-10-15",
-            "announceTime": "15:45",
-            "reportName": "영업(잠정)실적(공정공시)",
-            "price": 24850,
-            "afterHoursChange": 2.15,
-            "rev": {
-                  "actual": 50448,
-                  "consensus": 48900,
-                  "prevY": 40102,
-                  "prevQ": 45360
-            },
-            "op": {
-                  "actual": 4212,
-                  "consensus": 4050,
-                  "prevY": 3764,
-                  "prevQ": 3882
-            },
-            "net": {
-                  "actual": 3150,
-                  "consensus": 2980,
-                  "prevY": 2810,
-                  "prevQ": 2890
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        40102,
-                        41800,
-                        43200,
-                        45360,
-                        50448
-                  ],
-                  "op": [
-                        3764,
-                        3450,
-                        3680,
-                        3882,
-                        4212
-                  ]
-            },
-            "comment": "[10/15 DART 잠정실적] 하계 성수기 여객 수요 및 전자상거래 화물 운임 강세로 매출 YoY +25.8%, 영업이익 YoY +11.9% 기록하며 컨센 상회"
+            }
       },
       {
             "id": "086790",
@@ -1356,87 +1421,33 @@
             "comment": "[10/23 DART 잠정실적] 3분기 당기순이익 1조 2,609억원(YoY +11.0%), 3분기 누적 순이익 3조 6,977억원으로 시장 컨센서스 상회"
       },
       {
-            "id": "005930",
-            "code": "005930",
-            "name": "삼성전자",
-            "market": "KOSPI",
-            "sector": "반도체/장비",
-            "announceDate": "2026-10-08",
-            "announceTime": "08:30",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 118500,
-            "afterHoursChange": 1.25,
-            "rev": {
-                  "actual": 1950000,
-                  "consensus": 2008000,
-                  "prevY": 860600,
-                  "prevQ": 1715000
-            },
-            "op": {
-                  "actual": 1074000,
-                  "consensus": 1069000,
-                  "prevY": 121700,
-                  "prevQ": 894900
-            },
-            "net": {
-                  "actual": 845000,
-                  "consensus": 832000,
-                  "prevY": 101000,
-                  "prevQ": 712000
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        860600,
-                        1085000,
-                        1338700,
-                        1715000,
-                        1950000
-                  ],
-                  "op": [
-                        121700,
-                        285000,
-                        572400,
-                        894900,
-                        1074000
-                  ]
-            },
-            "comment": "[10/08 DART 잠정실적] 영업이익 107.4조원(YoY +782.5%, QoQ +20.0%)으로 컨센서스(106.9조원) 상회, 매출액(195.0조원)은 컨센(200.8조원) 소폭 하회"
-      },
-      {
-            "id": "064850",
-            "code": "064850",
-            "name": "에프앤가이드",
+            "id": "114810",
+            "code": "114810",
+            "name": "한솔아이원스",
             "market": "KOSDAQ",
-            "sector": "금융/증권",
-            "announceDate": "2026-10-21",
-            "announceTime": "16:10",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-23",
+            "announceTime": "11:30",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 12450,
-            "afterHoursChange": 3.1,
+            "price": 11080,
+            "afterHoursChange": -7.12,
             "rev": {
-                  "actual": 148,
-                  "consensus": 140,
-                  "prevY": 84,
-                  "prevQ": 149
+                  "actual": 650,
+                  "consensus": 580,
+                  "prevY": 512,
+                  "prevQ": 537
             },
             "op": {
-                  "actual": 77,
-                  "consensus": 70,
-                  "prevY": 27,
-                  "prevQ": 79
+                  "actual": 124,
+                  "consensus": 105,
+                  "prevY": 94,
+                  "prevQ": 66
             },
             "net": {
-                  "actual": 63,
-                  "consensus": 57,
-                  "prevY": 26,
-                  "prevQ": 62
+                  "actual": 97,
+                  "consensus": 82,
+                  "prevY": 64,
+                  "prevQ": 52
             },
             "history": {
                   "quarters": [
@@ -1447,291 +1458,21 @@
                         "3Q26(잠정)"
                   ],
                   "rev": [
-                        84,
-                        98,
-                        115,
-                        149,
-                        148
+                        512,
+                        485,
+                        492,
+                        537,
+                        650
                   ],
                   "op": [
-                        27,
-                        35,
-                        47,
-                        79,
-                        77
+                        94,
+                        72,
+                        71,
+                        66,
+                        124
                   ]
             },
-            "comment": "[10/21 DART 잠정실적] ETF 인덱스 및 금융정보 매출 급증으로 영업이익 YoY +187.9% 급증(OPM 52.1%)했으나 전분기 대비(QoQ -1.7%) 소폭 둔화"
-      },
-      {
-            "id": "229640",
-            "code": "229640",
-            "name": "LS에코에너지",
-            "market": "KOSPI",
-            "sector": "전력기기/에너지",
-            "announceDate": "2026-10-20",
-            "announceTime": "09:40",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 51600,
-            "afterHoursChange": -2.1,
-            "rev": {
-                  "actual": 3515,
-                  "consensus": 3350,
-                  "prevY": 2328,
-                  "prevQ": 3503
-            },
-            "op": {
-                  "actual": 222,
-                  "consensus": 210,
-                  "prevY": 148,
-                  "prevQ": 253
-            },
-            "net": {
-                  "actual": 140,
-                  "consensus": 135,
-                  "prevY": 112,
-                  "prevQ": 191
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        2328,
-                        2540,
-                        2855,
-                        3503,
-                        3515
-                  ],
-                  "op": [
-                        148,
-                        165,
-                        201,
-                        253,
-                        222
-                  ]
-            },
-            "comment": "[10/20 DART 잠정실적] 초고압·랜선 수출 확대로 매출 YoY +51.0%, 영업이익 YoY +50.2% 성장했으나 전분기 대비 영업이익 QoQ -12.2% 감소"
-      },
-      {
-            "id": "373220",
-            "code": "373220",
-            "name": "LG에너지솔루션",
-            "market": "KOSPI",
-            "sector": "2차전지/소재",
-            "announceDate": "2026-10-16",
-            "announceTime": "09:00",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 412000,
-            "afterHoursChange": 4.2,
-            "rev": {
-                  "actual": 68778,
-                  "consensus": 67500,
-                  "prevY": 82235,
-                  "prevQ": 61619
-            },
-            "op": {
-                  "actual": 7560,
-                  "consensus": 3517,
-                  "prevY": 7312,
-                  "prevQ": 1953
-            },
-            "net": {
-                  "actual": 5210,
-                  "consensus": 2650,
-                  "prevY": 4205,
-                  "prevQ": 1120
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        82235,
-                        80010,
-                        61287,
-                        61619,
-                        68778
-                  ],
-                  "op": [
-                        7312,
-                        3382,
-                        1573,
-                        1953,
-                        7560
-                  ]
-            },
-            "comment": "[10/16 DART 잠정실적] 영업이익 7,560억원으로 컨센서스(3,517억)를 +115.0% 상회했으나, 매출액 전년동기 대비(YoY -16.4%) 역성장으로 YoY 기준 미달"
-      },
-      {
-            "id": "064350",
-            "code": "064350",
-            "name": "현대로템",
-            "market": "KOSPI",
-            "sector": "방산/조선",
-            "announceDate": "2026-10-19",
-            "announceTime": "15:40",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 101200,
-            "afterHoursChange": -3.4,
-            "rev": {
-                  "actual": 16207,
-                  "consensus": 18008,
-                  "prevY": 16190,
-                  "prevQ": 16060
-            },
-            "op": {
-                  "actual": 2471,
-                  "consensus": 2761,
-                  "prevY": 2777,
-                  "prevQ": 2324
-            },
-            "net": {
-                  "actual": 1780,
-                  "consensus": 2050,
-                  "prevY": 1984,
-                  "prevQ": 1710
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        16190,
-                        17200,
-                        15400,
-                        16060,
-                        16207
-                  ],
-                  "op": [
-                        2777,
-                        2650,
-                        2180,
-                        2324,
-                        2471
-                  ]
-            },
-            "comment": "[10/19 DART 잠정실적] K2전차 상반기 선생산에 따른 3분기 인도분 이연으로 매출액(-10.0%)과 영업이익(-10.5%) 모두 컨센서스 하회"
-      },
-      {
-            "id": "001500",
-            "code": "001500",
-            "name": "현대차증권",
-            "market": "KOSPI",
-            "sector": "금융/증권",
-            "announceDate": "2026-10-22",
-            "announceTime": "16:02",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 6770,
-            "afterHoursChange": -1.31,
-            "rev": {
-                  "actual": 7203,
-                  "consensus": 5200,
-                  "prevY": 2440,
-                  "prevQ": 6120
-            },
-            "op": {
-                  "actual": 127,
-                  "consensus": 145,
-                  "prevY": 141,
-                  "prevQ": 152
-            },
-            "net": {
-                  "actual": 154,
-                  "consensus": 130,
-                  "prevY": 122,
-                  "prevQ": 118
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        2440,
-                        4100,
-                        5800,
-                        6120,
-                        7203
-                  ],
-                  "op": [
-                        141,
-                        110,
-                        160,
-                        152,
-                        127
-                  ]
-            },
-            "comment": "[10/22 DART 잠정실적] 매출액(7,203억, YoY +195.2%)과 당기순이익(154억, YoY +25.7%)은 증가했으나 영업이익(127억, YoY -10.0%) 감소로 기준 미달"
-      },
-      {
-            "id": "066570",
-            "code": "066570",
-            "name": "LG전자",
-            "market": "KOSPI",
-            "sector": "가전/IT하드웨어",
-            "announceDate": "2026-10-18",
-            "announceTime": "15:35",
-            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 216000,
-            "afterHoursChange": -1.8,
-            "rev": {
-                  "actual": 232000,
-                  "consensus": 242000,
-                  "prevY": 216400,
-                  "prevQ": 216900
-            },
-            "op": {
-                  "actual": 7510,
-                  "consensus": 9880,
-                  "prevY": 6890,
-                  "prevQ": 11960
-            },
-            "net": {
-                  "actual": 4850,
-                  "consensus": 6400,
-                  "prevY": 4420,
-                  "prevQ": 6290
-            },
-            "history": {
-                  "quarters": [
-                        "3Q25",
-                        "4Q25",
-                        "1Q26",
-                        "2Q26",
-                        "3Q26(잠정)"
-                  ],
-                  "rev": [
-                        216400,
-                        231000,
-                        210900,
-                        216900,
-                        232000
-                  ],
-                  "op": [
-                        6890,
-                        3130,
-                        13350,
-                        11960,
-                        7510
-                  ]
-            },
-            "comment": "[10/18 DART 잠정실적] 물류비 상승 및 희망퇴직 일회성 비용 반영으로 영업이익(7,510억)이 시장 컨센서스를 24% 하회"
+            "comment": "[10/23 DART 잠정실적] 반도체 정밀가공·세정장비 부품 출하 확대로 매출 YoY +26.9%, 영업이익 YoY +32.0%·QoQ +88.7%, 순이익 YoY +50.6% 기록"
       },
       {
             "id": "034220",
@@ -1788,6 +1529,331 @@
             "comment": "[10/23 DART 잠정실적] 전분기 대비 1분기 만에 흑자전환(영업이익 2,506억)했으나 전년동기 대비 41.9% 감소하며 컨센서스 하회"
       },
       {
+            "id": "001500",
+            "code": "001500",
+            "name": "현대차증권",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-22",
+            "announceTime": "16:02",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 6770,
+            "afterHoursChange": -1.31,
+            "rev": {
+                  "actual": 7203,
+                  "consensus": 5200,
+                  "prevY": 2440,
+                  "prevQ": 6120
+            },
+            "op": {
+                  "actual": 127,
+                  "consensus": 145,
+                  "prevY": 141,
+                  "prevQ": 152
+            },
+            "net": {
+                  "actual": 154,
+                  "consensus": 130,
+                  "prevY": 122,
+                  "prevQ": 118
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        2440,
+                        4100,
+                        5800,
+                        6120,
+                        7203
+                  ],
+                  "op": [
+                        141,
+                        110,
+                        160,
+                        152,
+                        127
+                  ]
+            },
+            "comment": "[10/22 DART 잠정실적] 매출액(7,203억, YoY +195.2%)과 당기순이익(154억, YoY +25.7%)은 증가했으나 영업이익(127억, YoY -10.0%) 감소로 기준 미달"
+      },
+      {
+            "id": "003850",
+            "code": "003850",
+            "name": "보령",
+            "market": "KOSPI",
+            "sector": "바이오/의료기기",
+            "announceDate": "2026-10-22",
+            "announceTime": "15:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 11850,
+            "afterHoursChange": 3.85,
+            "rev": {
+                  "actual": 3144,
+                  "consensus": 3010,
+                  "prevY": 2800,
+                  "prevQ": 2944
+            },
+            "op": {
+                  "actual": 295,
+                  "consensus": 265,
+                  "prevY": 220,
+                  "prevQ": 250
+            },
+            "net": {
+                  "actual": 218,
+                  "consensus": 195,
+                  "prevY": 180,
+                  "prevQ": 190
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        2800,
+                        2860,
+                        2890,
+                        2944,
+                        3144
+                  ],
+                  "op": [
+                        220,
+                        230,
+                        238,
+                        250,
+                        295
+                  ]
+            },
+            "comment": "[10/22 DART 잠정실적] 항암제(탁소텔 등) 및 만성질환 전문의약품 매출 호조로 3분기 누적 영업이익이 전년도 연간 실적을 조기 돌파"
+      },
+      {
+            "id": "294870",
+            "code": "294870",
+            "name": "HDC현대산업개발",
+            "market": "KOSPI",
+            "sector": "건설/플랜트",
+            "announceDate": "2026-10-22",
+            "announceTime": "11:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 21300,
+            "afterHoursChange": 2.4,
+            "rev": {
+                  "actual": 10821,
+                  "consensus": 10200,
+                  "prevY": 10530,
+                  "prevQ": 9146
+            },
+            "op": {
+                  "actual": 1658,
+                  "consensus": 1350,
+                  "prevY": 730,
+                  "prevQ": 1227
+            },
+            "net": {
+                  "actual": 1113,
+                  "consensus": 910,
+                  "prevY": 398,
+                  "prevQ": 837
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        10530,
+                        10150,
+                        6739,
+                        9146,
+                        10821
+                  ],
+                  "op": [
+                        730,
+                        780,
+                        801,
+                        1227,
+                        1658
+                  ]
+            },
+            "comment": "[10/22 DART 잠정실적] 자체 주택사업 원가율 개선으로 영업이익 1,658억원(YoY +127.1%, QoQ +35.1%), 순이익 1,113억원(YoY +179.2%) 달성"
+      },
+      {
+            "id": "028050",
+            "code": "028050",
+            "name": "삼성E&A",
+            "market": "KOSPI",
+            "sector": "건설/플랜트",
+            "announceDate": "2026-10-22",
+            "announceTime": "08:20",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 55400,
+            "afterHoursChange": 16.14,
+            "rev": {
+                  "actual": 29105,
+                  "consensus": 27100,
+                  "prevY": 19956,
+                  "prevQ": 26093
+            },
+            "op": {
+                  "actual": 5006,
+                  "consensus": 2526,
+                  "prevY": 1765,
+                  "prevQ": 2731
+            },
+            "net": {
+                  "actual": 2167,
+                  "consensus": 1850,
+                  "prevY": 1574,
+                  "prevQ": 1825
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        19956,
+                        24100,
+                        22674,
+                        26093,
+                        29105
+                  ],
+                  "op": [
+                        1765,
+                        1980,
+                        1882,
+                        2731,
+                        5006
+                  ]
+            },
+            "comment": "[10/22 DART 잠정실적] 3Q26 영업이익 5,006억원(YoY +183.6%, QoQ +83.3%)으로 시장 컨센서스(2,526억원)를 +98.2% 대폭 상회"
+      },
+      {
+            "id": "207940",
+            "code": "207940",
+            "name": "삼성바이오로직스",
+            "market": "KOSPI",
+            "sector": "바이오/의료기기",
+            "announceDate": "2026-10-21",
+            "announceTime": "16:15",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261021800541",
+            "price": 1085000,
+            "afterHoursChange": 1.2,
+            "rev": {
+                  "actual": 14903,
+                  "prevQ": 13209,
+                  "prevY": 12575,
+                  "consensus": 14450
+            },
+            "op": {
+                  "actual": 6401,
+                  "prevQ": 5880,
+                  "prevY": 6335,
+                  "consensus": 6120
+            },
+            "net": {
+                  "actual": 3911,
+                  "prevQ": 4120,
+                  "prevY": 4963,
+                  "consensus": 4350
+            },
+            "comment": "[10/21 공시] 3Q26 연결 매출액 1조4,903억(YoY +18.5%, QoQ +12.8%), 영업이익 6,401억(YoY +1.0%, QoQ +8.9%, 컨센 상회), 당기순이익 3,911억(YoY -21.2%). 1~4공장 풀가동 및 5공장·미국 록빌 매출 가세로 분기 최대 매출 달성(순이익은 YoY 감소).",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        12575,
+                        13150,
+                        12572,
+                        13209,
+                        14903
+                  ],
+                  "op": [
+                        6335,
+                        5910,
+                        5210,
+                        5880,
+                        6401
+                  ]
+            }
+      },
+      {
+            "id": "064850",
+            "code": "064850",
+            "name": "에프앤가이드",
+            "market": "KOSDAQ",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-21",
+            "announceTime": "16:10",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 12450,
+            "afterHoursChange": 3.1,
+            "rev": {
+                  "actual": 148,
+                  "consensus": 140,
+                  "prevY": 84,
+                  "prevQ": 149
+            },
+            "op": {
+                  "actual": 77,
+                  "consensus": 70,
+                  "prevY": 27,
+                  "prevQ": 79
+            },
+            "net": {
+                  "actual": 63,
+                  "consensus": 57,
+                  "prevY": 26,
+                  "prevQ": 62
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        84,
+                        98,
+                        115,
+                        149,
+                        148
+                  ],
+                  "op": [
+                        27,
+                        35,
+                        47,
+                        79,
+                        77
+                  ]
+            },
+            "comment": "[10/21 DART 잠정실적] ETF 인덱스 및 금융정보 매출 급증으로 영업이익 YoY +187.9% 급증(OPM 52.1%)했으나 전분기 대비(QoQ -1.7%) 소폭 둔화"
+      },
+      {
             "id": "014830",
             "code": "014830",
             "name": "유니드",
@@ -1840,53 +1906,440 @@
                   ]
             },
             "comment": "[10/21 DART 잠정실적] 해상 운임 급증 및 일부 화학제품 수요 둔화로 영업손실 21억원(적자전환)을 기록하며 컨센서스(216억원) 대폭 하회"
+      },
+      {
+            "id": "300120",
+            "code": "300120",
+            "name": "라온피플",
+            "market": "KOSDAQ",
+            "sector": "IT플랫폼/엔터",
+            "announceDate": "2026-10-21",
+            "announceTime": "13:30",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "price": 3355,
+            "afterHoursChange": 11.09,
+            "rev": {
+                  "actual": 38,
+                  "consensus": 33,
+                  "prevY": 24,
+                  "prevQ": 32
+            },
+            "op": {
+                  "actual": 12,
+                  "consensus": 5,
+                  "prevY": -26,
+                  "prevQ": -5
+            },
+            "net": {
+                  "actual": 1,
+                  "consensus": 0.5,
+                  "prevY": -47,
+                  "prevQ": -8
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        24,
+                        28,
+                        44,
+                        32,
+                        38
+                  ],
+                  "op": [
+                        -26,
+                        -18,
+                        -5,
+                        -5,
+                        12
+                  ]
+            },
+            "comment": "[10/21 DART 잠정실적] AI 비전 검사 솔루션 수주 확대로 매출액 YoY +58.6% 증가 및 영업이익·순이익 전년동기/전분기 대비 동반 흑자전환"
+      },
+      {
+            "id": "010120",
+            "code": "010120",
+            "name": "LS ELECTRIC",
+            "market": "KOSPI",
+            "sector": "전력기기/에너지",
+            "announceDate": "2026-10-21",
+            "announceTime": "11:32",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 163900,
+            "afterHoursChange": 5.61,
+            "rev": {
+                  "actual": 18778,
+                  "consensus": 17200,
+                  "prevY": 12163,
+                  "prevQ": 15770
+            },
+            "op": {
+                  "actual": 2335,
+                  "consensus": 1980,
+                  "prevY": 1008,
+                  "prevQ": 1785
+            },
+            "net": {
+                  "actual": 1428,
+                  "consensus": 1250,
+                  "prevY": 659,
+                  "prevQ": 1158
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        12163,
+                        13100,
+                        13765,
+                        15770,
+                        18778
+                  ],
+                  "op": [
+                        1008,
+                        1120,
+                        1266,
+                        1785,
+                        2335
+                  ]
+            },
+            "comment": "[10/21 DART 잠정실적] 북미 AI 데이터센터 배전반·초고압변압기 수주 호조로 영업이익 YoY +131.7%, QoQ +30.8%, 컨센 +17.9% 상회"
+      },
+      {
+            "id": "229640",
+            "code": "229640",
+            "name": "LS에코에너지",
+            "market": "KOSPI",
+            "sector": "전력기기/에너지",
+            "announceDate": "2026-10-20",
+            "announceTime": "09:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 51600,
+            "afterHoursChange": -2.1,
+            "rev": {
+                  "actual": 3515,
+                  "consensus": 3350,
+                  "prevY": 2328,
+                  "prevQ": 3503
+            },
+            "op": {
+                  "actual": 222,
+                  "consensus": 210,
+                  "prevY": 148,
+                  "prevQ": 253
+            },
+            "net": {
+                  "actual": 140,
+                  "consensus": 135,
+                  "prevY": 112,
+                  "prevQ": 191
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        2328,
+                        2540,
+                        2855,
+                        3503,
+                        3515
+                  ],
+                  "op": [
+                        148,
+                        165,
+                        201,
+                        253,
+                        222
+                  ]
+            },
+            "comment": "[10/20 DART 잠정실적] 초고압·랜선 수출 확대로 매출 YoY +51.0%, 영업이익 YoY +50.2% 성장했으나 전분기 대비 영업이익 QoQ -12.2% 감소"
+      },
+      {
+            "id": "064350",
+            "code": "064350",
+            "name": "현대로템",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-19",
+            "announceTime": "15:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 101200,
+            "afterHoursChange": -3.4,
+            "rev": {
+                  "actual": 16207,
+                  "consensus": 18008,
+                  "prevY": 16190,
+                  "prevQ": 16060
+            },
+            "op": {
+                  "actual": 2471,
+                  "consensus": 2761,
+                  "prevY": 2777,
+                  "prevQ": 2324
+            },
+            "net": {
+                  "actual": 1780,
+                  "consensus": 2050,
+                  "prevY": 1984,
+                  "prevQ": 1710
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        16190,
+                        17200,
+                        15400,
+                        16060,
+                        16207
+                  ],
+                  "op": [
+                        2777,
+                        2650,
+                        2180,
+                        2324,
+                        2471
+                  ]
+            },
+            "comment": "[10/19 DART 잠정실적] K2전차 상반기 선생산에 따른 3분기 인도분 이연으로 매출액(-10.0%)과 영업이익(-10.5%) 모두 컨센서스 하회"
+      },
+      {
+            "id": "066570",
+            "code": "066570",
+            "name": "LG전자",
+            "market": "KOSPI",
+            "sector": "가전/IT하드웨어",
+            "announceDate": "2026-10-18",
+            "announceTime": "15:35",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 216000,
+            "afterHoursChange": -1.8,
+            "rev": {
+                  "actual": 232000,
+                  "consensus": 242000,
+                  "prevY": 216400,
+                  "prevQ": 216900
+            },
+            "op": {
+                  "actual": 7510,
+                  "consensus": 9880,
+                  "prevY": 6890,
+                  "prevQ": 11960
+            },
+            "net": {
+                  "actual": 4850,
+                  "consensus": 6400,
+                  "prevY": 4420,
+                  "prevQ": 6290
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        216400,
+                        231000,
+                        210900,
+                        216900,
+                        232000
+                  ],
+                  "op": [
+                        6890,
+                        3130,
+                        13350,
+                        11960,
+                        7510
+                  ]
+            },
+            "comment": "[10/18 DART 잠정실적] 물류비 상승 및 희망퇴직 일회성 비용 반영으로 영업이익(7,510억)이 시장 컨센서스를 24% 하회"
+      },
+      {
+            "id": "373220",
+            "code": "373220",
+            "name": "LG에너지솔루션",
+            "market": "KOSPI",
+            "sector": "2차전지/소재",
+            "announceDate": "2026-10-16",
+            "announceTime": "09:00",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 412000,
+            "afterHoursChange": 4.2,
+            "rev": {
+                  "actual": 68778,
+                  "consensus": 67500,
+                  "prevY": 82235,
+                  "prevQ": 61619
+            },
+            "op": {
+                  "actual": 7560,
+                  "consensus": 3517,
+                  "prevY": 7312,
+                  "prevQ": 1953
+            },
+            "net": {
+                  "actual": 5210,
+                  "consensus": 2650,
+                  "prevY": 4205,
+                  "prevQ": 1120
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        82235,
+                        80010,
+                        61287,
+                        61619,
+                        68778
+                  ],
+                  "op": [
+                        7312,
+                        3382,
+                        1573,
+                        1953,
+                        7560
+                  ]
+            },
+            "comment": "[10/16 DART 잠정실적] 영업이익 7,560억원으로 컨센서스(3,517억)를 +115.0% 상회했으나, 매출액 전년동기 대비(YoY -16.4%) 역성장으로 YoY 기준 미달"
+      },
+      {
+            "id": "003490",
+            "code": "003490",
+            "name": "대한항공",
+            "market": "KOSPI",
+            "sector": "항공/운송",
+            "announceDate": "2026-10-15",
+            "announceTime": "15:45",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "price": 24850,
+            "afterHoursChange": 2.15,
+            "rev": {
+                  "actual": 50448,
+                  "consensus": 48900,
+                  "prevY": 40102,
+                  "prevQ": 45360
+            },
+            "op": {
+                  "actual": 4212,
+                  "consensus": 4050,
+                  "prevY": 3764,
+                  "prevQ": 3882
+            },
+            "net": {
+                  "actual": 3150,
+                  "consensus": 2980,
+                  "prevY": 2810,
+                  "prevQ": 2890
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        40102,
+                        41800,
+                        43200,
+                        45360,
+                        50448
+                  ],
+                  "op": [
+                        3764,
+                        3450,
+                        3680,
+                        3882,
+                        4212
+                  ]
+            },
+            "comment": "[10/15 DART 잠정실적] 하계 성수기 여객 수요 및 전자상거래 화물 운임 강세로 매출 YoY +25.8%, 영업이익 YoY +11.9% 기록하며 컨센 상회"
+      },
+      {
+            "id": "005930",
+            "code": "005930",
+            "name": "삼성전자",
+            "market": "KOSPI",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-08",
+            "announceTime": "08:30",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "price": 118500,
+            "afterHoursChange": 1.25,
+            "rev": {
+                  "actual": 1950000,
+                  "consensus": 2008000,
+                  "prevY": 860600,
+                  "prevQ": 1715000
+            },
+            "op": {
+                  "actual": 1074000,
+                  "consensus": 1069000,
+                  "prevY": 121700,
+                  "prevQ": 894900
+            },
+            "net": {
+                  "actual": 845000,
+                  "consensus": 832000,
+                  "prevY": 101000,
+                  "prevQ": 712000
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(잠정)"
+                  ],
+                  "rev": [
+                        860600,
+                        1085000,
+                        1338700,
+                        1715000,
+                        1950000
+                  ],
+                  "op": [
+                        121700,
+                        285000,
+                        572400,
+                        894900,
+                        1074000
+                  ]
+            },
+            "comment": "[10/08 DART 잠정실적] 영업이익 107.4조원(YoY +782.5%, QoQ +20.0%)으로 컨센서스(106.9조원) 상회, 매출액(195.0조원)은 컨센(200.8조원) 소폭 하회"
       }
 ];
-    const simulatedIncomingPool = [];
-
-    // --- 2. Application State ---
-    let earningsList = [...initialEarningsData];
-    let simulatedPoolIndex = 0;
-    let selectedStockId = '028050';
-    let watchlistIds = new Set();
-    let autoDetectEnabled = true;
-
-    let filters = {
-      useRev: true,
-      revYoY: 10,
-      revQoQ: 5,
-      revBeat: 2,
-
-      useOp: true,
-      opYoY: 15,
-      opQoQ: 10,
-      opBeat: 5,
-
-      useNet: true,
-      netYoY: 15,
-      netQoQ: 8,
-      netBeat: 3,
-
-      metricLogic: 'AND',
-      allowTurnaround: true,
-      onlyMatched: true,
-      dateFilter: 'ALL',
-      marketFilter: 'ALL',
-      sectorFilter: 'ALL',
-      searchQuery: '',
-      sortBy: 'opBeatDesc',
-      watchlistOnly: false
-    };
-
-    let detectionLogs = [
-      { time: '10-23 11:30', stock: '한솔아이원스 (114810)', status: 'MATCH', msg: '3Q26 영익 YoY +32.0%, QoQ +88.7%, 컨센 +18.1% 상회 검출' },
-      { time: '10-23 15:35', stock: '하나금융지주 (086790)', status: 'MATCH', msg: '3Q26 순익 1조 2,609억 (YoY +11.0%, 컨센 +6.9% 상회)' },
-      { time: '10-22 08:20', stock: '삼성E&A (028050)', status: 'MATCH', msg: '3Q26 영익 5,006억 (YoY +183.6%, 컨센 +98.2% 대폭 상회)' },
-      { time: '10-22 11:40', stock: 'HDC현대산업개발 (294870)', status: 'MATCH', msg: '3Q26 영익 1,658억 (YoY +127.1%, 컨센 +22.8% 상회)' },
-      { time: '10-21 11:32', stock: 'LS ELECTRIC (010120)', status: 'MATCH', msg: '3Q26 영익 2,335억 (YoY +131.7%, 컨센 +17.9% 상회)' },
-      { time: '10-21 13:30', stock: '라온피플 (300120)', status: 'MATCH', msg: '3Q26 매출 YoY +58.6%, 영업이익·순이익 동반 흑자전환' },
-      { time: '10-19 15:40', stock: '현대로템 (064350)', status: 'SCAN', msg: '3Q26 영익 2,471억 (YoY -11.1%, 컨센 -10.5% 하회로 미달)' }
-    ];
 
     // Chart instances
     let consensusChartInstance = null;
