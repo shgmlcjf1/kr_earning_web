@@ -2,7 +2,7 @@ name: Daily DART Earnings Sync
 
 on:
   schedule:
-    # 평일 한국시간 오후 4시(UTC 07:00) 및 오후 7시(UTC 10:00) 자동 검출
+    # 평일 한국시간 오후 4시(16:00 KST = UTC 07:00) 및 오후 7시(19:00 KST = UTC 10:00) 자동 실행
     - cron: '0 7,10 * * 1-5'
   workflow_dispatch:
 
