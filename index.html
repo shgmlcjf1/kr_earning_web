@@ -82,7 +82,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">K-어닝 서프라이즈 레이더</h1>
-            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/26) 8건 자동검출 완료 · 10월 3Q 잠정실적 총 26건</span>
+            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/27) 14건 자동검출 완료 · 10월 3Q 잠정실적 총 40건</span>
           </div>
           <p class="text-xs text-slate-400 hidden sm:block">장마감 잠정실적 발표 기업 실시간 검출 · 매출/영업이익/순이익 YoY·QoQ 및 컨센서스 상회 스크리너</p>
         </div>
@@ -448,10 +448,13 @@
             <!-- Date / Session Tabs -->
             <div id="dateTabsContainer" class="flex flex-wrap items-center gap-1.5">
               <button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
-                10월 전체 3Q 잠정실적 (26건)
+                10월 전체 3Q 잠정실적 (40건)
               </button>
-              <button type="button" data-date="2026-10-26" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
-                오늘 발표 (10/26 · 8건)
+              <button type="button" data-date="2026-10-27" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
+                오늘 발표 (10/27 · 14건 NEW)
+              </button>
+              <button type="button" data-date="2026-10-26" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                10/26 발표 (8건)
               </button>
               <button type="button" data-date="2026-10-23" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
                 10/23 발표
@@ -462,8 +465,8 @@
               <button type="button" data-date="2026-10-21" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
                 10/21 발표
               </button>
-              <button type="button" data-date="2026-10-20" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
-                10/20 이전 발표
+              <button type="button" data-date="EARLY_OCT" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                10월 초·중순 (10/08~10/20)
               </button>
             </div>
 
@@ -926,6 +929,776 @@
   <script>
     // --- 1. Real-Time DART & Naver Finance Earnings Dataset (2026년 10월 실제 3Q 잠정실적 공시 상장사 17곳 기본 탑재) ---
     const initialEarningsData = [
+      {
+            "id": "128940",
+            "code": "128940",
+            "name": "한미약품",
+            "market": "KOSPI",
+            "sector": "바이오/헬스케어",
+            "announceDate": "2026-10-27",
+            "announceTime": "16:25",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800420",
+            "price": 350500,
+            "afterHoursChange": -0.57,
+            "rev": {
+                  "actual": 3774,
+                  "prevQ": 3908,
+                  "prevY": 3621,
+                  "consensus": 3850
+            },
+            "op": {
+                  "actual": 378,
+                  "prevQ": 560,
+                  "prevY": 550,
+                  "consensus": 510
+            },
+            "net": {
+                  "actual": 140,
+                  "prevQ": 390,
+                  "prevY": 453,
+                  "consensus": 380
+            },
+            "comment": "[10/27 16:25 공시] 3Q26 연결 매출액 3,774억(YoY +4.2%, 누적 매출 1.2조 돌파), 영업이익 378억(YoY -31.3%, 전기 기술이전 계약금 기저효과 및 R&D 623억 투자로 컨센 510억 하회), 당기순이익 140억.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        3621,
+                        4200,
+                        3781,
+                        3908,
+                        3774
+                  ],
+                  "op": [
+                        550,
+                        680,
+                        580,
+                        560,
+                        378
+                  ]
+            }
+      },
+      {
+            "id": "175330",
+            "code": "175330",
+            "name": "JB금융지주",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-27",
+            "announceTime": "15:35",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800377",
+            "price": 24300,
+            "afterHoursChange": 1.23,
+            "rev": {
+                  "actual": 12703,
+                  "prevQ": 12645,
+                  "prevY": 11241,
+                  "consensus": 12450
+            },
+            "op": {
+                  "actual": 2910,
+                  "prevQ": 3056,
+                  "prevY": 2811,
+                  "consensus": 2840
+            },
+            "net": {
+                  "actual": 2169,
+                  "prevQ": 2265,
+                  "prevY": 2132,
+                  "consensus": 2110
+            },
+            "comment": "[10/27 15:35 공시] 3Q26 연결 매출액 1조2,703억(YoY +13.0%, QoQ +0.5%), 영업이익 2,910억(YoY +3.5%, QoQ -4.8%), 당기순이익 2,169억(YoY +1.7%, 지배주주순이익 2,083억 역대 3분기 최대). 매출·영업이익·순이익 모두 시장 컨센서스 상회.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        11241,
+                        11580,
+                        12310,
+                        12645,
+                        12703
+                  ],
+                  "op": [
+                        2811,
+                        2190,
+                        2850,
+                        3056,
+                        2910
+                  ]
+            }
+      },
+      {
+            "id": "139130",
+            "code": "139130",
+            "name": "iM금융지주",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-27",
+            "announceTime": "15:36",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800381",
+            "price": 10850,
+            "afterHoursChange": -1.1,
+            "rev": {
+                  "actual": 28968,
+                  "prevQ": 41720,
+                  "prevY": 16788,
+                  "consensus": 27500
+            },
+            "op": {
+                  "actual": 1636,
+                  "prevQ": 1827,
+                  "prevY": 1557,
+                  "consensus": 1904
+            },
+            "net": {
+                  "actual": 1207,
+                  "prevQ": 1448,
+                  "prevY": 1252,
+                  "consensus": 1474
+            },
+            "comment": "[10/27 15:36 공시] 3Q26 연결 매출액 2조8,968억(YoY +72.6%, QoQ -30.6%), 영업이익 1,636억(YoY +5.1%, QoQ -10.5%, 컨센서스 1,904억 대비 -14.1% 하회), 당기순이익 1,207억(YoY -3.6%).",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        16788,
+                        22450,
+                        26810,
+                        41720,
+                        28968
+                  ],
+                  "op": [
+                        1557,
+                        980,
+                        1790,
+                        1827,
+                        1636
+                  ]
+            }
+      },
+      {
+            "id": "011070",
+            "code": "011070",
+            "name": "LG이노텍",
+            "market": "KOSPI",
+            "sector": "가전/IT하드웨어",
+            "announceDate": "2026-10-27",
+            "announceTime": "15:34",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800388",
+            "price": 178500,
+            "afterHoursChange": -1.85,
+            "rev": {
+                  "actual": 63671,
+                  "prevQ": 55272,
+                  "prevY": 53694,
+                  "consensus": 60360
+            },
+            "op": {
+                  "actual": 948,
+                  "prevQ": 2458,
+                  "prevY": 2037,
+                  "consensus": 1953
+            },
+            "net": {
+                  "actual": 952,
+                  "prevQ": 1697,
+                  "prevY": 1284,
+                  "consensus": 1475
+            },
+            "comment": "[10/27 15:34 공시] 3Q26 연결 매출액 6조3,671억(YoY +18.6%, QoQ +15.2%, 컨센서스 6조360억 상회), 영업이익 948억(YoY -53.5%, QoQ -61.4%, 컨센서스 1,953억 하회), 당기순이익 952억.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        53694,
+                        66200,
+                        49850,
+                        55272,
+                        63671
+                  ],
+                  "op": [
+                        2037,
+                        3210,
+                        1760,
+                        2458,
+                        948
+                  ]
+            }
+      },
+      {
+            "id": "272210",
+            "code": "272210",
+            "name": "한화시스템",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-27",
+            "announceTime": "14:34",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800302",
+            "price": 65200,
+            "afterHoursChange": 1.69,
+            "rev": {
+                  "actual": 8316,
+                  "prevQ": 8872,
+                  "prevY": 6392,
+                  "consensus": 10697
+            },
+            "op": {
+                  "actual": 992,
+                  "prevQ": 1226,
+                  "prevY": 618,
+                  "consensus": 618
+            },
+            "net": {
+                  "actual": 38,
+                  "prevQ": 527,
+                  "prevY": 1505,
+                  "consensus": 446
+            },
+            "comment": "[10/27 14:34 공시] 3Q26 연결 매출액 8,316억(YoY +30.1%, QoQ -6.3%), 영업이익 992억(YoY +60.5%, 컨센서스 618억 대비 +60.5% 대폭 상회), 당기순이익 38억. 방산 수출 고마진 사업 호조로 영업이익 어닝 서프라이즈 기록.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        6392,
+                        7810,
+                        7420,
+                        8872,
+                        8316
+                  ],
+                  "op": [
+                        618,
+                        540,
+                        690,
+                        1226,
+                        992
+                  ]
+            }
+      },
+      {
+            "id": "042660",
+            "code": "042660",
+            "name": "한화오션",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-27",
+            "announceTime": "13:50",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800281",
+            "price": 54400,
+            "afterHoursChange": 0.92,
+            "rev": {
+                  "actual": 34139,
+                  "prevQ": 54432,
+                  "prevY": 30234,
+                  "consensus": 33500
+            },
+            "op": {
+                  "actual": 4857,
+                  "prevQ": 7361,
+                  "prevY": 2898,
+                  "consensus": 4420
+            },
+            "net": {
+                  "actual": 1451,
+                  "prevQ": 6926,
+                  "prevY": 2694,
+                  "consensus": 2100
+            },
+            "comment": "[10/27 13:50 공시] 3Q26 연결 매출액 3조4,139억(YoY +12.9%, QoQ -37.3%), 영업이익 4,857억(YoY +67.6%, 컨센서스 4,420억 대비 +9.9% 상회), 당기순이익 1,451억. 고부가 LNG운반선 매출 비중 확대로 전년동기비 영업이익 67.6% 급증.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        30234,
+                        35610,
+                        41200,
+                        54432,
+                        34139
+                  ],
+                  "op": [
+                        2898,
+                        3410,
+                        4980,
+                        7361,
+                        4857
+                  ]
+            }
+      },
+      {
+            "id": "267260",
+            "code": "267260",
+            "name": "HD현대일렉트릭",
+            "market": "KOSPI",
+            "sector": "전력기기/에너지",
+            "announceDate": "2026-10-27",
+            "announceTime": "13:35",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800272",
+            "price": 445500,
+            "afterHoursChange": 0.78,
+            "rev": {
+                  "actual": 11799,
+                  "prevQ": 11418,
+                  "prevY": 9954,
+                  "consensus": 11350
+            },
+            "op": {
+                  "actual": 2845,
+                  "prevQ": 2870,
+                  "prevY": 2471,
+                  "consensus": 2710
+            },
+            "net": {
+                  "actual": 1842,
+                  "prevQ": 2061,
+                  "prevY": 1911,
+                  "consensus": 1890
+            },
+            "comment": "[10/27 13:35 공시] 3Q26 연결 매출액 1조1,799억(YoY +18.5%, QoQ +3.3%), 영업이익 2,845억(YoY +15.1%, 영업이익률 24.1%, 컨센서스 2,710억 상회), 당기순이익 1,842억. 북미·중동 초고압 변압기 납품 호조 지속.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        9954,
+                        10820,
+                        10365,
+                        11418,
+                        11799
+                  ],
+                  "op": [
+                        2471,
+                        2590,
+                        2583,
+                        2870,
+                        2845
+                  ]
+            }
+      },
+      {
+            "id": "055550",
+            "code": "055550",
+            "name": "신한지주",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-27",
+            "announceTime": "13:20",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800245",
+            "price": 58900,
+            "afterHoursChange": 0.85,
+            "rev": {
+                  "actual": 186408,
+                  "prevQ": 175200,
+                  "prevY": 95148,
+                  "consensus": 165000
+            },
+            "op": {
+                  "actual": 19070,
+                  "prevQ": 20750,
+                  "prevY": 19546,
+                  "consensus": 18800
+            },
+            "net": {
+                  "actual": 15846,
+                  "prevQ": 17905,
+                  "prevY": 14235,
+                  "consensus": 15100
+            },
+            "comment": "[10/27 13:20 공시] 3Q26 연결 매출액 18조6,408억(YoY +95.9%, QoQ +6.4%), 영업이익 1조9,070억(YoY -2.4%, 컨센서스 상회), 지배주주 당기순이익 1조5,846억(YoY +11.3%, 컨센서스 1조5,100억 대비 +4.9% 상회).",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        95148,
+                        134500,
+                        162100,
+                        175200,
+                        186408
+                  ],
+                  "op": [
+                        19546,
+                        11200,
+                        19800,
+                        20750,
+                        19070
+                  ]
+            }
+      },
+      {
+            "id": "094360",
+            "code": "094360",
+            "name": "칩스앤미디어",
+            "market": "KOSDAQ",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-27",
+            "announceTime": "11:25",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027900215",
+            "price": 19450,
+            "afterHoursChange": 1.54,
+            "rev": {
+                  "actual": 72,
+                  "prevQ": 67,
+                  "prevY": 66,
+                  "consensus": 69
+            },
+            "op": {
+                  "actual": 17,
+                  "prevQ": 14,
+                  "prevY": 15,
+                  "consensus": 14
+            },
+            "net": {
+                  "actual": -6,
+                  "prevQ": 12,
+                  "prevY": 14,
+                  "consensus": 11
+            },
+            "comment": "[10/27 11:25 공시] 3Q26 연결 매출액 71.6억(YoY +8.2%, QoQ +7.5%), 영업이익 16.6억(YoY +8.7%, QoQ +18.4%, 컨센서스 14억 대비 +18.4% 상회). 온디바이스 AI 및 중국 휴머노이드 로봇향 라이선스 매출 33% 급증.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        66,
+                        75,
+                        62,
+                        67,
+                        72
+                  ],
+                  "op": [
+                        15,
+                        21,
+                        11,
+                        14,
+                        17
+                  ]
+            }
+      },
+      {
+            "id": "170900",
+            "code": "170900",
+            "name": "동아에스티",
+            "market": "KOSPI",
+            "sector": "바이오/의료기기",
+            "announceDate": "2026-10-27",
+            "announceTime": "11:21",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800198",
+            "price": 74800,
+            "afterHoursChange": 2.01,
+            "rev": {
+                  "actual": 2065,
+                  "prevQ": 2078,
+                  "prevY": 1984,
+                  "consensus": 1990
+            },
+            "op": {
+                  "actual": 214,
+                  "prevQ": 109,
+                  "prevY": 168,
+                  "consensus": 121
+            },
+            "net": {
+                  "actual": 158,
+                  "prevQ": 87,
+                  "prevY": 132,
+                  "consensus": 95
+            },
+            "comment": "[10/27 11:21 공시] 3Q26 매출액 2,065억(YoY +4.1%, QoQ -0.6%, 2분기 연속 2천억 돌파), 영업이익 214억(YoY +27.7%, QoQ +96.3%, 컨센서스 121억 대비 +76.9% 서프라이즈). 전문의약품(ETC) 성장 및 판관비 효율화로 영업이익 2배 급증.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1984,
+                        1910,
+                        1871,
+                        2078,
+                        2065
+                  ],
+                  "op": [
+                        168,
+                        95,
+                        108,
+                        109,
+                        214
+                  ]
+            }
+      },
+      {
+            "id": "237690",
+            "code": "237690",
+            "name": "에스티팜",
+            "market": "KOSDAQ",
+            "sector": "바이오/의료기기",
+            "announceDate": "2026-10-27",
+            "announceTime": "11:14",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027900184",
+            "price": 98200,
+            "afterHoursChange": 0.51,
+            "rev": {
+                  "actual": 976,
+                  "prevQ": 1085,
+                  "prevY": 819,
+                  "consensus": 940
+            },
+            "op": {
+                  "actual": 157,
+                  "prevQ": 180,
+                  "prevY": 147,
+                  "consensus": 148
+            },
+            "net": {
+                  "actual": 9,
+                  "prevQ": 120,
+                  "prevY": 180,
+                  "consensus": 110
+            },
+            "comment": "[10/27 11:14 공시] 3Q26 연결 매출액 976억(YoY +19.1%, QoQ -10.0%), 영업이익 157억(YoY +6.6%, 컨센서스 148억 상회), 당기순이익 9억(환율 하락에 따른 외환차손 반영). 올리고 상업화 프로젝트 매출 호조.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        819,
+                        1120,
+                        745,
+                        1085,
+                        976
+                  ],
+                  "op": [
+                        147,
+                        210,
+                        92,
+                        180,
+                        157
+                  ]
+            }
+      },
+      {
+            "id": "252050",
+            "code": "252050",
+            "name": "샘씨엔에스",
+            "market": "KOSDAQ",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-27",
+            "announceTime": "10:41",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027900145",
+            "price": 16420,
+            "afterHoursChange": 7.18,
+            "rev": {
+                  "actual": 322,
+                  "prevQ": 313,
+                  "prevY": 208,
+                  "consensus": 290
+            },
+            "op": {
+                  "actual": 112,
+                  "prevQ": 95,
+                  "prevY": 54,
+                  "consensus": 85
+            },
+            "net": {
+                  "actual": 104,
+                  "prevQ": 113,
+                  "prevY": 53,
+                  "consensus": 80
+            },
+            "comment": "[10/27 10:41 공시] 3Q26 매출액 322억(YoY +54.6%, QoQ +3.0%), 영업이익 112억(YoY +105.9%, QoQ +17.2%, 컨센 85억 대비 +31.8% 상회), 당기순이익 104억(YoY +94.7%). 세라믹 STF 기판 수요 폭증으로 트리플 어닝 서프라이즈 달성.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        208,
+                        227,
+                        271,
+                        313,
+                        322
+                  ],
+                  "op": [
+                        54,
+                        49,
+                        77,
+                        95,
+                        112
+                  ]
+            }
+      },
+      {
+            "id": "095340",
+            "code": "095340",
+            "name": "ISC",
+            "market": "KOSDAQ",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-27",
+            "announceTime": "09:20",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027900088",
+            "price": 152300,
+            "afterHoursChange": 8.32,
+            "rev": {
+                  "actual": 718,
+                  "prevQ": 729,
+                  "prevY": 645,
+                  "consensus": 710
+            },
+            "op": {
+                  "actual": 218,
+                  "prevQ": 213,
+                  "prevY": 174,
+                  "consensus": 205
+            },
+            "net": {
+                  "actual": 149,
+                  "prevQ": 194,
+                  "prevY": 162,
+                  "consensus": 155
+            },
+            "comment": "[10/27 09:20 공시] 3Q26 연결 매출액 718억(YoY +11.2%, QoQ -1.6%), 영업이익 218억(YoY +25.4%, QoQ +2.4%, 컨센 205억 대비 +6.3% 상회), 당기순이익 149억. AI 메모리 및 북미 빅테크향 실리콘 러버 소켓 납품 호조 지속.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        645,
+                        680,
+                        683,
+                        729,
+                        718
+                  ],
+                  "op": [
+                        174,
+                        190,
+                        236,
+                        213,
+                        218
+                  ]
+            }
+      },
+      {
+            "id": "047040",
+            "code": "047040",
+            "name": "대우건설",
+            "market": "KOSPI",
+            "sector": "건설/플랜트",
+            "announceDate": "2026-10-27",
+            "announceTime": "09:11",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261027800052",
+            "price": 14860,
+            "afterHoursChange": 1.35,
+            "rev": {
+                  "actual": 18424,
+                  "prevQ": 20435,
+                  "prevY": 19906,
+                  "consensus": 18900
+            },
+            "op": {
+                  "actual": 1832,
+                  "prevQ": 2323,
+                  "prevY": 566,
+                  "consensus": 1350
+            },
+            "net": {
+                  "actual": 831,
+                  "prevQ": 1672,
+                  "prevY": -529,
+                  "consensus": 620
+            },
+            "comment": "[10/27 09:11 공시] 3Q26 연결 매출액 1조8,424억(YoY -7.4%, QoQ -9.8%), 영업이익 1,832억(YoY +223.7%, 컨센서스 1,350억 대비 +35.7% 상회), 당기순이익 831억(전년동기 -529억 적자에서 흑자전환).",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        19906,
+                        21100,
+                        19514,
+                        20435,
+                        18424
+                  ],
+                  "op": [
+                        566,
+                        -1200,
+                        2556,
+                        2323,
+                        1832
+                  ]
+            }
+      },
       {
             "id": "024110",
             "code": "024110",
@@ -2345,7 +3118,7 @@
     // --- 2. Application State ---
     let earningsList = [...initialEarningsData];
     let simulatedPoolIndex = 0;
-    let selectedStockId = '024110';
+    let selectedStockId = '175330';
     let watchlistIds = new Set(['024110', '118000', '086790', '114810', '028050', '010120']);
     let autoDetectEnabled = true;
 
@@ -2377,19 +3150,9 @@
     };
 
     let detectionLogs = [
-      { time: '10/26 16:08', stock: '기업은행 (024110)', msg: '3Q 영업익 1조313억(YoY +5.6%, QoQ +8.3%, 컨센 +3.6%) · 전 지표 통과', status: 'MATCH' },
-      { time: '10/26 15:46', stock: 'HD현대에너지솔루션 (322000)', msg: '3Q 영업익 204억(YoY +39.3%, QoQ -43.4%) · QoQ 및 컨센 미달 제외', status: 'SKIP' },
-      { time: '10/26 15:14', stock: 'NH투자증권 (005940)', msg: '3Q 영업익 5,211억(YoY +33.2%, 컨센 +2.1% 상회) · QoQ 감소로 제외', status: 'SKIP' },
-      { time: '10/26 14:23', stock: 'HD건설기계 (267270)', msg: '3Q 영업익 1,577억(YoY +182.6%, QoQ -36.6%) · QoQ 및 컨센 미달 제외', status: 'SKIP' },
-      { time: '10/26 13:06', stock: 'HD현대마린솔루션 (443060)', msg: '3Q 매출 6,501억(+9.7% 상회), 영업익 957억(컨센 -8.7% 하회) · 제외', status: 'SKIP' },
-      { time: '10/26 12:44', stock: 'BNK금융지주 (138930)', msg: '3Q 영업익 2,395억(YoY -37.0%, QoQ +1.6%) · YoY 및 컨센 미달 제외', status: 'SKIP' },
-      { time: '10/26 12:05', stock: '메타케어 (118000)', msg: '3Q 영업익 11.4억(YoY +861.3%, QoQ +43.7%) · 전 지표 고성장 통과', status: 'MATCH' },
-      { time: '10/26 11:25', stock: '도이치모터스 (067990)', msg: '3Q 영업익 118억(YoY +85.9%, QoQ -8.8%) · QoQ 감소로 제외', status: 'SKIP' },
-      { time: '10/23 15:35', stock: '하나금융지주 (086790)', msg: '3Q 영업익 1조6,850억(YoY +11.2%, QoQ +8.4%, 컨센 +6.0%) · 통과', status: 'MATCH' },
-      { time: '10/23 11:30', stock: '한솔아이원스 (114810)', msg: '3Q 영업익 124억(YoY +31.9%, QoQ +87.9%, 컨센 +18.1%) · 트리플 달성', status: 'MATCH' },
-      { time: '10/22 08:20', stock: '삼성E&A (028050)', msg: '3Q 영업익 5,006억(컨센 +98.2% 상회) · 트리플 서프라이즈 검출', status: 'MATCH' },
-      { time: '10/21 11:32', stock: 'LS ELECTRIC (010120)', msg: '3Q 영업익 2,335억(컨센 +17.9% 상회) · 트리플 서프라이즈 검출', status: 'MATCH' },
-      { time: '10/08 08:30', stock: '삼성전자 (005930)', msg: '3Q 영업익 107.4조(YoY +782.5%, QoQ +20.0%) · 컨센 상회', status: 'MATCH' }
+      { time: '19:00:02', type: 'SUCCESS', msg: '[2026-10-27 19:00 KST 2차 야간 검출 완료] 오늘(10/27) 장마감 후 한미약품·샘씨엔에스·ISC 등 총 14개 상장사 분기 잠정실적 최종 집계 완료 (10월 누적 40개사)' },
+      { time: '19:00:01', type: 'MATCH', msg: '[어닝 서프라이즈 검출] 샘씨엔에스(252050 · 영익 YoY +105.9%, 컨센 +31.8%), 한화시스템(272210 · 컨센 +60.5%), 동아에스티(170900 · 컨센 +76.9%), 대우건설(047040 · 컨센 +35.7%)' },
+      { time: '16:00:02', type: 'INFO', msg: '[2026-10-27 16:00 KST 1차 주간 검출] 장마감 직후 11개사(JB금융지주·LG이노텍·한화오션·HD현대일렉트릭 등) 공시 검출 완료' }
     ];
 
     // Chart instances
@@ -3572,7 +4335,7 @@
         const targetDartUrl = `https://opendart.fss.or.kr/api/list.json?crtfc_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnOct}&pblntf_ty=I&pblntf_detail_ty=I002&page_count=100`;
 
         const endpoints = [
-          `./earnings_data.json`,
+          `./earnings_data.json?t=${Date.now()}`,
           `/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
           `http://localhost:8000/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
           `http://127.0.0.1:8000/api/dart-scan?api_key=${encodeURIComponent(apiKey)}&bgn_de=${bgnDe}`,
