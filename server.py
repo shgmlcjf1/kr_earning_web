@@ -29,6 +29,721 @@ FINANCE_CACHE = {}
 
 OCTOBER_3Q26_BASELINE = [
     {
+        "id": "028260",
+        "code": "028260",
+        "name": "삼성물산",
+        "market": "KOSPI",
+        "sector": "건설/상사/바이오",
+        "announceDate": "2026-10-28",
+        "announceTime": "15:33",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800485",
+        "price": 164500,
+        "afterHoursChange": 3.45,
+        "rev": {
+            "actual": 120080,
+            "prevQ": 119960,
+            "prevY": 101505,
+            "consensus": 115708
+        },
+        "op": {
+            "actual": 11428,
+            "prevQ": 10314,
+            "prevY": 9937,
+            "consensus": 9936
+        },
+        "net": {
+            "actual": 8009,
+            "prevQ": 9153,
+            "prevY": 8849,
+            "consensus": 7850
+        },
+        "comment": "[10/28 장마감 공시] 3분기 연결 매출액 12조 80억원(YoY +18.3%, QoQ +0.1%), 영업이익 1조 1,428억원(YoY +15.0%, QoQ +10.8%)으로 시장 컨센서스(영업이익 9,936억원)를 +15.0% 상회하는 어닝 서프라이즈 기록.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                101505,
+                108200,
+                104649,
+                119960,
+                120080
+            ],
+            "op": [
+                9937,
+                8450,
+                7207,
+                10314,
+                11428
+            ]
+        }
+    },
+    {
+        "id": "237820",
+        "code": "237820",
+        "name": "플레이디",
+        "market": "KOSDAQ",
+        "sector": "IT/광고플랫폼",
+        "announceDate": "2026-10-28",
+        "announceTime": "14:45",
+        "reportName": "영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028900412",
+        "price": 6480,
+        "afterHoursChange": 2.85,
+        "rev": {
+            "actual": 86,
+            "prevQ": 91,
+            "prevY": 95,
+            "consensus": 88
+        },
+        "op": {
+            "actual": 17,
+            "prevQ": 15,
+            "prevY": 14,
+            "consensus": 15
+        },
+        "net": {
+            "actual": 19,
+            "prevQ": 14,
+            "prevY": 14,
+            "consensus": 15
+        },
+        "comment": "[10/28 공시] 3분기 개별기준 매출액 86억원(YoY -8.9%), 영업이익 17.5억원(YoY +21.7%), 당기순이익 19.4억원(YoY +42.3%) 기록. AI 광고 솔루션 효율화로 수익성 대폭 개선.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                95,
+                102,
+                84,
+                91,
+                86
+            ],
+            "op": [
+                14,
+                16,
+                12,
+                15,
+                17
+            ]
+        }
+    },
+    {
+        "id": "456040",
+        "code": "456040",
+        "name": "OCI",
+        "market": "KOSPI",
+        "sector": "화학/소재",
+        "announceDate": "2026-10-28",
+        "announceTime": "14:44",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800440",
+        "price": 82400,
+        "afterHoursChange": 3.12,
+        "rev": {
+            "actual": 5991,
+            "prevQ": 5350,
+            "prevY": 4764,
+            "consensus": 5650
+        },
+        "op": {
+            "actual": 303,
+            "prevQ": 433,
+            "prevY": -103,
+            "consensus": 285
+        },
+        "net": {
+            "actual": -65,
+            "prevQ": 295,
+            "prevY": -522,
+            "consensus": 120
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 5,991억원(YoY +25.8%, QoQ +12.0%), 영업이익 303억원으로 전년동기(-103억원) 대비 흑자전환 및 컨센서스(+6.2%) 상회. 반도체용 인산·과산화수소 등 전자소재 출하 호조.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                4764,
+                4920,
+                5066,
+                5350,
+                5991
+            ],
+            "op": [
+                -103,
+                185,
+                278,
+                433,
+                303
+            ]
+        }
+    },
+    {
+        "id": "267250",
+        "code": "267250",
+        "name": "HD현대",
+        "market": "KOSPI",
+        "sector": "조선/에너지/기계",
+        "announceDate": "2026-10-28",
+        "announceTime": "14:42",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800432",
+        "price": 94800,
+        "afterHoursChange": 4.2,
+        "rev": {
+            "actual": 220800,
+            "prevQ": 224094,
+            "prevY": 182243,
+            "consensus": 212500
+        },
+        "op": {
+            "actual": 29197,
+            "prevQ": 41246,
+            "prevY": 17024,
+            "consensus": 25800
+        },
+        "net": {
+            "actual": 13817,
+            "prevQ": 21450,
+            "prevY": 9869,
+            "consensus": 12900
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 22조 800억원(YoY +21.2%), 영업이익 2조 9,197억원(YoY +71.5%, 영업이익률 13.2%)으로 컨센서스(2조 5,800억원)를 +13.2% 상회하는 어닝 서프라이즈 달성. 조선·정유·건설기계·전력기기 전 부문 호조.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                182243,
+                191500,
+                196019,
+                224094,
+                220800
+            ],
+            "op": [
+                17024,
+                19800,
+                28348,
+                41246,
+                29197
+            ]
+        }
+    },
+    {
+        "id": "008770",
+        "code": "008770",
+        "name": "호텔신라",
+        "market": "KOSPI",
+        "sector": "유통/면세/호텔",
+        "announceDate": "2026-10-28",
+        "announceTime": "14:08",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800368",
+        "price": 51200,
+        "afterHoursChange": 5.45,
+        "rev": {
+            "actual": 9590,
+            "prevQ": 9718,
+            "prevY": 10256,
+            "consensus": 9850
+        },
+        "op": {
+            "actual": 552,
+            "prevQ": 611,
+            "prevY": 114,
+            "consensus": 480
+        },
+        "net": {
+            "actual": 384,
+            "prevQ": 214,
+            "prevY": -1492,
+            "consensus": 310
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 9,590억원(YoY -6.5%), 영업이익 552억원(YoY +382.4% 급증), 당기순이익 384억원(전년동기 -1,492억 적자에서 흑자전환, QoQ +79.1%). 인천공항 적자 면세구역 철수 및 호텔·레저 외국인 수요 호조로 컨센서스(+15.0%) 상회.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                10256,
+                9650,
+                10535,
+                9718,
+                9590
+            ],
+            "op": [
+                114,
+                85,
+                204,
+                611,
+                552
+            ]
+        }
+    },
+    {
+        "id": "000100",
+        "code": "000100",
+        "name": "유한양행",
+        "market": "KOSPI",
+        "sector": "제약/바이오",
+        "announceDate": "2026-10-28",
+        "announceTime": "14:01",
+        "reportName": "영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800352",
+        "price": 134500,
+        "afterHoursChange": 2.3,
+        "rev": {
+            "actual": 5857,
+            "prevQ": 6140,
+            "prevY": 5511,
+            "consensus": 5780
+        },
+        "op": {
+            "actual": 347,
+            "prevQ": 614,
+            "prevY": 241,
+            "consensus": 315
+        },
+        "net": {
+            "actual": 144,
+            "prevQ": 477,
+            "prevY": 181,
+            "consensus": 165
+        },
+        "comment": "[10/28 공시] 3분기 별도 매출액 5,857억원(YoY +6.3%; 연결 6,043억원), 별도 영업이익 347억원(YoY +44.2%; 연결 332억원)으로 컨센서스(+10.3%) 상회. 비소세포폐암 신약 렉라자 글로벌 로열티 및 전문의약품 성장 견조.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                5511,
+                5280,
+                5096,
+                6140,
+                5857
+            ],
+            "op": [
+                241,
+                195,
+                88,
+                614,
+                347
+            ]
+        }
+    },
+    {
+        "id": "009540",
+        "code": "009540",
+        "name": "HD한국조선해양",
+        "market": "KOSPI",
+        "sector": "방산/조선",
+        "announceDate": "2026-10-28",
+        "announceTime": "13:41",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800310",
+        "price": 245000,
+        "afterHoursChange": 3.8,
+        "rev": {
+            "actual": 82862,
+            "prevQ": 89270,
+            "prevY": 75815,
+            "consensus": 81500
+        },
+        "op": {
+            "actual": 14472,
+            "prevQ": 16451,
+            "prevY": 10538,
+            "consensus": 13200
+        },
+        "net": {
+            "actual": 7770,
+            "prevQ": 15942,
+            "prevY": 8767,
+            "consensus": 8100
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 8조 2,862억원(YoY +9.3%), 영업이익 1조 4,472억원(YoY +37.3%, 영업이익률 17.5%)으로 시장 컨센서스(1조 3,200억원)를 +9.6% 상회. 고선가 선박 건조 비중 확대 및 엔진·해양플랜트 흑자전환 효과.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                75815,
+                78500,
+                81409,
+                89270,
+                82862
+            ],
+            "op": [
+                10538,
+                11800,
+                13560,
+                16451,
+                14472
+            ]
+        }
+    },
+    {
+        "id": "011790",
+        "code": "011790",
+        "name": "SKC",
+        "market": "KOSPI",
+        "sector": "이차전지/화학소재",
+        "announceDate": "2026-10-28",
+        "announceTime": "13:40",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800308",
+        "price": 112500,
+        "afterHoursChange": -2.1,
+        "rev": {
+            "actual": 6389,
+            "prevQ": 6454,
+            "prevY": 5070,
+            "consensus": 6200
+        },
+        "op": {
+            "actual": -496,
+            "prevQ": -144,
+            "prevY": -549,
+            "consensus": -380
+        },
+        "net": {
+            "actual": -1285,
+            "prevQ": -907,
+            "prevY": -990,
+            "consensus": -650
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 6,389억원(YoY +26.0%, QoQ -1.0%), 영업손실 496억원으로 전년동기(-549억원) 대비 적자폭 9.7% 축소했으나 말레이시아 동박 생산전환 일회성 비용 반영으로 전기(-144억원) 대비 적자 확대.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                5070,
+                4850,
+                4966,
+                6454,
+                6389
+            ],
+            "op": [
+                -549,
+                -620,
+                -288,
+                -144,
+                -496
+            ]
+        }
+    },
+    {
+        "id": "329180",
+        "code": "329180",
+        "name": "HD현대중공업",
+        "market": "KOSPI",
+        "sector": "방산/조선",
+        "announceDate": "2026-10-28",
+        "announceTime": "13:32",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800296",
+        "price": 291500,
+        "afterHoursChange": 3.25,
+        "rev": {
+            "actual": 57536,
+            "prevQ": 63322,
+            "prevY": 44179,
+            "consensus": 56200
+        },
+        "op": {
+            "actual": 8992,
+            "prevQ": 10399,
+            "prevY": 5573,
+            "consensus": 8450
+        },
+        "net": {
+            "actual": 3543,
+            "prevQ": 8221,
+            "prevY": 4308,
+            "consensus": 4100
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 5조 7,536억원(YoY +30.2%), 영업이익 8,992억원(YoY +61.3%, 영업이익률 15.6%)으로 컨센서스(8,450억원)를 +6.4% 상회. LNG선 등 고부가 선박 매출 본격 반영 및 엔진·해양플랜트 수익성 개선.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                44179,
+                51200,
+                59162,
+                63322,
+                57536
+            ],
+            "op": [
+                5573,
+                7120,
+                9054,
+                10399,
+                8992
+            ]
+        }
+    },
+    {
+        "id": "071970",
+        "code": "071970",
+        "name": "HD현대마린엔진",
+        "market": "KOSPI",
+        "sector": "조선기자재/엔진",
+        "announceDate": "2026-10-28",
+        "announceTime": "13:32",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800295",
+        "price": 43400,
+        "afterHoursChange": 22.08,
+        "rev": {
+            "actual": 2114,
+            "prevQ": 1281,
+            "prevY": 1092,
+            "consensus": 1680
+        },
+        "op": {
+            "actual": 603,
+            "prevQ": 313,
+            "prevY": 203,
+            "consensus": 445
+        },
+        "net": {
+            "actual": 465,
+            "prevQ": 319,
+            "prevY": 226,
+            "consensus": 350
+        },
+        "comment": "[10/28 공시 · 주가 +22.08% 급등] 3분기 연결 매출액 2,114억원(YoY +93.7%, QoQ +65.0%), 영업이익 603억원(YoY +197.2%, QoQ +92.7%, 영업이익률 28.5%)으로 컨센서스(445억원)를 +35.5% 압도하는 초대형 어닝 서프라이즈! 이중연료(DF) 엔진 비중 확대.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                1092,
+                1180,
+                1335,
+                1281,
+                2114
+            ],
+            "op": [
+                203,
+                245,
+                326,
+                313,
+                603
+            ]
+        }
+    },
+    {
+        "id": "009150",
+        "code": "009150",
+        "name": "삼성전기",
+        "market": "KOSPI",
+        "sector": "IT/전기전자",
+        "announceDate": "2026-10-28",
+        "announceTime": "12:08",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800240",
+        "price": 182500,
+        "afterHoursChange": 9.15,
+        "rev": {
+            "actual": 37633,
+            "prevQ": 34572,
+            "prevY": 28890,
+            "consensus": 38362
+        },
+        "op": {
+            "actual": 6910,
+            "prevQ": 4404,
+            "prevY": 2603,
+            "consensus": 6636
+        },
+        "net": {
+            "actual": 4850,
+            "prevQ": 3284,
+            "prevY": 2249,
+            "consensus": 4520
+        },
+        "comment": "[10/28 공시 · 역대 분기 최대 실적] 3분기 연결 매출액 3조 7,633억원(YoY +30.3%, QoQ +8.9%), 영업이익 6,910억원(YoY +165.5%, QoQ +56.9%)으로 증권사 컨센서스(6,636억원)를 +4.1% 상회. AI 서버용 MLCC 및 FC-BGA 반도체 기판 공급 급증.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                28890,
+                29450,
+                32091,
+                34572,
+                37633
+            ],
+            "op": [
+                2603,
+                2410,
+                2805,
+                4404,
+                6910
+            ]
+        }
+    },
+    {
+        "id": "137950",
+        "code": "137950",
+        "name": "제이씨케미칼",
+        "market": "KOSDAQ",
+        "sector": "바이오에너지/화학",
+        "announceDate": "2026-10-28",
+        "announceTime": "11:35",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028900215",
+        "price": 3155,
+        "afterHoursChange": 4.1,
+        "rev": {
+            "actual": 1862,
+            "prevQ": 1428,
+            "prevY": 1108,
+            "consensus": 1450
+        },
+        "op": {
+            "actual": 99,
+            "prevQ": 115,
+            "prevY": 18,
+            "consensus": 80
+        },
+        "net": {
+            "actual": 31,
+            "prevQ": 88,
+            "prevY": -6,
+            "consensus": 25
+        },
+        "comment": "[10/28 공시] 3분기 연결 매출액 1,862억원(YoY +68.0%, QoQ +30.4%), 영업이익 99억원(YoY +437.1% 급증), 당기순이익 31억원(전년동기 대비 흑자전환)으로 컨센서스(+23.8%) 대폭 상회.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                1108,
+                1190,
+                1212,
+                1428,
+                1862
+            ],
+            "op": [
+                18,
+                25,
+                16,
+                115,
+                99
+            ]
+        }
+    },
+    {
+        "id": "000660",
+        "code": "000660",
+        "name": "SK하이닉스",
+        "market": "KOSPI",
+        "sector": "반도체",
+        "announceDate": "2026-10-28",
+        "announceTime": "09:01",
+        "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+        "rceptNo": "20261028800052",
+        "price": 2485000,
+        "afterHoursChange": 8.45,
+        "rev": {
+            "actual": 1046155,
+            "prevQ": 793187,
+            "prevY": 244489,
+            "consensus": 982718
+        },
+        "op": {
+            "actual": 833338,
+            "prevQ": 605624,
+            "prevY": 113834,
+            "consensus": 772214
+        },
+        "net": {
+            "actual": 397756,
+            "prevQ": 939226,
+            "prevY": 125992,
+            "consensus": 410000
+        },
+        "comment": "[10/28 개장전 공시 · 사상 첫 분기매출 100조 돌파] 3분기 연결 매출액 104조 6,155억원(YoY +327.9%, QoQ +31.9%), 영업이익 83조 3,338억원(YoY +632.1%, QoQ +37.6%, 영업이익률 79.7%)으로 컨센서스(77조 2,214억원)를 +7.9% 상회하는 역대 최대 실적! HBM4 출하 본격화 및 100조원 주주환원(주당 2만원 배당·자사주 20조 매입) 발표.",
+        "history": {
+            "quarters": [
+                "3Q25",
+                "4Q25",
+                "1Q26",
+                "2Q26",
+                "3Q26(P)"
+            ],
+            "rev": [
+                244489,
+                385000,
+                525763,
+                793187,
+                1046155
+            ],
+            "op": [
+                113834,
+                215000,
+                375905,
+                605624,
+                833338
+            ]
+        }
+    },
+    {
         "id": "128940",
         "code": "128940",
         "name": "한미약품",
@@ -2478,6 +3193,33 @@ def fetch_public_disclosures_no_key() -> list:
                     })
     except Exception:
         pass
+    # 3) 네이버 금융 공시/실적 뉴스 보조 스캔 (GitHub Actions 해외 IP에서도 100% 접속 가능)
+    try:
+        raw_nv = http_get_bytes("https://finance.naver.com/news/news_list.naver?mode=LSS2D&section_id=101&section_id2=258", timeout=8)
+        nv_html = raw_nv.decode("cp949", errors="ignore")
+        nv_titles = re.findall(r'title="([^"]*(?:잠정|영업이익|3분기|매출)[^"]*)"', nv_html)
+        for t in nv_titles[:25]:
+            m_corp = re.match(r"\[?([가-힣A-Za-z0-9]+)\]?\s*,\s*(?:올해\s*)?(?:3분기|2분기|4분기|1분기|잠정)", t)
+            if m_corp:
+                cname = m_corp.group(1).strip()
+                try:
+                    q_url = f"https://ac.finance.naver.com/ac?q={urllib.parse.quote(cname)}&q_enc=utf-8&st=111&r_format=json&r_enc=utf-8"
+                    ac_data = json.loads(http_get_bytes(q_url, timeout=5).decode("utf-8", errors="ignore"))
+                    scode = ac_data["items"][0][0][0][0] if ac_data.get("items") and ac_data["items"][0] else ""
+                except Exception:
+                    scode = ""
+                if len(scode) == 6 and scode.isdigit() and scode not in seen_codes:
+                    seen_codes.add(scode)
+                    results.append({
+                        "corp_name": cname,
+                        "corp_cls": "Y",
+                        "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)",
+                        "rcept_no": "",
+                        "rcept_dt": datetime.now().strftime("%Y%m%d"),
+                        "stock_code": scode
+                    })
+    except Exception:
+        pass
     return results
 
 def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
@@ -2660,7 +3402,7 @@ def start_daily_4pm_7pm_scheduler():
                 now = datetime.now()
                 hm = now.strftime("%H:%M")
                 day_key = now.strftime("%Y-%m-%d_") + hm
-                if now.weekday() < 5 and hm in ("16:00", "19:00") and last_run != day_key:
+                if now.weekday() < 5 and hm == "19:00" and last_run != day_key:
                     last_run = day_key
                     if DART_API_KEY:
                         print(f"[자동 검출 스케줄러] {hm} 정각 DART + 네이버증권 실적 수집 시작...")

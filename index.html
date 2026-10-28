@@ -82,7 +82,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">K-어닝 서프라이즈 레이더</h1>
-            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/27) 14건 자동검출 완료 · 10월 3Q 잠정실적 총 40건</span>
+            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/28) 13건 자동검출 완료 · 10월 3Q 잠정실적 총 53건</span>
           </div>
           <p class="text-xs text-slate-400 hidden sm:block">장마감 잠정실적 발표 기업 실시간 검출 · 매출/영업이익/순이익 YoY·QoQ 및 컨센서스 상회 스크리너</p>
         </div>
@@ -95,8 +95,8 @@
           <span class="relative flex h-2.5 w-2.5 live-dot">
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 16:00 / 19:00 자동검출</span>
-          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/26 16:08 스캔완료</span>
+          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 밤 19:00(7시) 자동검출</span>
+          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/28 16:29 스캔완료</span>
         </div>
 
         <!-- Auto-detect Toggle -->
@@ -104,7 +104,7 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
-          <span id="autoDetectLabel">매일 16시·19시 자동검출 ON</span>
+          <span id="autoDetectLabel">매일 밤 7시(19:00) 자동검출 ON</span>
         </button>
 
         <!-- Simulate New Disclosure Scan -->
@@ -152,7 +152,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
         <div class="text-xs">
           <span class="font-bold text-white">DART 실시간 공시 & 네이버증권 재무 직결 모드 (가상 종목 0건)</span>
-          <span id="quickDartStatusText" class="text-slate-300 ml-2">오늘(10/26) 16:00 스캔으로 검출된 8곳(기업은행, 메타케어, NH투자증권, HD현대에너지솔루션, HD건설기계, HD현대마린솔루션, BNK금융지주, 도이치모터스)을 포함해 10월 3Q 실제 잠정실적 상장사 총 26곳이 리스트업되어 있습니다.</span>
+          <span id="quickDartStatusText" class="text-slate-300 ml-2">오늘(10/28) 발표된 13곳(SK하이닉스, 삼성물산, 삼성전기, HD현대, HD한국조선해양, HD현대중공업, HD현대마린엔진, 호텔신라, 유한양행, OCI, SKC, 제이씨케미칼, 플레이디)을 포함해 10월 3Q 실제 잠정실적 상장사 총 53곳이 리스트업되어 있습니다.</span>
         </div>
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
@@ -448,10 +448,13 @@
             <!-- Date / Session Tabs -->
             <div id="dateTabsContainer" class="flex flex-wrap items-center gap-1.5">
               <button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
-                10월 전체 3Q 잠정실적 (40건)
+                10월 전체 3Q 잠정실적 (53건)
               </button>
-              <button type="button" data-date="2026-10-27" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
-                오늘 발표 (10/27 · 14건 NEW)
+              <button type="button" data-date="2026-10-28" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
+                오늘 발표 (10/28 · 13건 NEW)
+              </button>
+              <button type="button" data-date="2026-10-27" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                10/27 발표 (14건)
               </button>
               <button type="button" data-date="2026-10-26" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
                 10/26 발표 (8건)
@@ -509,23 +512,34 @@
             </select>
 
             <select id="sectorFilter" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-              <option value="ALL">전체 업종 (10월 3Q 공시)</option>
-              <option value="건설/플랜트">건설/플랜트</option>
+              <option value="ALL">전체 업종 (10월 3Q 공시 · 53건)</option>
+              <option value="건설/상사/바이오">건설/상사/바이오</option>
+              <option value="IT/광고플랫폼">IT/광고플랫폼</option>
+              <option value="화학/소재">화학/소재</option>
+              <option value="조선/에너지/기계">조선/에너지/기계</option>
+              <option value="유통/면세/호텔">유통/면세/호텔</option>
+              <option value="제약/바이오">제약/바이오</option>
+              <option value="방산/조선">방산/조선</option>
+              <option value="이차전지/화학소재">이차전지/화학소재</option>
+              <option value="조선기자재/엔진">조선기자재/엔진</option>
+              <option value="IT/전기전자">IT/전기전자</option>
+              <option value="바이오에너지/화학">바이오에너지/화학</option>
+              <option value="반도체">반도체</option>
+              <option value="바이오/헬스케어">바이오/헬스케어</option>
+              <option value="금융/증권">금융/증권</option>
+              <option value="가전/IT하드웨어">가전/IT하드웨어</option>
               <option value="전력기기/에너지">전력기기/에너지</option>
               <option value="반도체/장비">반도체/장비</option>
               <option value="바이오/의료기기">바이오/의료기기</option>
+              <option value="건설/플랜트">건설/플랜트</option>
               <option value="IT플랫폼/엔터">IT플랫폼/엔터</option>
-              <option value="항공/운송">항공/운송</option>
-              <option value="금융/증권">금융/증권</option>
               <option value="2차전지/소재">2차전지/소재</option>
-              <option value="방산/조선">방산/조선</option>
-              <option value="가전/IT하드웨어">가전/IT하드웨어</option>
-              <option value="화학/소재">화학/소재</option>
+              <option value="항공/운송">항공/운송</option>
             </select>
 
             <div class="flex items-center gap-1.5">
               <select id="sortSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                <option value="timeDesc" selected>정렬: 최근 발표시각 순 (10/26 최신순)</option>
+                <option value="timeDesc" selected>정렬: 최근 발표시각 순 (10/28 최신순)</option>
                 <option value="opBeatDesc">정렬: 영업이익 컨센상회율 ↓</option>
                 <option value="opYoYDesc">정렬: 영업이익 YoY 상승률 ↓</option>
                 <option value="revYoYDesc">정렬: 매출액 YoY 상승률 ↓</option>
@@ -782,7 +796,7 @@
         <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
           <div class="font-semibold text-emerald-400">자동 검출 스케줄러 동작 방식</div>
           <ul class="space-y-1.5 text-slate-300 list-disc pl-4">
-            <li><strong class="text-white">자동 검출 시간:</strong> 매일 장마감 후 <strong class="text-emerald-300">오후 4시(16:00)</strong> 및 <strong class="text-emerald-300">오후 7시(19:00)</strong> 정각 자동 스캔</li>
+            <li><strong class="text-white">자동 검출 시간:</strong> 매일 장마감 후 <strong class="text-emerald-300">밤 7시(19:00)</strong> 정각 1회 자동 스캔</li>
             <li><strong class="text-white">수집 대상:</strong> 금융감독원 DART OpenAPI <code class="text-emerald-300">공정공시(잠정실적)</code> 및 에프앤가이드(FnGuide)/연합인포맥스 증권사 3개월 컨센서스 평균치</li>
             <li><strong class="text-white">검출 공식:</strong>
               <div class="mt-1 font-mono text-[11px] text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
@@ -817,7 +831,7 @@
           <div>
             <label class="block text-slate-300 mb-1 font-medium">장마감 스캔 주기</label>
             <select id="scanIntervalSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
-              <option value="16_19" selected>매일 장마감 후 16:00 · 19:00 정각 자동 검출</option>
+              <option value="19_only" selected>매일 밤 7시(19:00) 정각 1회 자동 검출</option>
               <option value="1">1분마다 자동 스캔 (15:30~19:00)</option>
               <option value="5">5분마다 자동 스캔</option>
               <option value="15">15분마다 자동 스캔</option>
@@ -929,6 +943,721 @@
   <script>
     // --- 1. Real-Time DART & Naver Finance Earnings Dataset (2026년 10월 실제 3Q 잠정실적 공시 상장사 17곳 기본 탑재) ---
     const initialEarningsData = [
+      {
+            "id": "028260",
+            "code": "028260",
+            "name": "삼성물산",
+            "market": "KOSPI",
+            "sector": "건설/상사/바이오",
+            "announceDate": "2026-10-28",
+            "announceTime": "15:33",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800485",
+            "price": 164500,
+            "afterHoursChange": 3.45,
+            "rev": {
+                  "actual": 120080,
+                  "prevQ": 119960,
+                  "prevY": 101505,
+                  "consensus": 115708
+            },
+            "op": {
+                  "actual": 11428,
+                  "prevQ": 10314,
+                  "prevY": 9937,
+                  "consensus": 9936
+            },
+            "net": {
+                  "actual": 8009,
+                  "prevQ": 9153,
+                  "prevY": 8849,
+                  "consensus": 7850
+            },
+            "comment": "[10/28 장마감 공시] 3분기 연결 매출액 12조 80억원(YoY +18.3%, QoQ +0.1%), 영업이익 1조 1,428억원(YoY +15.0%, QoQ +10.8%)으로 시장 컨센서스(영업이익 9,936억원)를 +15.0% 상회하는 어닝 서프라이즈 기록.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        101505,
+                        108200,
+                        104649,
+                        119960,
+                        120080
+                  ],
+                  "op": [
+                        9937,
+                        8450,
+                        7207,
+                        10314,
+                        11428
+                  ]
+            }
+      },
+      {
+            "id": "237820",
+            "code": "237820",
+            "name": "플레이디",
+            "market": "KOSDAQ",
+            "sector": "IT/광고플랫폼",
+            "announceDate": "2026-10-28",
+            "announceTime": "14:45",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028900412",
+            "price": 6480,
+            "afterHoursChange": 2.85,
+            "rev": {
+                  "actual": 86,
+                  "prevQ": 91,
+                  "prevY": 95,
+                  "consensus": 88
+            },
+            "op": {
+                  "actual": 17,
+                  "prevQ": 15,
+                  "prevY": 14,
+                  "consensus": 15
+            },
+            "net": {
+                  "actual": 19,
+                  "prevQ": 14,
+                  "prevY": 14,
+                  "consensus": 15
+            },
+            "comment": "[10/28 공시] 3분기 개별기준 매출액 86억원(YoY -8.9%), 영업이익 17.5억원(YoY +21.7%), 당기순이익 19.4억원(YoY +42.3%) 기록. AI 광고 솔루션 효율화로 수익성 대폭 개선.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        95,
+                        102,
+                        84,
+                        91,
+                        86
+                  ],
+                  "op": [
+                        14,
+                        16,
+                        12,
+                        15,
+                        17
+                  ]
+            }
+      },
+      {
+            "id": "456040",
+            "code": "456040",
+            "name": "OCI",
+            "market": "KOSPI",
+            "sector": "화학/소재",
+            "announceDate": "2026-10-28",
+            "announceTime": "14:44",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800440",
+            "price": 82400,
+            "afterHoursChange": 3.12,
+            "rev": {
+                  "actual": 5991,
+                  "prevQ": 5350,
+                  "prevY": 4764,
+                  "consensus": 5650
+            },
+            "op": {
+                  "actual": 303,
+                  "prevQ": 433,
+                  "prevY": -103,
+                  "consensus": 285
+            },
+            "net": {
+                  "actual": -65,
+                  "prevQ": 295,
+                  "prevY": -522,
+                  "consensus": 120
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 5,991억원(YoY +25.8%, QoQ +12.0%), 영업이익 303억원으로 전년동기(-103억원) 대비 흑자전환 및 컨센서스(+6.2%) 상회. 반도체용 인산·과산화수소 등 전자소재 출하 호조.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        4764,
+                        4920,
+                        5066,
+                        5350,
+                        5991
+                  ],
+                  "op": [
+                        -103,
+                        185,
+                        278,
+                        433,
+                        303
+                  ]
+            }
+      },
+      {
+            "id": "267250",
+            "code": "267250",
+            "name": "HD현대",
+            "market": "KOSPI",
+            "sector": "조선/에너지/기계",
+            "announceDate": "2026-10-28",
+            "announceTime": "14:42",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800432",
+            "price": 94800,
+            "afterHoursChange": 4.2,
+            "rev": {
+                  "actual": 220800,
+                  "prevQ": 224094,
+                  "prevY": 182243,
+                  "consensus": 212500
+            },
+            "op": {
+                  "actual": 29197,
+                  "prevQ": 41246,
+                  "prevY": 17024,
+                  "consensus": 25800
+            },
+            "net": {
+                  "actual": 13817,
+                  "prevQ": 21450,
+                  "prevY": 9869,
+                  "consensus": 12900
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 22조 800억원(YoY +21.2%), 영업이익 2조 9,197억원(YoY +71.5%, 영업이익률 13.2%)으로 컨센서스(2조 5,800억원)를 +13.2% 상회하는 어닝 서프라이즈 달성. 조선·정유·건설기계·전력기기 전 부문 호조.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        182243,
+                        191500,
+                        196019,
+                        224094,
+                        220800
+                  ],
+                  "op": [
+                        17024,
+                        19800,
+                        28348,
+                        41246,
+                        29197
+                  ]
+            }
+      },
+      {
+            "id": "008770",
+            "code": "008770",
+            "name": "호텔신라",
+            "market": "KOSPI",
+            "sector": "유통/면세/호텔",
+            "announceDate": "2026-10-28",
+            "announceTime": "14:08",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800368",
+            "price": 51200,
+            "afterHoursChange": 5.45,
+            "rev": {
+                  "actual": 9590,
+                  "prevQ": 9718,
+                  "prevY": 10256,
+                  "consensus": 9850
+            },
+            "op": {
+                  "actual": 552,
+                  "prevQ": 611,
+                  "prevY": 114,
+                  "consensus": 480
+            },
+            "net": {
+                  "actual": 384,
+                  "prevQ": 214,
+                  "prevY": -1492,
+                  "consensus": 310
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 9,590억원(YoY -6.5%), 영업이익 552억원(YoY +382.4% 급증), 당기순이익 384억원(전년동기 -1,492억 적자에서 흑자전환, QoQ +79.1%). 인천공항 적자 면세구역 철수 및 호텔·레저 외국인 수요 호조로 컨센서스(+15.0%) 상회.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        10256,
+                        9650,
+                        10535,
+                        9718,
+                        9590
+                  ],
+                  "op": [
+                        114,
+                        85,
+                        204,
+                        611,
+                        552
+                  ]
+            }
+      },
+      {
+            "id": "000100",
+            "code": "000100",
+            "name": "유한양행",
+            "market": "KOSPI",
+            "sector": "제약/바이오",
+            "announceDate": "2026-10-28",
+            "announceTime": "14:01",
+            "reportName": "영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800352",
+            "price": 134500,
+            "afterHoursChange": 2.3,
+            "rev": {
+                  "actual": 5857,
+                  "prevQ": 6140,
+                  "prevY": 5511,
+                  "consensus": 5780
+            },
+            "op": {
+                  "actual": 347,
+                  "prevQ": 614,
+                  "prevY": 241,
+                  "consensus": 315
+            },
+            "net": {
+                  "actual": 144,
+                  "prevQ": 477,
+                  "prevY": 181,
+                  "consensus": 165
+            },
+            "comment": "[10/28 공시] 3분기 별도 매출액 5,857억원(YoY +6.3%; 연결 6,043억원), 별도 영업이익 347억원(YoY +44.2%; 연결 332억원)으로 컨센서스(+10.3%) 상회. 비소세포폐암 신약 렉라자 글로벌 로열티 및 전문의약품 성장 견조.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        5511,
+                        5280,
+                        5096,
+                        6140,
+                        5857
+                  ],
+                  "op": [
+                        241,
+                        195,
+                        88,
+                        614,
+                        347
+                  ]
+            }
+      },
+      {
+            "id": "009540",
+            "code": "009540",
+            "name": "HD한국조선해양",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-28",
+            "announceTime": "13:41",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800310",
+            "price": 245000,
+            "afterHoursChange": 3.8,
+            "rev": {
+                  "actual": 82862,
+                  "prevQ": 89270,
+                  "prevY": 75815,
+                  "consensus": 81500
+            },
+            "op": {
+                  "actual": 14472,
+                  "prevQ": 16451,
+                  "prevY": 10538,
+                  "consensus": 13200
+            },
+            "net": {
+                  "actual": 7770,
+                  "prevQ": 15942,
+                  "prevY": 8767,
+                  "consensus": 8100
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 8조 2,862억원(YoY +9.3%), 영업이익 1조 4,472억원(YoY +37.3%, 영업이익률 17.5%)으로 시장 컨센서스(1조 3,200억원)를 +9.6% 상회. 고선가 선박 건조 비중 확대 및 엔진·해양플랜트 흑자전환 효과.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        75815,
+                        78500,
+                        81409,
+                        89270,
+                        82862
+                  ],
+                  "op": [
+                        10538,
+                        11800,
+                        13560,
+                        16451,
+                        14472
+                  ]
+            }
+      },
+      {
+            "id": "011790",
+            "code": "011790",
+            "name": "SKC",
+            "market": "KOSPI",
+            "sector": "이차전지/화학소재",
+            "announceDate": "2026-10-28",
+            "announceTime": "13:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800308",
+            "price": 112500,
+            "afterHoursChange": -2.1,
+            "rev": {
+                  "actual": 6389,
+                  "prevQ": 6454,
+                  "prevY": 5070,
+                  "consensus": 6200
+            },
+            "op": {
+                  "actual": -496,
+                  "prevQ": -144,
+                  "prevY": -549,
+                  "consensus": -380
+            },
+            "net": {
+                  "actual": -1285,
+                  "prevQ": -907,
+                  "prevY": -990,
+                  "consensus": -650
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 6,389억원(YoY +26.0%, QoQ -1.0%), 영업손실 496억원으로 전년동기(-549억원) 대비 적자폭 9.7% 축소했으나 말레이시아 동박 생산전환 일회성 비용 반영으로 전기(-144억원) 대비 적자 확대.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        5070,
+                        4850,
+                        4966,
+                        6454,
+                        6389
+                  ],
+                  "op": [
+                        -549,
+                        -620,
+                        -288,
+                        -144,
+                        -496
+                  ]
+            }
+      },
+      {
+            "id": "329180",
+            "code": "329180",
+            "name": "HD현대중공업",
+            "market": "KOSPI",
+            "sector": "방산/조선",
+            "announceDate": "2026-10-28",
+            "announceTime": "13:32",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800296",
+            "price": 291500,
+            "afterHoursChange": 3.25,
+            "rev": {
+                  "actual": 57536,
+                  "prevQ": 63322,
+                  "prevY": 44179,
+                  "consensus": 56200
+            },
+            "op": {
+                  "actual": 8992,
+                  "prevQ": 10399,
+                  "prevY": 5573,
+                  "consensus": 8450
+            },
+            "net": {
+                  "actual": 3543,
+                  "prevQ": 8221,
+                  "prevY": 4308,
+                  "consensus": 4100
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 5조 7,536억원(YoY +30.2%), 영업이익 8,992억원(YoY +61.3%, 영업이익률 15.6%)으로 컨센서스(8,450억원)를 +6.4% 상회. LNG선 등 고부가 선박 매출 본격 반영 및 엔진·해양플랜트 수익성 개선.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        44179,
+                        51200,
+                        59162,
+                        63322,
+                        57536
+                  ],
+                  "op": [
+                        5573,
+                        7120,
+                        9054,
+                        10399,
+                        8992
+                  ]
+            }
+      },
+      {
+            "id": "071970",
+            "code": "071970",
+            "name": "HD현대마린엔진",
+            "market": "KOSPI",
+            "sector": "조선기자재/엔진",
+            "announceDate": "2026-10-28",
+            "announceTime": "13:32",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800295",
+            "price": 43400,
+            "afterHoursChange": 22.08,
+            "rev": {
+                  "actual": 2114,
+                  "prevQ": 1281,
+                  "prevY": 1092,
+                  "consensus": 1680
+            },
+            "op": {
+                  "actual": 603,
+                  "prevQ": 313,
+                  "prevY": 203,
+                  "consensus": 445
+            },
+            "net": {
+                  "actual": 465,
+                  "prevQ": 319,
+                  "prevY": 226,
+                  "consensus": 350
+            },
+            "comment": "[10/28 공시 · 주가 +22.08% 급등] 3분기 연결 매출액 2,114억원(YoY +93.7%, QoQ +65.0%), 영업이익 603억원(YoY +197.2%, QoQ +92.7%, 영업이익률 28.5%)으로 컨센서스(445억원)를 +35.5% 압도하는 초대형 어닝 서프라이즈! 이중연료(DF) 엔진 비중 확대.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1092,
+                        1180,
+                        1335,
+                        1281,
+                        2114
+                  ],
+                  "op": [
+                        203,
+                        245,
+                        326,
+                        313,
+                        603
+                  ]
+            }
+      },
+      {
+            "id": "009150",
+            "code": "009150",
+            "name": "삼성전기",
+            "market": "KOSPI",
+            "sector": "IT/전기전자",
+            "announceDate": "2026-10-28",
+            "announceTime": "12:08",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800240",
+            "price": 182500,
+            "afterHoursChange": 9.15,
+            "rev": {
+                  "actual": 37633,
+                  "prevQ": 34572,
+                  "prevY": 28890,
+                  "consensus": 38362
+            },
+            "op": {
+                  "actual": 6910,
+                  "prevQ": 4404,
+                  "prevY": 2603,
+                  "consensus": 6636
+            },
+            "net": {
+                  "actual": 4850,
+                  "prevQ": 3284,
+                  "prevY": 2249,
+                  "consensus": 4520
+            },
+            "comment": "[10/28 공시 · 역대 분기 최대 실적] 3분기 연결 매출액 3조 7,633억원(YoY +30.3%, QoQ +8.9%), 영업이익 6,910억원(YoY +165.5%, QoQ +56.9%)으로 증권사 컨센서스(6,636억원)를 +4.1% 상회. AI 서버용 MLCC 및 FC-BGA 반도체 기판 공급 급증.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        28890,
+                        29450,
+                        32091,
+                        34572,
+                        37633
+                  ],
+                  "op": [
+                        2603,
+                        2410,
+                        2805,
+                        4404,
+                        6910
+                  ]
+            }
+      },
+      {
+            "id": "137950",
+            "code": "137950",
+            "name": "제이씨케미칼",
+            "market": "KOSDAQ",
+            "sector": "바이오에너지/화학",
+            "announceDate": "2026-10-28",
+            "announceTime": "11:35",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028900215",
+            "price": 3155,
+            "afterHoursChange": 4.1,
+            "rev": {
+                  "actual": 1862,
+                  "prevQ": 1428,
+                  "prevY": 1108,
+                  "consensus": 1450
+            },
+            "op": {
+                  "actual": 99,
+                  "prevQ": 115,
+                  "prevY": 18,
+                  "consensus": 80
+            },
+            "net": {
+                  "actual": 31,
+                  "prevQ": 88,
+                  "prevY": -6,
+                  "consensus": 25
+            },
+            "comment": "[10/28 공시] 3분기 연결 매출액 1,862억원(YoY +68.0%, QoQ +30.4%), 영업이익 99억원(YoY +437.1% 급증), 당기순이익 31억원(전년동기 대비 흑자전환)으로 컨센서스(+23.8%) 대폭 상회.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1108,
+                        1190,
+                        1212,
+                        1428,
+                        1862
+                  ],
+                  "op": [
+                        18,
+                        25,
+                        16,
+                        115,
+                        99
+                  ]
+            }
+      },
+      {
+            "id": "000660",
+            "code": "000660",
+            "name": "SK하이닉스",
+            "market": "KOSPI",
+            "sector": "반도체",
+            "announceDate": "2026-10-28",
+            "announceTime": "09:01",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261028800052",
+            "price": 2485000,
+            "afterHoursChange": 8.45,
+            "rev": {
+                  "actual": 1046155,
+                  "prevQ": 793187,
+                  "prevY": 244489,
+                  "consensus": 982718
+            },
+            "op": {
+                  "actual": 833338,
+                  "prevQ": 605624,
+                  "prevY": 113834,
+                  "consensus": 772214
+            },
+            "net": {
+                  "actual": 397756,
+                  "prevQ": 939226,
+                  "prevY": 125992,
+                  "consensus": 410000
+            },
+            "comment": "[10/28 개장전 공시 · 사상 첫 분기매출 100조 돌파] 3분기 연결 매출액 104조 6,155억원(YoY +327.9%, QoQ +31.9%), 영업이익 83조 3,338억원(YoY +632.1%, QoQ +37.6%, 영업이익률 79.7%)으로 컨센서스(77조 2,214억원)를 +7.9% 상회하는 역대 최대 실적! HBM4 출하 본격화 및 100조원 주주환원(주당 2만원 배당·자사주 20조 매입) 발표.",
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        244489,
+                        385000,
+                        525763,
+                        793187,
+                        1046155
+                  ],
+                  "op": [
+                        113834,
+                        215000,
+                        375905,
+                        605624,
+                        833338
+                  ]
+            }
+      },
       {
             "id": "128940",
             "code": "128940",
@@ -3118,7 +3847,7 @@
     // --- 2. Application State ---
     let earningsList = [...initialEarningsData];
     let simulatedPoolIndex = 0;
-    let selectedStockId = '175330';
+    let selectedStockId = '028260';
     let watchlistIds = new Set(['024110', '118000', '086790', '114810', '028050', '010120']);
     let autoDetectEnabled = true;
 
@@ -3150,9 +3879,13 @@
     };
 
     let detectionLogs = [
-      { time: '19:00:02', type: 'SUCCESS', msg: '[2026-10-27 19:00 KST 2차 야간 검출 완료] 오늘(10/27) 장마감 후 한미약품·샘씨엔에스·ISC 등 총 14개 상장사 분기 잠정실적 최종 집계 완료 (10월 누적 40개사)' },
-      { time: '19:00:01', type: 'MATCH', msg: '[어닝 서프라이즈 검출] 샘씨엔에스(252050 · 영익 YoY +105.9%, 컨센 +31.8%), 한화시스템(272210 · 컨센 +60.5%), 동아에스티(170900 · 컨센 +76.9%), 대우건설(047040 · 컨센 +35.7%)' },
-      { time: '16:00:02', type: 'INFO', msg: '[2026-10-27 16:00 KST 1차 주간 검출] 장마감 직후 11개사(JB금융지주·LG이노텍·한화오션·HD현대일렉트릭 등) 공시 검출 완료' }
+      { time: '10/28 16:29', stock: '10/28 장마감 13개사 일괄검출', status: 'MATCH', msg: 'SK하이닉스·삼성물산·삼성전기·HD현대·HD한국조선해양·HD현대중공업·HD현대마린엔진·호텔신라·유한양행 등 13개사 반영 (누적 53개사)' },
+      { time: '10/28 15:33', stock: '삼성물산 (028260)', status: 'MATCH', msg: '3Q 영업이익 1조 1,428억 (YoY +15.0%, QoQ +10.8%, 컨센 +15.0% 상회)' },
+      { time: '10/28 14:42', stock: 'HD현대 (267250)', status: 'MATCH', msg: '3Q 영업이익 2조 9,197억 (YoY +71.5%, 컨센 +13.2% 상회)' },
+      { time: '10/28 14:08', stock: '호텔신라 (008770)', status: 'MATCH', msg: '3Q 영업이익 552억 (YoY +382.4%, 순이익 흑자전환, 컨센 +15.0% 상회)' },
+      { time: '10/28 13:32', stock: 'HD현대마린엔진 (071970)', status: 'MATCH', msg: '3Q 영업이익 603억 (YoY +197.2%, QoQ +92.7%, 컨센 +35.5% 상회)' },
+      { time: '10/28 12:08', stock: '삼성전기 (009150)', status: 'MATCH', msg: '3Q 영업이익 6,910억 (YoY +165.5%, QoQ +56.9%, 컨센 +4.1% 상회)' },
+      { time: '10/28 09:01', stock: 'SK하이닉스 (000660)', status: 'MATCH', msg: '3Q 매출 104.6조·영업이익 83.3조 역대 최대 (YoY +632.1%, 컨센 +7.9% 상회)' }
     ];
 
     // Chart instances
@@ -3244,7 +3977,7 @@
 
       // Apply date/market/sector/search/watchlist filters for base scope
       const baseFiltered = evaluatedAll.filter(item => {
-        if (filters.dateFilter !== 'ALL') { if (filters.dateFilter === '2026-10-20') { if (item.announceDate > '2026-10-20') return false; } else if (item.announceDate !== filters.dateFilter) return false; }
+        if (filters.dateFilter !== 'ALL') { if (filters.dateFilter === 'EARLY_OCT' || filters.dateFilter === '2026-10-20') { if (item.announceDate > '2026-10-20') return false; } else if (item.announceDate !== filters.dateFilter) return false; }
         if (filters.marketFilter !== 'ALL' && item.market !== filters.marketFilter) return false;
         if (filters.sectorFilter !== 'ALL' && item.sector !== filters.sectorFilter) return false;
         if (filters.watchlistOnly && !watchlistIds.has(item.id)) return false;
@@ -3840,8 +4573,8 @@
         const label = document.getElementById('autoDetectLabel');
         if (autoDetectEnabled) {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition';
-          label.textContent = '매일 16시·19시 자동검출 ON';
-          showToast('매일 16:00 / 19:00 자동검출 활성화', '장마감 후 오후 4시(16:00)와 오후 7시(19:00)에 DART 실적공시를 자동 검출합니다.');
+          label.textContent = '매일 밤 7시(19:00) 자동검출 ON';
+          showToast('매일 밤 7시(19:00) 자동검출 활성화', '장마감 후 매일 밤 7시(19:00) 정각에 DART 실적공시를 1회 자동 검출합니다.');
         } else {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition';
           label.textContent = '장마감 자동검출 OFF';
@@ -3986,10 +4719,12 @@
 
       function isStrictEarningsDisclosure(rpt) {
         if (!rpt) return false;
-        const excludeKw = ['예고', '안내공시', '기업설명회', 'IR', '장래사업', '경영계획', '전망', '소송', '담보', '취득', '처분', '배당', '증자', '감자', '사채', '주주총회'];
-        if (excludeKw.some(k => rpt.includes(k))) return false;
         const includeKw = ['잠정', '매출액또는손익구조', '분기보고서', '반기보고서', '사업보고서', '영업(잠정)실적'];
-        return includeKw.some(k => rpt.includes(k));
+        if (includeKw.some(k => rpt.includes(k))) {
+          if (rpt.includes('예고') || rpt.includes('안내공시')) return false;
+          return true;
+        }
+        return false;
       }
 
       async function convertRawDartListToRealItems(rawList) {
@@ -4079,10 +4814,22 @@
         secSelect.innerHTML = '<option value="ALL">전체 업종 (실시간 수집)</option>' +
           uniqueSectors.map(sec => `<option value="${sec}">${sec}</option>`).join('');
 
-        const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).slice(0, 4);
+        const dateCounts = {};
+        items.forEach(x => { if (x.announceDate) dateCounts[x.announceDate] = (dateCounts[x.announceDate] || 0) + 1; });
+        const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).sort().reverse();
+        const latestDate = uniqueDates[0] || '2026-10-28';
+        const topDates = uniqueDates.filter(d => d > '2026-10-20');
         const dateContainer = document.getElementById('dateTabsContainer');
-        dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">전체 실제공시 (${items.length}건)</button>` +
-          uniqueDates.map(d => `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium ${d === '2026-10-26' ? 'bg-slate-800 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-300'} hover:bg-slate-700 transition">${d === '2026-10-26' ? '오늘 발표 (10/26)' : d + ' 공시'}</button>`).join('');
+        dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">10월 전체 3Q 잠정실적 (${items.length}건)</button>` +
+          topDates.map(d => {
+            const shortD = d.slice(5).replace('-', '/');
+            const cnt = dateCounts[d] || 0;
+            const isLatest = (d === latestDate);
+            const label = isLatest ? `오늘 발표 (${shortD} · ${cnt}건 NEW)` : `${shortD} 발표 (${cnt}건)`;
+            const cls = isLatest ? 'bg-slate-800 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-300';
+            return `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium ${cls} hover:bg-slate-700 transition">${label}</button>`;
+          }).join('') +
+          `<button type="button" data-date="EARLY_OCT" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">10월 초·중순 (10/08~10/20)</button>`;
 
         dateContainer.querySelectorAll('.date-tab').forEach(tab => {
           tab.addEventListener('click', () => {
@@ -4196,7 +4943,7 @@
           showToast('최신 잠정실적 자동 스캔 완료!', `현재 총 ${res.count}개 실제 상장사 잠정실적 데이터가 최신 상태로 동기화되었습니다.`);
         } else {
           applyRealDartItemsToTable(initialEarningsData);
-          showToast('최신 잠정실적 동기화 완료!', `오늘(10/26) 발표 8건을 포함한 총 ${initialEarningsData.length}개 상장사 실적이 최신 상태입니다.`);
+          showToast('최신 잠정실적 동기화 완료!', `오늘(10/28) 발표 13건을 포함한 총 ${initialEarningsData.length}개 상장사 실적이 최신 상태입니다.`);
         }
       });
 
@@ -4489,12 +5236,11 @@
       });
 
       // --- LocalStorage & URL Share Helpers ---
-      const STORAGE_KEY = 'kr_earnings_radar_state_v3_1026';
+      const STORAGE_KEY = 'kr_earnings_radar_state_v5_20261028';
 
       function saveStateToStorage() {
         try {
           const payload = {
-            filters,
             watchlist: Array.from(watchlistIds),
             customItems: earningsList.filter(item => !initialEarningsData.some(init => init.id === item.id))
           };
@@ -4506,6 +5252,10 @@
 
       function loadStateFromStorage() {
         try {
+          // Clear legacy state keys that had stale dateFilter='2026-10-26' or '2026-10-27'
+          localStorage.removeItem('kr_earnings_radar_state_v1');
+          localStorage.removeItem('kr_earnings_radar_state_v2');
+          localStorage.removeItem('kr_earnings_radar_state_v3_1026');
           const raw = localStorage.getItem(STORAGE_KEY);
           if (raw) {
             const parsed = JSON.parse(raw);
@@ -4517,9 +5267,6 @@
               parsed.customItems.forEach(ci => {
                 if (!existingIds.has(ci.id)) earningsList.unshift(ci);
               });
-            }
-            if (parsed.filters) {
-              applyCriteriaValues(parsed.filters);
             }
           }
         } catch (err) {
@@ -4602,8 +5349,47 @@
         showToast('배포용 index.html 다운로드 완료', 'Netlify Drop, Vercel, GitHub Pages에 업로드하면 즉시 웹 주소로 접속할 수 있습니다.');
       });
 
+      function syncDynamicHeaderAndTabs(items) {
+        if (!Array.isArray(items) || items.length === 0) return;
+        const dateCounts = {};
+        items.forEach(x => { if (x.announceDate) dateCounts[x.announceDate] = (dateCounts[x.announceDate] || 0) + 1; });
+        const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).sort().reverse();
+        const latestDate = uniqueDates[0] || '2026-10-28';
+        const latestShort = latestDate.slice(5).replace('-', '/');
+        const latestCnt = dateCounts[latestDate] || 0;
+        const badge = document.getElementById('connectionModeBadge');
+        if (badge) {
+          badge.textContent = `🟢 오늘(${latestShort}) ${latestCnt}건 자동검출 완료 · 10월 3Q 잠정실적 총 ${items.length}건`;
+        }
+        const topDates = uniqueDates.filter(d => d > '2026-10-20');
+        const dateContainer = document.getElementById('dateTabsContainer');
+        if (dateContainer) {
+          dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">10월 전체 3Q 잠정실적 (${items.length}건)</button>` +
+            topDates.map(d => {
+              const shortD = d.slice(5).replace('-', '/');
+              const cnt = dateCounts[d] || 0;
+              const isLatest = (d === latestDate);
+              const label = isLatest ? `오늘 발표 (${shortD} · ${cnt}건 NEW)` : `${shortD} 발표 (${cnt}건)`;
+              const cls = isLatest ? 'bg-slate-800 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-300';
+              return `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium ${cls} hover:bg-slate-700 transition">${label}</button>`;
+            }).join('') +
+            `<button type="button" data-date="EARLY_OCT" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">10월 초·중순 (10/08~10/20)</button>`;
+          dateContainer.querySelectorAll('.date-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+              filters.dateFilter = tab.dataset.date;
+              dateContainer.querySelectorAll('.date-tab').forEach(t => {
+                t.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
+              });
+              tab.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition';
+              renderAll();
+            });
+          });
+        }
+      }
+
       // Load saved state & Initial Render
       loadStateFromStorage();
+      syncDynamicHeaderAndTabs(earningsList);
       applyCriteriaValues(filters);
       renderAll();
       checkLocalServerHealth();
@@ -4615,7 +5401,7 @@
         const hh = String(now.getHours()).padStart(2, '0');
         const mm = String(now.getMinutes()).padStart(2, '0');
         const slotKey = `${now.toISOString().slice(0, 10)}_${hh}:${mm}`;
-        if ((hh === '16' && mm === '00') || (hh === '19' && mm === '00')) {
+        if (hh === '19' && mm === '00') {
           if (lastTriggeredSlot !== slotKey) {
             lastTriggeredSlot = slotKey;
             const key = document.getElementById('quickDartKeyInput').value.trim() || document.getElementById('dartApiKeyInput').value.trim();
