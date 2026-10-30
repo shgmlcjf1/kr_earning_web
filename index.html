@@ -82,7 +82,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">K-어닝 서프라이즈 레이더</h1>
-            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/29) 23건 자동검출 완료 · 10월 3Q 잠정실적 총 79건</span>
+            <span id="connectionModeBadge" class="px-2 py-0.5 text-[11px] font-semibold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">🟢 오늘(10/30) 20건 자동검출 완료 · 10월 3Q 잠정실적 총 99건</span>
           </div>
           <p class="text-xs text-slate-400 hidden sm:block">장마감 잠정실적 발표 기업 실시간 검출 · 매출/영업이익/순이익 YoY·QoQ 및 컨센서스 상회 스크리너</p>
         </div>
@@ -95,8 +95,8 @@
           <span class="relative flex h-2.5 w-2.5 live-dot">
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 밤 18:00(7시) 자동검출</span>
-          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/29 18:00 스캔완료</span>
+          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 저녁 18:00(6시) 자동검출</span>
+          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/30 18:00 스캔완료</span>
         </div>
 
         <!-- Auto-detect Toggle -->
@@ -104,7 +104,7 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
-          <span id="autoDetectLabel">매일 밤 7시(19:00) 자동검출 ON</span>
+          <span id="autoDetectLabel">매일 저녁 6시(18:00) 자동검출 ON</span>
         </button>
 
         <!-- Simulate New Disclosure Scan -->
@@ -152,7 +152,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
         <div class="text-xs">
           <span class="font-bold text-white">DART 실시간 공시 & 네이버증권 재무 직결 모드 (가상 종목 0건)</span>
-          <span id="quickDartStatusText" class="text-slate-300 ml-2">오늘(10/29) 19:00까지 발표된 23곳(삼성SDI, 한화비전, SK이노베이션, KB금융, 현대차, 두산에너빌리티, 두산밥캣, 삼성중공업, 삼성SDS, 아모레퍼시픽, 아모레퍼시픽홀딩스, 금호타이어, 대한유화, OCI홀딩스, 대한전선, 현대코퍼레이션, 한화솔루션, 한화에어로스페이스, 롯데정밀화학, 한독 등)을 포함해 10월 3Q 실제 잠정실적 상장사 총 79곳이 리스트업되어 있습니다.</span>
+          <span id="quickDartStatusText" class="text-slate-300 ml-2">오늘(10/30) 발표된 20곳(효성, 효성티앤씨, 케이씨, 대덕전자, 라온로보틱스, 폰드그룹, 현대모비스, DL이앤씨, 기아, 효성중공업, 한미반도체, 현대오토에버, 현대제철, 키움증권, HL만도, SOOP, HS효성첨단소재, 효성화학, 대한제강, HDC현대EP)을 포함해 10월 3Q 실제 잠정실적 상장사 총 99곳이 리스트업되어 있습니다.</span>
         </div>
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
@@ -448,10 +448,10 @@
             <!-- Date / Session Tabs -->
             <div id="dateTabsContainer" class="flex flex-wrap items-center gap-1.5">
               <button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">
-                10월 전체 3Q 잠정실적 (79건)
+                10월 전체 3Q 잠정실적 (99건)
               </button>
               <button type="button" data-date="2026-10-28" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 border border-emerald-500/40 hover:bg-slate-700 transition">
-                오늘 발표 (10/29 · 23건 NEW)
+                오늘 발표 (10/30 · 20건 NEW)
               </button>
               <button type="button" data-date="2026-10-27" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
                 10/27 발표 (14건)
@@ -512,7 +512,7 @@
             </select>
 
             <select id="sectorFilter" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-              <option value="ALL">전체 업종 (10월 3Q 공시 · 79건)</option>
+              <option value="ALL">전체 업종 (10월 3Q 공시 · 99건)</option>
               <option value="건설/상사/바이오">건설/상사/바이오</option>
               <option value="IT/광고플랫폼">IT/광고플랫폼</option>
               <option value="화학/소재">화학/소재</option>
@@ -539,7 +539,7 @@
 
             <div class="flex items-center gap-1.5">
               <select id="sortSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                <option value="timeDesc" selected>정렬: 최근 발표시각 순 (10/29 최신순)</option>
+                <option value="timeDesc" selected>정렬: 최근 발표시각 순 (10/30 최신순)</option>
                 <option value="opBeatDesc">정렬: 영업이익 컨센상회율 ↓</option>
                 <option value="opYoYDesc">정렬: 영업이익 YoY 상승률 ↓</option>
                 <option value="revYoYDesc">정렬: 매출액 YoY 상승률 ↓</option>
@@ -796,7 +796,7 @@
         <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
           <div class="font-semibold text-emerald-400">자동 검출 스케줄러 동작 방식</div>
           <ul class="space-y-1.5 text-slate-300 list-disc pl-4">
-            <li><strong class="text-white">자동 검출 시간:</strong> 매일 장마감 후 <strong class="text-emerald-300">밤 7시(19:00)</strong> 정각 1회 자동 스캔</li>
+            <li><strong class="text-white">자동 검출 시간:</strong> 매일 장마감 후 <strong class="text-emerald-300">저녁 6시(18:00)</strong> 정각 1회 자동 스캔</li>
             <li><strong class="text-white">수집 대상:</strong> 금융감독원 DART OpenAPI <code class="text-emerald-300">공정공시(잠정실적)</code> 및 에프앤가이드(FnGuide)/연합인포맥스 증권사 3개월 컨센서스 평균치</li>
             <li><strong class="text-white">검출 공식:</strong>
               <div class="mt-1 font-mono text-[11px] text-slate-400 bg-slate-900 p-2 rounded border border-slate-800">
@@ -831,7 +831,7 @@
           <div>
             <label class="block text-slate-300 mb-1 font-medium">장마감 스캔 주기</label>
             <select id="scanIntervalSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white">
-              <option value="19_only" selected>매일 밤 7시(19:00) 정각 1회 자동 검출</option>
+              <option value="19_only" selected>매일 저녁 6시(18:00) 정각 1회 자동 검출</option>
               <option value="1">1분마다 자동 스캔 (15:30~19:00)</option>
               <option value="5">5분마다 자동 스캔</option>
               <option value="15">15분마다 자동 스캔</option>
@@ -943,6 +943,1686 @@
   <script>
     // --- 1. Real-Time DART & Naver Finance Earnings Dataset (2026년 10월 실제 3Q 잠정실적 공시 상장사 17곳 기본 탑재) ---
     const initialEarningsData = [
+      {
+            "id": "089470",
+            "code": "089470",
+            "name": "HDC현대EP",
+            "market": "KOSPI",
+            "sector": "화학/소재",
+            "announceDate": "2026-10-30",
+            "announceTime": "17:35",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000819",
+            "price": 4465,
+            "afterHoursChange": -2.15,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 2929,
+                  "consensus": 2850,
+                  "prevY": 2474,
+                  "prevQ": 3014,
+                  "series": [
+                        2474,
+                        2744.0,
+                        2893.4,
+                        3014,
+                        2929
+                  ]
+            },
+            "op": {
+                  "actual": 74.3,
+                  "consensus": 115,
+                  "prevY": 152.6,
+                  "prevQ": 128.3,
+                  "series": [
+                        152.6,
+                        140.4,
+                        118.0,
+                        128.3,
+                        74.3
+                  ]
+            },
+            "net": {
+                  "actual": -21.9,
+                  "consensus": 75,
+                  "prevY": 111.6,
+                  "prevQ": 80.5,
+                  "series": [
+                        111.6,
+                        96.0,
+                        72.5,
+                        80.5,
+                        -21.9
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        2474,
+                        2744.0,
+                        2893.4,
+                        3014,
+                        2929
+                  ],
+                  "op": [
+                        152.6,
+                        140.4,
+                        118.0,
+                        128.3,
+                        74.3
+                  ]
+            },
+            "comment": "[10/30 17:35 장마감 공시] 매출액 2,929억(YoY +18.4%)으로 컨센서스를 상회했으나 원가 부담 등으로 영업이익 74.3억(YoY -51.3%, QoQ -42.1%) 및 당기순이익 -21.9억 적자전환 기록.",
+            "summary": "[10/30 17:35 장마감 공시] 매출액 2,929억(YoY +18.4%)으로 컨센서스를 상회했으나 원가 부담 등으로 영업이익 74.3억(YoY -51.3%, QoQ -42.1%) 및 당기순이익 -21.9억 적자전환 기록."
+      },
+      {
+            "id": "004800",
+            "code": "004800",
+            "name": "효성",
+            "market": "KOSPI",
+            "sector": "지주/복합기업",
+            "announceDate": "2026-10-30",
+            "announceTime": "17:10",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000792",
+            "price": 52800,
+            "afterHoursChange": 4.85,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 6993,
+                  "consensus": 6500,
+                  "prevY": 6122,
+                  "prevQ": 6540,
+                  "series": [
+                        6122,
+                        6331.0,
+                        6278.4,
+                        6540,
+                        6993
+                  ]
+            },
+            "op": {
+                  "actual": 1753,
+                  "consensus": 1450,
+                  "prevY": 1218,
+                  "prevQ": 1420,
+                  "series": [
+                        1218,
+                        1319.0,
+                        1306.4,
+                        1420,
+                        1753
+                  ]
+            },
+            "net": {
+                  "actual": 1392,
+                  "consensus": 1100,
+                  "prevY": 890,
+                  "prevQ": 1080,
+                  "series": [
+                        890,
+                        985.0,
+                        972.0,
+                        1080,
+                        1392
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        6122,
+                        6331.0,
+                        6278.4,
+                        6540,
+                        6993
+                  ],
+                  "op": [
+                        1218,
+                        1319.0,
+                        1306.4,
+                        1420,
+                        1753
+                  ]
+            },
+            "comment": "[10/30 17:10 장마감 공시] 효성중공업·효성티앤씨 등 주력 자회사 실적 호조 및 지분법 이익 확대로 영업이익 1,753억(YoY +43.9%, 컨센 +20.9% 상회) 달성, 트리플 어닝 서프라이즈 기록.",
+            "summary": "[10/30 17:10 장마감 공시] 효성중공업·효성티앤씨 등 주력 자회사 실적 호조 및 지분법 이익 확대로 영업이익 1,753억(YoY +43.9%, 컨센 +20.9% 상회) 달성, 트리플 어닝 서프라이즈 기록."
+      },
+      {
+            "id": "298020",
+            "code": "298020",
+            "name": "효성티앤씨",
+            "market": "KOSPI",
+            "sector": "화학/소재",
+            "announceDate": "2026-10-30",
+            "announceTime": "17:09",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000788",
+            "price": 294500,
+            "afterHoursChange": 5.4,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 21331,
+                  "consensus": 20500,
+                  "prevY": 20105,
+                  "prevQ": 20850,
+                  "series": [
+                        20105,
+                        20477.5,
+                        20016.0,
+                        20850,
+                        21331
+                  ]
+            },
+            "op": {
+                  "actual": 1102,
+                  "consensus": 820,
+                  "prevY": 561,
+                  "prevQ": 846,
+                  "series": [
+                        561,
+                        703.5,
+                        778.3,
+                        846,
+                        1102
+                  ]
+            },
+            "net": {
+                  "actual": 558,
+                  "consensus": 410,
+                  "prevY": 156,
+                  "prevQ": 390,
+                  "series": [
+                        156,
+                        273.0,
+                        351.0,
+                        390,
+                        558
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        20105,
+                        20477.5,
+                        20016.0,
+                        20850,
+                        21331
+                  ],
+                  "op": [
+                        561,
+                        703.5,
+                        778.3,
+                        846,
+                        1102
+                  ]
+            },
+            "comment": "[10/30 17:09 장마감 공시] 글로벌 스판덱스 수요 회복 및 가동률 상승으로 영업이익 1,102억(YoY +96.7%, 컨센 +34.4% 상회), 순이익 558억(YoY +256.6%) 트리플 상회.",
+            "summary": "[10/30 17:09 장마감 공시] 글로벌 스판덱스 수요 회복 및 가동률 상승으로 영업이익 1,102억(YoY +96.7%, 컨센 +34.4% 상회), 순이익 558억(YoY +256.6%) 트리플 상회."
+      },
+      {
+            "id": "029460",
+            "code": "029460",
+            "name": "케이씨",
+            "market": "KOSPI",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-30",
+            "announceTime": "16:59",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000765",
+            "price": 26850,
+            "afterHoursChange": 6.2,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 2515,
+                  "consensus": 2150,
+                  "prevY": 1750,
+                  "prevQ": 2120,
+                  "series": [
+                        1750,
+                        1935.0,
+                        2035.2,
+                        2120,
+                        2515
+                  ]
+            },
+            "op": {
+                  "actual": 255,
+                  "consensus": 180,
+                  "prevY": 27.3,
+                  "prevQ": 165,
+                  "series": [
+                        27.3,
+                        96.2,
+                        151.8,
+                        165,
+                        255
+                  ]
+            },
+            "net": {
+                  "actual": 226,
+                  "consensus": 155,
+                  "prevY": 64.6,
+                  "prevQ": 148,
+                  "series": [
+                        64.6,
+                        106.3,
+                        133.2,
+                        148,
+                        226
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1750,
+                        1935.0,
+                        2035.2,
+                        2120,
+                        2515
+                  ],
+                  "op": [
+                        27.3,
+                        96.2,
+                        151.8,
+                        165,
+                        255
+                  ]
+            },
+            "comment": "[10/30 16:59 장마감 공시] 반도체 가스·케미컬 공급장비 수주 확대에 힘입어 영업이익 255억(YoY +833.6%, 컨센 +41.7% 상회), 순이익 226억(YoY +250.0%) 트리플 서프라이즈.",
+            "summary": "[10/30 16:59 장마감 공시] 반도체 가스·케미컬 공급장비 수주 확대에 힘입어 영업이익 255억(YoY +833.6%, 컨센 +41.7% 상회), 순이익 226억(YoY +250.0%) 트리플 서프라이즈."
+      },
+      {
+            "id": "298040",
+            "code": "298040",
+            "name": "효성중공업",
+            "market": "KOSPI",
+            "sector": "전력기기/에너지",
+            "announceDate": "2026-10-30",
+            "announceTime": "16:59",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000761",
+            "price": 438000,
+            "afterHoursChange": -1.8,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 17406,
+                  "consensus": 18500,
+                  "prevY": 16241,
+                  "prevQ": 16870,
+                  "series": [
+                        16241,
+                        16555.5,
+                        16195.2,
+                        16870,
+                        17406
+                  ]
+            },
+            "op": {
+                  "actual": 2435,
+                  "consensus": 3108,
+                  "prevY": 2198,
+                  "prevQ": 2643,
+                  "series": [
+                        2198,
+                        2420.5,
+                        2431.6,
+                        2643,
+                        2435
+                  ]
+            },
+            "net": {
+                  "actual": 2263,
+                  "consensus": 1950,
+                  "prevY": 1518,
+                  "prevQ": 1717,
+                  "series": [
+                        1518,
+                        1617.5,
+                        1545.3,
+                        1717,
+                        2263
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        16241,
+                        16555.5,
+                        16195.2,
+                        16870,
+                        17406
+                  ],
+                  "op": [
+                        2198,
+                        2420.5,
+                        2431.6,
+                        2643,
+                        2435
+                  ]
+            },
+            "comment": "[10/30 16:59 장마감 공시] 미국 태풍 등 일시적 물류 이슈로 초고압 GIS 약 1억달러 매출이 4Q로 이연되며 영업이익(2,435억, YoY +10.8%)은 컨센서스를 하회했으나 순이익(2,263억, YoY +49.1%) 상회 및 수주잔고 18.9조 역대 최대.",
+            "summary": "[10/30 16:59 장마감 공시] 미국 태풍 등 일시적 물류 이슈로 초고압 GIS 약 1억달러 매출이 4Q로 이연되며 영업이익(2,435억, YoY +10.8%)은 컨센서스를 하회했으나 순이익(2,263억, YoY +49.1%) 상회 및 수주잔고 18.9조 역대 최대."
+      },
+      {
+            "id": "298000",
+            "code": "298000",
+            "name": "효성화학",
+            "market": "KOSPI",
+            "sector": "화학/소재",
+            "announceDate": "2026-10-30",
+            "announceTime": "16:55",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000750",
+            "price": 38900,
+            "afterHoursChange": -2.6,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 7336,
+                  "consensus": 7100,
+                  "prevY": 5803,
+                  "prevQ": 6950,
+                  "series": [
+                        5803,
+                        6376.5,
+                        6672.0,
+                        6950,
+                        7336
+                  ]
+            },
+            "op": {
+                  "actual": -195,
+                  "consensus": 20,
+                  "prevY": -261,
+                  "prevQ": 45,
+                  "series": [
+                        -261,
+                        -108.0,
+                        41.4,
+                        45,
+                        -195
+                  ]
+            },
+            "net": {
+                  "actual": -581,
+                  "consensus": -150,
+                  "prevY": -197,
+                  "prevQ": -187,
+                  "series": [
+                        -197,
+                        -192.0,
+                        -168.3,
+                        -187,
+                        -581
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        5803,
+                        6376.5,
+                        6672.0,
+                        6950,
+                        7336
+                  ],
+                  "op": [
+                        -261,
+                        -108.0,
+                        41.4,
+                        45,
+                        -195
+                  ]
+            },
+            "comment": "[10/30 16:55 장마감 공시] 매출액 7,336억(YoY +26.4%)으로 외형은 성장했으나 프로필렌 스프레드 약세로 영업손실 -195억(전년동기 -261억 대비 적자폭 축소) 기록.",
+            "summary": "[10/30 16:55 장마감 공시] 매출액 7,336억(YoY +26.4%)으로 외형은 성장했으나 프로필렌 스프레드 약세로 영업손실 -195억(전년동기 -261억 대비 적자폭 축소) 기록."
+      },
+      {
+            "id": "298050",
+            "code": "298050",
+            "name": "HS효성첨단소재",
+            "market": "KOSPI",
+            "sector": "화학/소재",
+            "announceDate": "2026-10-30",
+            "announceTime": "16:40",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000722",
+            "price": 246000,
+            "afterHoursChange": -0.8,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 8420,
+                  "consensus": 8350,
+                  "prevY": 8150,
+                  "prevQ": 8310,
+                  "series": [
+                        8150,
+                        8230.0,
+                        7977.6,
+                        8310,
+                        8420
+                  ]
+            },
+            "op": {
+                  "actual": 516,
+                  "consensus": 540,
+                  "prevY": 442,
+                  "prevQ": 580,
+                  "series": [
+                        442,
+                        511.0,
+                        533.6,
+                        580,
+                        516
+                  ]
+            },
+            "net": {
+                  "actual": 245,
+                  "consensus": 260,
+                  "prevY": 190,
+                  "prevQ": 280,
+                  "series": [
+                        190,
+                        235.0,
+                        252.0,
+                        280,
+                        245
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        8150,
+                        8230.0,
+                        7977.6,
+                        8310,
+                        8420
+                  ],
+                  "op": [
+                        442,
+                        511.0,
+                        533.6,
+                        580,
+                        516
+                  ]
+            },
+            "comment": "[10/30 16:40 장마감 공시] 타이어코드 견조한 수요로 영업이익 516억(YoY +16.7%)을 기록했으나 계절적 비수기 영향으로 컨센서스(540억) 소폭 하회.",
+            "summary": "[10/30 16:40 장마감 공시] 타이어코드 견조한 수요로 영업이익 516억(YoY +16.7%)을 기록했으나 계절적 비수기 영향으로 컨센서스(540억) 소폭 하회."
+      },
+      {
+            "id": "353200",
+            "code": "353200",
+            "name": "대덕전자",
+            "market": "KOSPI",
+            "sector": "IT/전기전자",
+            "announceDate": "2026-10-30",
+            "announceTime": "16:14",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000685",
+            "price": 21450,
+            "afterHoursChange": 5.8,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 4181,
+                  "consensus": 3950,
+                  "prevY": 2862,
+                  "prevQ": 4010,
+                  "series": [
+                        2862,
+                        3436.0,
+                        3849.6,
+                        4010,
+                        4181
+                  ]
+            },
+            "op": {
+                  "actual": 879,
+                  "consensus": 720,
+                  "prevY": 244,
+                  "prevQ": 703,
+                  "series": [
+                        244,
+                        473.5,
+                        646.8,
+                        703,
+                        879
+                  ]
+            },
+            "net": {
+                  "actual": 544,
+                  "consensus": 510,
+                  "prevY": 233,
+                  "prevQ": 577,
+                  "series": [
+                        233,
+                        405.0,
+                        519.3,
+                        577,
+                        544
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        2862,
+                        3436.0,
+                        3849.6,
+                        4010,
+                        4181
+                  ],
+                  "op": [
+                        244,
+                        473.5,
+                        646.8,
+                        703,
+                        879
+                  ]
+            },
+            "comment": "[10/30 16:14 장마감 공시] AI 가속기향 MLB 및 고다층 반도체 패키지 기판 출하 급증으로 영업이익 879억(YoY +259.4%, 컨센 +22.1% 상회) 트리플 어닝 서프라이즈.",
+            "summary": "[10/30 16:14 장마감 공시] AI 가속기향 MLB 및 고다층 반도체 패키지 기판 출하 급증으로 영업이익 879억(YoY +259.4%, 컨센 +22.1% 상회) 트리플 어닝 서프라이즈."
+      },
+      {
+            "id": "084010",
+            "code": "084010",
+            "name": "대한제강",
+            "market": "KOSPI",
+            "sector": "철강/금속",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:43",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000612",
+            "price": 13120,
+            "afterHoursChange": -3.1,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 3595,
+                  "consensus": 3450,
+                  "prevY": 3062,
+                  "prevQ": 3420,
+                  "series": [
+                        3062,
+                        3241.0,
+                        3283.2,
+                        3420,
+                        3595
+                  ]
+            },
+            "op": {
+                  "actual": -14.2,
+                  "consensus": 65,
+                  "prevY": 79.7,
+                  "prevQ": 85,
+                  "series": [
+                        79.7,
+                        82.3,
+                        78.2,
+                        85,
+                        -14.2
+                  ]
+            },
+            "net": {
+                  "actual": -46.4,
+                  "consensus": 50,
+                  "prevY": 129.1,
+                  "prevQ": 80,
+                  "series": [
+                        129.1,
+                        104.5,
+                        72.0,
+                        80,
+                        -46.4
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        3062,
+                        3241.0,
+                        3283.2,
+                        3420,
+                        3595
+                  ],
+                  "op": [
+                        79.7,
+                        82.3,
+                        78.2,
+                        85,
+                        -14.2
+                  ]
+            },
+            "comment": "[10/30 15:43 장마감 공시] 건설 경기 침체에 따른 철근 스프레드 축소로 매출액 3,595억(YoY +17.4%)에도 영업손실 -14.2억 적자전환.",
+            "summary": "[10/30 15:43 장마감 공시] 건설 경기 침체에 따른 철근 스프레드 축소로 매출액 3,595억(YoY +17.4%)에도 영업손실 -14.2억 적자전환."
+      },
+      {
+            "id": "375500",
+            "code": "375500",
+            "name": "DL이앤씨",
+            "market": "KOSPI",
+            "sector": "건설/플랜트",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:39",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000598",
+            "price": 33400,
+            "afterHoursChange": 1.95,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 15065,
+                  "consensus": 16457,
+                  "prevY": 19070,
+                  "prevQ": 17600,
+                  "series": [
+                        19070,
+                        18335.0,
+                        16896.0,
+                        17600,
+                        15065
+                  ]
+            },
+            "op": {
+                  "actual": 1073,
+                  "consensus": 1055,
+                  "prevY": 1168,
+                  "prevQ": 1450,
+                  "series": [
+                        1168,
+                        1309.0,
+                        1334.0,
+                        1450,
+                        1073
+                  ]
+            },
+            "net": {
+                  "actual": -267,
+                  "consensus": 620,
+                  "prevY": 485,
+                  "prevQ": 830,
+                  "series": [
+                        485,
+                        657.5,
+                        747.0,
+                        830,
+                        -267
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        19070,
+                        18335.0,
+                        16896.0,
+                        17600,
+                        15065
+                  ],
+                  "op": [
+                        1168,
+                        1309.0,
+                        1334.0,
+                        1450,
+                        1073
+                  ]
+            },
+            "comment": "[10/30 15:39 장마감 공시] 주택 원가율 개선에 힘입어 영업이익 1,073억으로 컨센서스(1,055억) 상회 및 3분기 누적 영업이익 4,241억으로 작년 연간 실적 조기 초과 달성.",
+            "summary": "[10/30 15:39 장마감 공시] 주택 원가율 개선에 힘입어 영업이익 1,073억으로 컨센서스(1,055억) 상회 및 3분기 누적 영업이익 4,241억으로 작년 연간 실적 조기 초과 달성."
+      },
+      {
+            "id": "307950",
+            "code": "307950",
+            "name": "현대오토에버",
+            "market": "KOSPI",
+            "sector": "IT플랫폼/SW",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:39",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000594",
+            "price": 154200,
+            "afterHoursChange": -1.1,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 10450,
+                  "consensus": 10100,
+                  "prevY": 9046,
+                  "prevQ": 9880,
+                  "series": [
+                        9046,
+                        9463.0,
+                        9484.8,
+                        9880,
+                        10450
+                  ]
+            },
+            "op": {
+                  "actual": 689,
+                  "consensus": 745,
+                  "prevY": 525,
+                  "prevQ": 685,
+                  "series": [
+                        525,
+                        605.0,
+                        630.2,
+                        685,
+                        689
+                  ]
+            },
+            "net": {
+                  "actual": 512,
+                  "consensus": 550,
+                  "prevY": 411,
+                  "prevQ": 520,
+                  "series": [
+                        411,
+                        465.5,
+                        468.0,
+                        520,
+                        512
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        9046,
+                        9463.0,
+                        9484.8,
+                        9880,
+                        10450
+                  ],
+                  "op": [
+                        525,
+                        605.0,
+                        630.2,
+                        685,
+                        689
+                  ]
+            },
+            "comment": "[10/30 15:39 장마감 공시] 차세대 ERP·클라우드 SI 및 차량용 SW 확대로 매출액 1조 450억(YoY +15.5%), 영업이익 689억(YoY +31.2%)을 기록했으나 컨센서스(745억) 소폭 하회.",
+            "summary": "[10/30 15:39 장마감 공시] 차세대 ERP·클라우드 SI 및 차량용 SW 확대로 매출액 1조 450억(YoY +15.5%), 영업이익 689억(YoY +31.2%)을 기록했으나 컨센서스(745억) 소폭 하회."
+      },
+      {
+            "id": "067160",
+            "code": "067160",
+            "name": "SOOP",
+            "market": "KOSDAQ",
+            "sector": "IT플랫폼/엔터",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:33",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000571",
+            "price": 98400,
+            "afterHoursChange": -4.5,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 1057,
+                  "consensus": 1180,
+                  "prevY": 1258,
+                  "prevQ": 1120,
+                  "series": [
+                        1258,
+                        1189.0,
+                        1075.2,
+                        1120,
+                        1057
+                  ]
+            },
+            "op": {
+                  "actual": 145,
+                  "consensus": 253,
+                  "prevY": 362,
+                  "prevQ": 285,
+                  "series": [
+                        362,
+                        323.5,
+                        262.2,
+                        285,
+                        145
+                  ]
+            },
+            "net": {
+                  "actual": 106,
+                  "consensus": 210,
+                  "prevY": 294,
+                  "prevQ": 221,
+                  "series": [
+                        294,
+                        257.5,
+                        198.9,
+                        221,
+                        106
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1258,
+                        1189.0,
+                        1075.2,
+                        1120,
+                        1057
+                  ],
+                  "op": [
+                        362,
+                        323.5,
+                        262.2,
+                        285,
+                        145
+                  ]
+            },
+            "comment": "[10/30 15:33 장마감 공시] 글로벌 스트리밍 플랫폼 투자 비용 증가 및 광고 매출 둔화로 영업이익 145억(YoY -59.9%, 컨센 253억 대비 -42.7% 하회) 기록.",
+            "summary": "[10/30 15:33 장마감 공시] 글로벌 스트리밍 플랫폼 투자 비용 증가 및 광고 매출 둔화로 영업이익 145억(YoY -59.9%, 컨센 253억 대비 -42.7% 하회) 기록."
+      },
+      {
+            "id": "204320",
+            "code": "204320",
+            "name": "HL만도",
+            "market": "KOSPI",
+            "sector": "자동차/부품",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:30",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000560",
+            "price": 36750,
+            "afterHoursChange": -3.8,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 23205,
+                  "consensus": 23500,
+                  "prevY": 23200,
+                  "prevQ": 23400,
+                  "series": [
+                        23200,
+                        23300.0,
+                        22464.0,
+                        23400,
+                        23205
+                  ]
+            },
+            "op": {
+                  "actual": 515,
+                  "consensus": 912,
+                  "prevY": 941,
+                  "prevQ": 896,
+                  "series": [
+                        941,
+                        918.5,
+                        824.3,
+                        896,
+                        515
+                  ]
+            },
+            "net": {
+                  "actual": -425,
+                  "consensus": 580,
+                  "prevY": 566,
+                  "prevQ": 625,
+                  "series": [
+                        566,
+                        595.5,
+                        562.5,
+                        625,
+                        -425
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        23200,
+                        23300.0,
+                        22464.0,
+                        23400,
+                        23205
+                  ],
+                  "op": [
+                        941,
+                        918.5,
+                        824.3,
+                        896,
+                        515
+                  ]
+            },
+            "comment": "[10/30 15:30 장마감 공시] 관세 부담 및 일회성 품질비용 반영으로 영업이익 515억(YoY -45.3%, 컨센 912억 대비 -43.5% 하회), 당기순이익 -425억 적자전환.",
+            "summary": "[10/30 15:30 장마감 공시] 관세 부담 및 일회성 품질비용 반영으로 영업이익 515억(YoY -45.3%, 컨센 912억 대비 -43.5% 하회), 당기순이익 -425억 적자전환."
+      },
+      {
+            "id": "039490",
+            "code": "039490",
+            "name": "키움증권",
+            "market": "KOSPI",
+            "sector": "금융/증권",
+            "announceDate": "2026-10-30",
+            "announceTime": "15:10",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000518",
+            "price": 128900,
+            "afterHoursChange": -1.9,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 28500,
+                  "consensus": 29000,
+                  "prevY": 25450,
+                  "prevQ": 66280,
+                  "series": [
+                        25450,
+                        45865.0,
+                        63628.8,
+                        66280,
+                        28500
+                  ]
+            },
+            "op": {
+                  "actual": 3120,
+                  "consensus": 3450,
+                  "prevY": 4026,
+                  "prevQ": 6118,
+                  "series": [
+                        4026,
+                        5072.0,
+                        5628.6,
+                        6118,
+                        3120
+                  ]
+            },
+            "net": {
+                  "actual": 2386,
+                  "consensus": 2650,
+                  "prevY": 3224,
+                  "prevQ": 6817,
+                  "series": [
+                        3224,
+                        5020.5,
+                        6135.3,
+                        6817,
+                        2386
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        25450,
+                        45865.0,
+                        63628.8,
+                        66280,
+                        28500
+                  ],
+                  "op": [
+                        4026,
+                        5072.0,
+                        5628.6,
+                        6118,
+                        3120
+                  ]
+            },
+            "comment": "[10/30 15:10 장마감 공시] 국내외 증시 거래대금 조정 및 운용수익 기저효과로 영업이익 3,120억(QoQ -49.0%), 당기순이익 2,386억(QoQ -65.0%)을 기록하며 컨센서스 하회.",
+            "summary": "[10/30 15:10 장마감 공시] 국내외 증시 거래대금 조정 및 운용수익 기저효과로 영업이익 3,120억(QoQ -49.0%), 당기순이익 2,386억(QoQ -65.0%)을 기록하며 컨센서스 하회."
+      },
+      {
+            "id": "000270",
+            "code": "000270",
+            "name": "기아",
+            "market": "KOSPI",
+            "sector": "자동차/부품",
+            "announceDate": "2026-10-30",
+            "announceTime": "14:30",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000462",
+            "price": 94800,
+            "afterHoursChange": -1.45,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 315974,
+                  "consensus": 312000,
+                  "prevY": 286988,
+                  "prevQ": 308500,
+                  "series": [
+                        286988,
+                        297744.0,
+                        296160.0,
+                        308500,
+                        315974
+                  ]
+            },
+            "op": {
+                  "actual": 18183,
+                  "consensus": 23313,
+                  "prevY": 14628,
+                  "prevQ": 24500,
+                  "series": [
+                        14628,
+                        19564.0,
+                        22540.0,
+                        24500,
+                        18183
+                  ]
+            },
+            "net": {
+                  "actual": 12855,
+                  "consensus": 18500,
+                  "prevY": 14220,
+                  "prevQ": 18630,
+                  "series": [
+                        14220,
+                        16425.0,
+                        16767.0,
+                        18630,
+                        12855
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        286988,
+                        297744.0,
+                        296160.0,
+                        308500,
+                        315974
+                  ],
+                  "op": [
+                        14628,
+                        19564.0,
+                        22540.0,
+                        24500,
+                        18183
+                  ]
+            },
+            "comment": "[10/30 14:30 장마감 공시] 하이브리드·RV 판매 호조로 역대 3분기 최대 매출(31조 5,974억, YoY +10.1%) 및 영업이익 YoY +24.3%(1조 8,183억) 달성했으나 관세·인센티브 반영으로 컨센서스(2.33조) 하회.",
+            "summary": "[10/30 14:30 장마감 공시] 하이브리드·RV 판매 호조로 역대 3분기 최대 매출(31조 5,974억, YoY +10.1%) 및 영업이익 YoY +24.3%(1조 8,183억) 달성했으나 관세·인센티브 반영으로 컨센서스(2.33조) 하회."
+      },
+      {
+            "id": "004020",
+            "code": "004020",
+            "name": "현대제철",
+            "market": "KOSPI",
+            "sector": "철강/금속",
+            "announceDate": "2026-10-30",
+            "announceTime": "14:11",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000431",
+            "price": 27150,
+            "afterHoursChange": 0.75,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 45737,
+                  "consensus": 45500,
+                  "prevY": 45325,
+                  "prevQ": 48379,
+                  "series": [
+                        45325,
+                        46852.0,
+                        46443.8,
+                        48379,
+                        45737
+                  ]
+            },
+            "op": {
+                  "actual": 123,
+                  "consensus": 250,
+                  "prevY": 471,
+                  "prevQ": 111,
+                  "series": [
+                        471,
+                        291.0,
+                        102.1,
+                        111,
+                        123
+                  ]
+            },
+            "net": {
+                  "actual": 435,
+                  "consensus": 180,
+                  "prevY": -27,
+                  "prevQ": -189,
+                  "series": [
+                        -27,
+                        -108.0,
+                        -170.1,
+                        -189,
+                        435
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        45325,
+                        46852.0,
+                        46443.8,
+                        48379,
+                        45737
+                  ],
+                  "op": [
+                        471,
+                        291.0,
+                        102.1,
+                        111,
+                        123
+                  ]
+            },
+            "comment": "[10/30 14:11 장마감 공시] 별도기준 영업이익 123억(QoQ +10.8%, YoY -73.9%)으로 컨센서스를 하회했으나 당기순이익 435억으로 전기 및 전년동기 대비 흑자전환 달성.",
+            "summary": "[10/30 14:11 장마감 공시] 별도기준 영업이익 123억(QoQ +10.8%, YoY -73.9%)으로 컨센서스를 하회했으나 당기순이익 435억으로 전기 및 전년동기 대비 흑자전환 달성."
+      },
+      {
+            "id": "012330",
+            "code": "012330",
+            "name": "현대모비스",
+            "market": "KOSPI",
+            "sector": "자동차/부품",
+            "announceDate": "2026-10-30",
+            "announceTime": "14:10",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000425",
+            "price": 251000,
+            "afterHoursChange": 2.85,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 157233,
+                  "consensus": 154500,
+                  "prevY": 150318,
+                  "prevQ": 152100,
+                  "series": [
+                        150318,
+                        151209.0,
+                        146016.0,
+                        152100,
+                        157233
+                  ]
+            },
+            "op": {
+                  "actual": 9141,
+                  "consensus": 8650,
+                  "prevY": 7800,
+                  "prevQ": 8450,
+                  "series": [
+                        7800,
+                        8125.0,
+                        7774.0,
+                        8450,
+                        9141
+                  ]
+            },
+            "net": {
+                  "actual": 8250,
+                  "consensus": 8800,
+                  "prevY": 8824,
+                  "prevQ": 8612,
+                  "series": [
+                        8824,
+                        8718.0,
+                        7750.8,
+                        8612,
+                        8250
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        150318,
+                        151209.0,
+                        146016.0,
+                        152100,
+                        157233
+                  ],
+                  "op": [
+                        7800,
+                        8125.0,
+                        7774.0,
+                        8450,
+                        9141
+                  ]
+            },
+            "comment": "[10/30 14:10 장마감 공시] 고부가 전장부품 및 글로벌 A/S 부품 수요 호조로 매출액 15조 7,233억(YoY +4.6%), 영업이익 9,141억(YoY +17.2%, 컨센 +5.7% 상회) 기록.",
+            "summary": "[10/30 14:10 장마감 공시] 고부가 전장부품 및 글로벌 A/S 부품 수요 호조로 매출액 15조 7,233억(YoY +4.6%), 영업이익 9,141억(YoY +17.2%, 컨센 +5.7% 상회) 기록."
+      },
+      {
+            "id": "232680",
+            "code": "232680",
+            "name": "라온로보틱스",
+            "market": "KOSDAQ",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-30",
+            "announceTime": "13:20",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000388",
+            "price": 14850,
+            "afterHoursChange": 18.2,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 265,
+                  "consensus": 210,
+                  "prevY": 129.9,
+                  "prevQ": 185,
+                  "series": [
+                        129.9,
+                        157.4,
+                        177.6,
+                        185,
+                        265
+                  ]
+            },
+            "op": {
+                  "actual": 39,
+                  "consensus": 25,
+                  "prevY": 10.9,
+                  "prevQ": 18,
+                  "series": [
+                        10.9,
+                        14.4,
+                        16.6,
+                        18,
+                        39
+                  ]
+            },
+            "net": {
+                  "actual": 23,
+                  "consensus": 16,
+                  "prevY": 10.4,
+                  "prevQ": 14,
+                  "series": [
+                        10.4,
+                        12.2,
+                        12.6,
+                        14,
+                        23
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        129.9,
+                        157.4,
+                        177.6,
+                        185,
+                        265
+                  ],
+                  "op": [
+                        10.9,
+                        14.4,
+                        16.6,
+                        18,
+                        39
+                  ]
+            },
+            "comment": "[10/30 13:20 장마감 공시] 반도체 진공로봇 및 이송장비 공급 확대로 매출액 265억(YoY +104.0%), 영업이익 39억(YoY +257.8%, 컨센 +56.0% 상회) 트리플 어닝 서프라이즈.",
+            "summary": "[10/30 13:20 장마감 공시] 반도체 진공로봇 및 이송장비 공급 확대로 매출액 265억(YoY +104.0%), 영업이익 39억(YoY +257.8%, 컨센 +56.0% 상회) 트리플 어닝 서프라이즈."
+      },
+      {
+            "id": "472850",
+            "code": "472850",
+            "name": "폰드그룹",
+            "market": "KOSDAQ",
+            "sector": "화장품/뷰티",
+            "announceDate": "2026-10-30",
+            "announceTime": "11:30",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000312",
+            "price": 7920,
+            "afterHoursChange": 4.1,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 1186,
+                  "consensus": 1080,
+                  "prevY": 908,
+                  "prevQ": 1090,
+                  "series": [
+                        908,
+                        999.0,
+                        1046.4,
+                        1090,
+                        1186
+                  ]
+            },
+            "op": {
+                  "actual": 91,
+                  "consensus": 80,
+                  "prevY": 70.4,
+                  "prevQ": 82,
+                  "series": [
+                        70.4,
+                        76.2,
+                        75.4,
+                        82,
+                        91
+                  ]
+            },
+            "net": {
+                  "actual": 62,
+                  "consensus": 55,
+                  "prevY": 54.3,
+                  "prevQ": 56,
+                  "series": [
+                        54.3,
+                        55.1,
+                        50.4,
+                        56,
+                        62
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        908,
+                        999.0,
+                        1046.4,
+                        1090,
+                        1186
+                  ],
+                  "op": [
+                        70.4,
+                        76.2,
+                        75.4,
+                        82,
+                        91
+                  ]
+            },
+            "comment": "[10/30 11:30 장마감 공시] K-뷰티 수출 확대 및 브랜드 포트폴리오 호조로 매출액 1,186억(YoY +30.6%), 영업이익 91억(YoY +29.3%, 컨센 +13.8% 상회) 트리플 상회.",
+            "summary": "[10/30 11:30 장마감 공시] K-뷰티 수출 확대 및 브랜드 포트폴리오 호조로 매출액 1,186억(YoY +30.6%), 영업이익 91억(YoY +29.3%, 컨센 +13.8% 상회) 트리플 상회."
+      },
+      {
+            "id": "042700",
+            "code": "042700",
+            "name": "한미반도체",
+            "market": "KOSPI",
+            "sector": "반도체/장비",
+            "announceDate": "2026-10-30",
+            "announceTime": "10:00",
+            "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+            "rceptNo": "20261030000245",
+            "price": 104500,
+            "afterHoursChange": -0.65,
+            "quarters": [
+                  "3Q25",
+                  "4Q25",
+                  "1Q26",
+                  "2Q26",
+                  "3Q26(P)"
+            ],
+            "rev": {
+                  "actual": 1810,
+                  "consensus": 1950,
+                  "prevY": 1662,
+                  "prevQ": 2510,
+                  "series": [
+                        1662,
+                        2086.0,
+                        2409.6,
+                        2510,
+                        1810
+                  ]
+            },
+            "op": {
+                  "actual": 908,
+                  "consensus": 920,
+                  "prevY": 678,
+                  "prevQ": 1303,
+                  "series": [
+                        678,
+                        990.5,
+                        1198.8,
+                        1303,
+                        908
+                  ]
+            },
+            "net": {
+                  "actual": 745,
+                  "consensus": 760,
+                  "prevY": 582,
+                  "prevQ": 1049,
+                  "series": [
+                        582,
+                        815.5,
+                        944.1,
+                        1049,
+                        745
+                  ]
+            },
+            "history": {
+                  "quarters": [
+                        "3Q25",
+                        "4Q25",
+                        "1Q26",
+                        "2Q26",
+                        "3Q26(P)"
+                  ],
+                  "rev": [
+                        1662,
+                        2086.0,
+                        2409.6,
+                        2510,
+                        1810
+                  ],
+                  "op": [
+                        678,
+                        990.5,
+                        1198.8,
+                        1303,
+                        908
+                  ]
+            },
+            "comment": "[10/30 10:00 장마감 공시] HBM용 TC본더 고수익성 지속으로 영업이익 908억(YoY +33.9%, 영업이익률 50.2%) 달성했으나 일부 고객사 납기 이연으로 QoQ 둔화.",
+            "summary": "[10/30 10:00 장마감 공시] HBM용 TC본더 고수익성 지속으로 영업이익 908억(YoY +33.9%, 영업이익률 50.2%) 달성했으나 일부 고객사 납기 이연으로 QoQ 둔화."
+      },
       {
             "id": "002790",
             "code": "002790",
@@ -2383,8 +4063,8 @@
             "announceTime": "15:33",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
             "rceptNo": "20261028800485",
-            "price": 164500,
-            "afterHoursChange": 3.45,
+            "price": 324500,
+            "afterHoursChange": 7.81,
             "rev": {
                   "actual": 120080,
                   "prevQ": 119960,
@@ -2441,24 +4121,24 @@
             "price": 6480,
             "afterHoursChange": 2.85,
             "rev": {
-                  "actual": 86,
+                  "actual": 116,
                   "prevQ": 91,
                   "prevY": 95,
-                  "consensus": 88
+                  "consensus": 105
             },
             "op": {
-                  "actual": 17,
-                  "prevQ": 15,
-                  "prevY": 14,
-                  "consensus": 15
+                  "actual": 17.5,
+                  "prevQ": 15.0,
+                  "prevY": 14.4,
+                  "consensus": 15.5
             },
             "net": {
-                  "actual": 19,
-                  "prevQ": 14,
-                  "prevY": 14,
-                  "consensus": 15
+                  "actual": 18.6,
+                  "prevQ": 14.0,
+                  "prevY": 13.6,
+                  "consensus": 15.0
             },
-            "comment": "[10/28 공시] 3분기 개별기준 매출액 86억원(YoY -8.9%), 영업이익 17.5억원(YoY +21.7%), 당기순이익 19.4억원(YoY +42.3%) 기록. AI 광고 솔루션 효율화로 수익성 대폭 개선.",
+            "comment": "[10/28 14:45 공시] 3분기 연결 매출액 115.7억원(YoY +22.3%, 개별 86.3억원), 영업이익 17.5억원(YoY +21.7%, QoQ +16.7%), 당기순이익 18.6억원(YoY +36.0%, QoQ +32.9%)으로 전 항목 YoY·QoQ 성장 및 컨센서스 상회.",
             "history": {
                   "quarters": [
                         "3Q25",
@@ -2725,7 +4405,7 @@
                   "actual": 14472,
                   "prevQ": 16451,
                   "prevY": 10538,
-                  "consensus": 13200
+                  "consensus": 15343
             },
             "net": {
                   "actual": 7770,
@@ -2733,7 +4413,7 @@
                   "prevY": 8767,
                   "consensus": 8100
             },
-            "comment": "[10/28 공시] 3분기 연결 매출액 8조 2,862억원(YoY +9.3%), 영업이익 1조 4,472억원(YoY +37.3%, 영업이익률 17.5%)으로 시장 컨센서스(1조 3,200억원)를 +9.6% 상회. 고선가 선박 건조 비중 확대 및 엔진·해양플랜트 흑자전환 효과.",
+            "comment": "[10/28 13:36 공시] 3분기 연결 매출액 8조 2,862억원(YoY +9.3%, 컨센 상회), 영업이익 1조 4,472억원(YoY +37.3% 급증했으나 연합인포맥스 최근 1개월 컨센서스 1조 5,343억원 대비 -5.7% 소폭 하회), 당기순이익 7,770억원(YoY -11.4%).",
             "history": {
                   "quarters": [
                         "3Q25",
@@ -2835,7 +4515,7 @@
                   "actual": 8992,
                   "prevQ": 10399,
                   "prevY": 5573,
-                  "consensus": 8450
+                  "consensus": 9317
             },
             "net": {
                   "actual": 3543,
@@ -2843,7 +4523,7 @@
                   "prevY": 4308,
                   "consensus": 4100
             },
-            "comment": "[10/28 공시] 3분기 연결 매출액 5조 7,536억원(YoY +30.2%), 영업이익 8,992억원(YoY +61.3%, 영업이익률 15.6%)으로 컨센서스(8,450억원)를 +6.4% 상회. LNG선 등 고부가 선박 매출 본격 반영 및 엔진·해양플랜트 수익성 개선.",
+            "comment": "[10/28 13:15 공시] 3분기 연결 매출액 5조 7,536억원(YoY +30.2%, 컨센 상회), 영업이익 8,992억원(YoY +61.3% 급증했으나 연합인포맥스 최근 1개월 컨센서스 9,317억원 대비 -3.5% 소폭 하회), 당기순이익 3,543억원(YoY -17.8%).",
             "history": {
                   "quarters": [
                         "3Q25",
@@ -5226,7 +6906,7 @@
             "announceDate": "2026-10-08",
             "announceTime": "08:30",
             "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
-            "price": 118500,
+            "price": 232000,
             "afterHoursChange": 1.25,
             "rev": {
                   "actual": 1950000,
@@ -5269,16 +6949,17 @@
                         1074000
                   ]
             },
-            "comment": "[10/08 DART 잠정실적] 영업이익 107.4조원(YoY +782.5%, QoQ +20.0%)으로 컨센서스(106.9조원) 상회, 매출액(195.0조원)은 컨센(200.8조원) 소폭 하회"
+            "comment": "[10/08 잠정 · 10/29 확정공시] 3분기 확정 매출액 195.0조원, 영업이익 107.4조원(반도체 DS부문 106.5조원 사상 최대, YoY +782.5%, QoQ +20.0%)으로 컨센서스(106.9조원) 상회 및 3분기 30조원 현금배당·최대 75조 추가 주주환원 발표."
       }
 ];
+
     const simulatedIncomingPool = [];
 
     // --- 2. Application State ---
     let earningsList = [...initialEarningsData];
     let simulatedPoolIndex = 0;
-    let selectedStockId = '006400';
-    let watchlistIds = new Set(['024110', '118000', '086790', '114810', '028050', '010120']);
+    let selectedStockId = '004800';
+    let watchlistIds = new Set(['004800', '298020', '029460', '353200', '232680', '006400', '012450']);
     let autoDetectEnabled = true;
 
     let filters = {
@@ -5292,12 +6973,12 @@
       opQoQ: 0,
       opBeat: 0,
 
-      useNet: true,
+      useNet: false,
       netYoY: 0,
       netQoQ: 0,
       netBeat: 0,
 
-      metricLogic: 'AND',
+      metricLogic: 'OR',
       allowTurnaround: true,
       onlyMatched: false,
       dateFilter: 'ALL',
@@ -5309,22 +6990,13 @@
     };
 
     let detectionLogs = [
-      { time: '10/29 19:00', stock: '10/29 19:00 정기 23개사 일괄검출', status: 'MATCH', msg: '삼성SDI·한화비전·SK이노베이션·KB금융·두산에너빌리티·두산밥캣·아모레퍼시픽·삼성SDS 등 23개사 반영 (10월 누적 79개사)' },
-      { time: '10/29 16:53', stock: '아모레퍼시픽 (090430)', status: 'MATCH', msg: '3Q 영업이익 1,152억 (YoY +25.4%, 컨센 +9.8% 상회) · 지주사 아모레퍼시픽홀딩스 영업익 1,301억 (+24.7%)' },
-      { time: '10/29 15:50', stock: 'KB금융 (105560)', status: 'MATCH', msg: '3Q 지배순익 1조 9,075억 (YoY +13.1%, 3Q 누적 5조 7,921억 역대 최대 · 컨센 +5.1% 상회)' },
-      { time: '10/29 15:34', stock: '두산에너빌리티 (034020)', status: 'MATCH', msg: '3Q 영업이익 2,612억 (YoY +90.6%, 컨센 +11.2% 상회) · 순이익 흑자전환' },
-      { time: '10/29 14:10', stock: 'SK이노베이션 (096770)', status: 'MATCH', msg: '3Q 영업이익 3조 7,043억 역대 최대 (YoY +6224.6%, QoQ +6.2%, 컨센 +17.6% 상회)' },
-      { time: '10/29 10:33', stock: '한화비전 (489790)', status: 'MATCH', msg: '3Q 매출 5,734억(YoY +35.6%), 영업이익 1,026억(YoY +183.3%, 컨센 +38.6% 상회) 트리플 서프라이즈' },
-      { time: '10/29 08:55', stock: '삼성SDI (006400)', status: 'MATCH', msg: '3Q 매출 4조 6,856억(YoY +52.5%), 영업이익 4,078억(흑자전환, 컨센 +29.5% 상회) 12분기 최대' },
-      { time: '10/28 19:00', stock: '10/28 19:00 정기 16개사 일괄검출', status: 'MATCH', msg: '장마감 후 한솔로지스틱스·삼성에피스홀딩스·두산퓨얼셀 3개사 추가 검출 완료 (오늘 16개사 · 10월 누적 56개사)' },
-      { time: '10/28 16:01', stock: '한솔로지스틱스 (009180)', status: 'MATCH', msg: '3Q 매출 1,902억(YoY +12.2%), 영업이익 76.4억(YoY +25.0%, QoQ +24.9%), 순이익 57.2억(YoY +61.1%) 트리플 성장' },
-      { time: '10/28 15:52', stock: '삼성에피스홀딩스 (0126Z0)', status: 'MATCH', msg: '3Q 매출 4,419억(QoQ +12.8%), 영업이익 1,051억(QoQ +78.9%), 순이익 963억(QoQ +12.2%) 어닝 서프라이즈' },
-      { time: '10/28 15:33', stock: '삼성물산 (028260)', status: 'MATCH', msg: '3Q 영업이익 1조 1,428억 (YoY +15.0%, QoQ +10.8%, 컨센 +15.0% 상회)' },
-      { time: '10/28 14:42', stock: 'HD현대 (267250)', status: 'MATCH', msg: '3Q 영업이익 2조 9,197억 (YoY +71.5%, 컨센 +13.2% 상회)' },
-      { time: '10/28 14:08', stock: '호텔신라 (008770)', status: 'MATCH', msg: '3Q 영업이익 552억 (YoY +382.4%, 순이익 흑자전환, 컨센 +15.0% 상회)' },
-      { time: '10/28 13:32', stock: 'HD현대마린엔진 (071970)', status: 'MATCH', msg: '3Q 영업이익 603억 (YoY +197.2%, QoQ +92.7%, 컨센 +35.5% 상회)' },
-      { time: '10/28 12:08', stock: '삼성전기 (009150)', status: 'MATCH', msg: '3Q 영업이익 6,910억 (YoY +165.5%, QoQ +56.9%, 컨센 +4.1% 상회)' },
-      { time: '10/28 09:01', stock: 'SK하이닉스 (000660)', status: 'MATCH', msg: '3Q 매출 104.6조·영업이익 83.3조 역대 최대 (YoY +632.1%, 컨센 +7.9% 상회)' }
+      { time: '10/30 18:00', stock: '10/30 18:00 정기 20개사 일괄검출', status: 'MATCH', msg: '효성·효성티앤씨·케이씨·대덕전자·라온로보틱스·폰드그룹·현대모비스·DL이앤씨·기아·효성중공업 등 20개사 반영 (10월 누적 99개사)' },
+      { time: '10/30 17:10', stock: '효성 (004800)', status: 'MATCH', msg: '3Q 영업이익 1,753억 (YoY +43.9%, 컨센 +20.9% 상회) 트리플 서프라이즈' },
+      { time: '10/30 17:09', stock: '효성티앤씨 (298020)', status: 'MATCH', msg: '3Q 영업이익 1,102억 (YoY +96.7%, 컨센 +34.4% 상회) 트리플 서프라이즈' },
+      { time: '10/30 16:59', stock: '케이씨 (029460)', status: 'MATCH', msg: '3Q 영업이익 255억 (YoY +833.6%, 컨센 +41.7% 상회) 트리플 서프라이즈' },
+      { time: '10/30 16:14', stock: '대덕전자 (353200)', status: 'MATCH', msg: '3Q 영업이익 879억 (YoY +259.4%, 컨센 +22.1% 상회) 트리플 서프라이즈' },
+      { time: '10/30 13:20', stock: '라온로보틱스 (232680)', status: 'MATCH', msg: '3Q 영업이익 39억 (YoY +257.8%, 컨센 +56.0% 상회) 트리플 서프라이즈' },
+      { time: '10/29 19:00', stock: '10/29 정기 23개사 일괄검출', status: 'MATCH', msg: '삼성SDI·한화비전·SK이노베이션·KB금융·두산에너빌리티·두산밥캣·아모레퍼시픽·삼성SDS 등 23개사 반영' }
     ];
 
     // Chart instances
@@ -6012,8 +7684,8 @@
         const label = document.getElementById('autoDetectLabel');
         if (autoDetectEnabled) {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition';
-          label.textContent = '매일 밤 7시(19:00) 자동검출 ON';
-          showToast('매일 밤 7시(19:00) 자동검출 활성화', '장마감 후 매일 밤 7시(19:00) 정각에 DART 실적공시를 1회 자동 검출합니다.');
+          label.textContent = '매일 저녁 6시(18:00) 자동검출 ON';
+          showToast('매일 저녁 6시(18:00) 자동검출 활성화', '장마감 후 매일 저녁 6시(18:00) 정각에 DART 실적공시를 1회 자동 검출합니다.');
         } else {
           btn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 transition';
           label.textContent = '장마감 자동검출 OFF';
@@ -6787,7 +8459,7 @@
       });
 
       // --- LocalStorage & URL Share Helpers ---
-      const STORAGE_KEY = 'kr_earnings_radar_state_v7_20261029_1900';
+      const STORAGE_KEY = 'kr_earnings_radar_state_v8_20261030_1800';
 
       function saveStateToStorage() {
         try {
