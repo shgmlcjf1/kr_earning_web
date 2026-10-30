@@ -4888,7 +4888,7 @@ def start_daily_4pm_7pm_scheduler():
                 now = datetime.now()
                 hm = now.strftime("%H:%M")
                 day_key = now.strftime("%Y-%m-%d_") + hm
-                if now.weekday() < 5 and hm == "19:00" and last_run != day_key:
+                if now.weekday() < 5 and hm == "18:00" and last_run != day_key:
                     last_run = day_key
                     if DART_API_KEY:
                         print(f"[자동 검출 스케줄러] {hm} 정각 DART + 네이버증권 실적 수집 시작...")
