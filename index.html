@@ -95,8 +95,8 @@
           <span class="relative flex h-2.5 w-2.5 live-dot">
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 밤 19:00(7시) 자동검출</span>
-          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/29 19:00 스캔완료</span>
+          <span id="marketStatusText" class="font-medium text-slate-200">정규장 마감 (15:30) · 매일 밤 18:00(7시) 자동검출</span>
+          <span id="lastScanTime" class="text-slate-400 font-mono pl-1 border-l border-slate-700">10/29 18:00 스캔완료</span>
         </div>
 
         <!-- Auto-detect Toggle -->
@@ -6952,7 +6952,7 @@
         const hh = String(now.getHours()).padStart(2, '0');
         const mm = String(now.getMinutes()).padStart(2, '0');
         const slotKey = `${now.toISOString().slice(0, 10)}_${hh}:${mm}`;
-        if (hh === '19' && mm === '00') {
+        if (hh === '18' && mm === '00') {
           if (lastTriggeredSlot !== slotKey) {
             lastTriggeredSlot = slotKey;
             const key = document.getElementById('quickDartKeyInput').value.trim() || document.getElementById('dartApiKeyInput').value.trim();
