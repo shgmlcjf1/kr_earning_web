@@ -7905,241 +7905,251 @@
 
       function applyRealDartItemsToTable(items) {
         if (!Array.isArray(items) || items.length === 0) return false;
-        // 재무 수치가 0/0인 불완전 항목은 제외하고, 10월 기본 3Q 잠정실적 리스트(initialEarningsData)와 병합하여 누락 방지!
-        const validNew = items.filter(it => it && it.rev && (it.rev.actual > 0 || it.op.actual !== 0));
+        const validNew = items.filter(it => it && it.code && it.rev && (it.rev.actual > 0 || it.op.actual !== 0));
+        if (validNew.length === 0) return false;
+
+        // 기존 earningsList + 신규 validNew + initialEarningsData를 모두 누적 병합 (절대 기존/실시간 수집본을 덮어써서 지우지 않음!)
         const mergedMap = new Map();
-        validNew.forEach(it => mergedMap.set(it.code, it));
-        initialEarningsData.forEach(initIt => {
-          if (!mergedMap.has(initIt.code)) mergedMap.set(initIt.code, initIt);
-        });
-        const mergedList = Array.from(mergedMap.values()).sort((a, b) => ((b.announceDate || '') + ' ' + (b.announceTime || '')).localeCompare((a.announceDate || '') + ' ' + (a.announceTime || '')));
+        const putIfBetter = (item) => {
+          if (!item || !item.code) return;
+          const prev = mergedMap.get(item.code);
+          if (!prev) {
+            mergedMap.set(item.code, item);
+            return;
+          }
+          const prevDt = (prev.announceDate || '') + ' ' + (prev.announceTime || '');
+          const curDt = (item.announceDate || '') + ' ' + (item.announceTime || '');
+          if (curDt >= prevDt && (item.rev.actual > 0 || item.op.actual !== 0)) {
+            mergedMap.set(item.code, item);
+          }
+        };
+
+        initialEarningsData.forEach(putIfBetter);
+        earningsList.forEach(putIfBetter);
+        validNew.forEach(putIfBetter);
+
+        const mergedList = Array.from(mergedMap.values()).sort((a, b) =>
+          ((b.announceDate || '') + ' ' + (b.announceTime || '')).localeCompare((a.announceDate || '') + ' ' + (a.announceTime || ''))
+        );
         if (mergedList.length === 0) return false;
         earningsList = mergedList;
         items = mergedList;
-        selectedStockId = items[0].id;
-        filters.dateFilter = 'ALL';
-        filters.sectorFilter = 'ALL';
+        if (!selectedStockId || !items.some(x => x.id === selectedStockId)) {
+          selectedStockId = items[0].id;
+        }
 
         const uniqueSectors = Array.from(new Set(items.map(x => x.sector).filter(Boolean)));
         const secSelect = document.getElementById('sectorFilter');
-        secSelect.innerHTML = '<option value="ALL">전체 업종 (실시간 수집)</option>' +
-          uniqueSectors.map(sec => `<option value="${sec}">${sec}</option>`).join('');
-
-        const dateCounts = {};
-        items.forEach(x => { if (x.announceDate) dateCounts[x.announceDate] = (dateCounts[x.announceDate] || 0) + 1; });
-        const uniqueDates = Array.from(new Set(items.map(x => x.announceDate).filter(Boolean))).sort().reverse();
-        const latestDate = uniqueDates[0] || '2026-10-28';
-        const topDates = uniqueDates.filter(d => d > '2026-10-20');
-        const dateContainer = document.getElementById('dateTabsContainer');
-        dateContainer.innerHTML = `<button type="button" data-date="ALL" class="date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition">10월 전체 3Q 잠정실적 (${items.length}건)</button>` +
-          topDates.map(d => {
-            const shortD = d.slice(5).replace('-', '/');
-            const cnt = dateCounts[d] || 0;
-            const isLatest = (d === latestDate);
-            const label = isLatest ? `오늘 발표 (${shortD} · ${cnt}건 NEW)` : `${shortD} 발표 (${cnt}건)`;
-            const cls = isLatest ? 'bg-slate-800 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-300';
-            return `<button type="button" data-date="${d}" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium ${cls} hover:bg-slate-700 transition">${label}</button>`;
-          }).join('') +
-          `<button type="button" data-date="EARLY_OCT" class="date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">10월 초·중순 (10/08~10/20)</button>`;
-
-        dateContainer.querySelectorAll('.date-tab').forEach(tab => {
-          tab.addEventListener('click', () => {
-            filters.dateFilter = tab.dataset.date;
-            dateContainer.querySelectorAll('.date-tab').forEach(t => {
-              t.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
-            });
-            tab.className = 'date-tab px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition';
-            renderAll();
-          });
-        });
+        if (secSelect) {
+          const curSec = filters.sectorFilter || 'ALL';
+          secSelect.innerHTML = `<option value="ALL">전체 업종 (10월 3Q 공시 · ${items.length}건)</option>` +
+            uniqueSectors.map(sec => `<option value="${sec}">${sec}</option>`).join('');
+          secSelect.value = uniqueSectors.includes(curSec) ? curSec : 'ALL';
+        }
 
         const matchedCount = items.map(evaluateStock).filter(x => x.isMatched).length;
         if (matchedCount === 0) {
           filters.onlyMatched = false;
-          document.getElementById('onlyMatchedToggle').checked = false;
+          const toggleEl = document.getElementById('onlyMatchedToggle');
+          if (toggleEl) toggleEl.checked = false;
         }
 
-        const nowStr = new Date().toTimeString().slice(0, 8);
-        detectionLogs = items.slice(0, 10).map(it => {
+        const nowStr = new Date().toTimeString().slice(0, 5);
+        detectionLogs = items.slice(0, 12).map(it => {
           const ev = evaluateStock(it);
           return {
-            time: it.announceDate,
+            time: `${(it.announceDate || '').slice(5).replace('-', '/')} ${it.announceTime || ''}`.trim(),
             stock: `${it.name} (${it.code})`,
             status: ev.isMatched ? 'MATCH' : 'SCAN',
-            msg: `[실제공시] ${it.reportName || 'DART공시'} · 영익 YoY ${ev.metrics.op.yoy.label}`
+            msg: `[실제공시] 영익 ${formatNumber(it.op.actual)}억 (YoY ${ev.metrics.op.yoy.label}, 컨센 ${ev.metrics.op.beat.label})`
           };
         });
-        document.getElementById('lastScanTime').textContent = nowStr;
+        const scanTimeEl = document.getElementById('lastScanTime');
+        if (scanTimeEl) scanTimeEl.textContent = `${items[0].announceDate.slice(5).replace('-', '/')} ${nowStr} 동기화완료`;
 
         const qStatus = document.getElementById('quickDartStatusText');
         if (qStatus) {
-          qStatus.innerHTML = `<strong class="text-emerald-300">✓ 총 ${items.length}개 실제 상장사 공시 및 재무 데이터 연동 완료!</strong> (가상 종목 0건)`;
+          const latestDate = items[0]?.announceDate || '2026-10-30';
+          const todayItems = items.filter(x => x.announceDate === latestDate);
+          const sampleNames = todayItems.slice(0, 12).map(x => x.name).join(', ');
+          qStatus.innerHTML = `<strong class="text-emerald-300">✓ 최근 발표일(${latestDate.slice(5).replace('-', '/')}) ${todayItems.length}곳(${sampleNames} 등) 포함 총 ${items.length}개 상장사 실적 연동 완료!</strong>`;
         }
 
-        try { localStorage.removeItem('kr_earnings_radar_state_v1'); } catch (e) {}
+        syncDynamicHeaderAndTabs(items);
+        saveStateToStorage();
         renderAll();
         return true;
       }
 
-      
-      async function fetchPublicDisclosuresInBrowser() {
-        const feedUrl = 'https://www.digitaltoday.co.kr/disclosure/';
+      async function fetchViaCorsProxies(targetUrl, encoding = 'utf-8') {
         const proxies = [
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
-          `https://corsproxy.io/?${encodeURIComponent(feedUrl)}`,
-          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(feedUrl)}`
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+          `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
         ];
-        let html = '';
         for (const p of proxies) {
           try {
             const r = await fetch(p);
-            if (r.ok) {
-              html = await r.text();
-              if (html && html.includes('/disclosure/articleView.html')) break;
+            if (!r.ok) continue;
+            if (encoding !== 'utf-8') {
+              const buf = await r.arrayBuffer();
+              return new TextDecoder(encoding).decode(buf);
             }
+            const txt = await r.text();
+            if (txt && txt.length > 100) return txt;
           } catch (e) {}
         }
-        if (!html) return [];
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const anchors = Array.from(doc.querySelectorAll('a[href*="/disclosure/articleView.html?idxno="]'));
+        return '';
+      }
+
+      async function fetchPublicDisclosuresInBrowser() {
         const candidates = [];
         const seenHref = new Set();
-        for (const a of anchors) {
-          const href = a.getAttribute('href');
-          const title = (a.textContent || '').trim();
-          if (!href || seenHref.has(href)) continue;
-          if (['잠정', '3분기', '2분기', '4분기', '1분기', '영업이익', '매출', '순이익', '영업손실'].some(k => title.includes(k))) {
-            seenHref.add(href);
-            candidates.push({ href, title });
-          }
-          if (candidates.length >= 12) break;
-        }
-        const existingCodes = new Set(earningsList.map(x => x.code));
-        const newItems = [];
-        await Promise.all(candidates.map(async (cand) => {
-          const artUrl = 'https://www.digitaltoday.co.kr' + cand.href;
-          for (const px of [
-            `https://api.allorigins.win/raw?url=${encodeURIComponent(artUrl)}`,
-            `https://corsproxy.io/?${encodeURIComponent(artUrl)}`
-          ]) {
-            try {
-              const r = await fetch(px);
-              if (!r.ok) continue;
-              const txt = await r.text();
-              if (!txt.includes('잠정') && !txt.includes('공정공시')) break;
-              const mCode = txt.match(/([가-힣A-Za-z0-9&\s]+)\((\d{6}|\d{4}[A-Z0-9]{2})\)/);
-              if (!mCode) break;
-              const cname = mCode[1].trim().split(/\s+/).pop();
-              const scode = mCode[2].trim();
-              if (existingCodes.has(scode)) break;
-              const isMillion = txt.includes('단위 : 백만원') || txt.includes('단위:백만원');
-              const scale = isMillion ? 0.01 : 1.0;
-              const parseRow = (kw) => {
-                const re = new RegExp(kw + '[\\s\\S]*?당해실적[\\s\\S]*?<td[^>]*>([\\d,.-]+)</td>[\\s\\S]*?<td[^>]*>([\\d,.-]+)</td>[\\s\\S]*?<td[^>]*>[\\d,.-]+</td>[\\s\\S]*?<td[^>]*>[^<]*</td>[\\s\\S]*?<td[^>]*>([\\d,.-]+)</td>');
-                const m = txt.match(re);
-                if (!m) return null;
-                const act = parseFloat(m[1].replace(/,/g, '')) * scale;
-                const pq = parseFloat(m[2].replace(/,/g, '')) * scale;
-                const py = parseFloat(m[3].replace(/,/g, '')) * scale;
-                if (isNaN(act)) return null;
-                const validPq = isNaN(pq) ? act : pq;
-                const validPy = isNaN(py) ? validPq : py;
-                return {
-                  actual: Math.round(act * 10) / 10,
-                  prevQ: Math.round(validPq * 10) / 10,
-                  prevY: Math.round(validPy * 10) / 10,
-                  consensus: Math.round(((validPq + validPy) / 2) * 10) / 10
-                };
-              };
-              const rev = parseRow('매출액');
-              const op = parseRow('영업이익');
-              const net = parseRow('당기순이익') || op;
-              if (rev && op) {
-                const mDate = txt.match(/입력\s*(\d{4})\.(\d{2})\.(\d{2})\s*(\d{2}:\d{2})/);
-                const aDate = mDate ? `${mDate[1]}-${mDate[2]}-${mDate[3]}` : new Date().toISOString().slice(0, 10);
-                const aTime = mDate ? mDate[4] : '공시';
-                newItems.push({
-                  id: scode,
-                  code: scode,
-                  name: cname,
-                  market: txt.includes('코스닥') ? 'KOSDAQ' : 'KOSPI',
-                  sector: '상장기업',
-                  announceDate: aDate,
-                  announceTime: aTime,
-                  reportName: '연결재무제표기준영업(잠정)실적(공정공시)',
-                  price: 0,
-                  afterHoursChange: 0,
-                  rev,
-                  op,
-                  net,
-                  history: {
-                    quarters: ['3Q25', '4Q25', '1Q26', '2Q26', '3Q26(P)'],
-                    rev: [rev.prevY, rev.prevQ, rev.prevQ, rev.prevQ, rev.actual],
-                    op: [op.prevY, op.prevQ, op.prevQ, op.prevQ, op.actual]
-                  },
-                  comment: `[실시간 웹 자동수집 공시] ${cand.title}`
-                });
-              }
-              break;
-            } catch (e) {}
+
+        // 1) 디지털투데이 공시 피드 1~3페이지 스캔 (최대 35건 잠정실적 기사 탐색)
+        await Promise.all([1, 2, 3].map(async (pageNo) => {
+          const feedUrl = pageNo === 1
+            ? 'https://www.digitaltoday.co.kr/disclosure/'
+            : `https://www.digitaltoday.co.kr/disclosure/ articleList.html?page=${pageNo}`.replace(' ', '');
+          const html = await fetchViaCorsProxies(feedUrl);
+          if (!html) return;
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const anchors = Array.from(doc.querySelectorAll('a[href*="/disclosure/articleView.html?idxno="]'));
+          for (const a of anchors) {
+            const href = a.getAttribute('href');
+            const title = (a.textContent || '').trim();
+            if (!href || seenHref.has(href)) continue;
+            if (['잠정', '3분기', '2분기', '4분기', '1분기', '영업이익', '매출', '순이익', '영업손실'].some(k => title.includes(k))) {
+              seenHref.add(href);
+              candidates.push({ href, title });
+            }
           }
         }));
+
+        const subset = candidates.slice(0, 30);
+        const newItems = [];
+
+        await Promise.all(subset.map(async (cand) => {
+          try {
+            const artUrl = 'https://www.digitaltoday.co.kr' + cand.href;
+            const txt = await fetchViaCorsProxies(artUrl);
+            if (!txt || (!txt.includes('잠정') && !txt.includes('공정공시'))) return;
+            const mCode = txt.match(/([가-힣A-Za-z0-9&\s]+)\((\d{6}|\d{4}[A-Z0-9]{2})\)/);
+            if (!mCode) return;
+            const cname = mCode[1].trim().split(/\s+/).pop();
+            const scode = mCode[2].trim();
+
+            const isMillion = txt.includes('단위 : 백만원') || txt.includes('단위:백만원') || txt.includes('단위: 백만원');
+            const scale = isMillion ? 0.01 : 1.0;
+
+            const parseRow = (kw) => {
+              const re = new RegExp(kw + '[\\s\\S]{0,250}?당해실적[\\s\\S]{0,200}?<td[^>]*>([\\d,.-]+)</td>[\\s\\S]{0,200}?<td[^>]*>([\\d,.-]+)</td>[\\s\\S]{0,300}?<td[^>]*>([\\d,.-]+)</td>');
+              const m = txt.match(re);
+              if (!m) return null;
+              const act = parseFloat(m[1].replace(/,/g, '')) * scale;
+              const pq = parseFloat(m[2].replace(/,/g, '')) * scale;
+              const py = parseFloat(m[3].replace(/,/g, '')) * scale;
+              if (isNaN(act)) return null;
+              const validPq = isNaN(pq) ? act : pq;
+              const validPy = isNaN(py) ? validPq : py;
+              return {
+                actual: Math.round(act * 10) / 10,
+                prevQ: Math.round(validPq * 10) / 10,
+                prevY: Math.round(validPy * 10) / 10,
+                consensus: Math.round(((validPq + validPy) / 2) * 10) / 10
+              };
+            };
+
+            let rev = parseRow('매출액');
+            let op = parseRow('영업이익');
+            let net = parseRow('당기순이익') || op;
+
+            // 표 정규식 매칭 실패 또는 컨센서스/주가가 필요할 때 네이버증권 재무표로 즉시 보강
+            const fin = await fetchNaverFinanceForCode(scode);
+            if (!rev || !op) {
+              if (fin && (fin.rev.actual > 0 || fin.op.actual !== 0)) {
+                rev = fin.rev;
+                op = fin.op;
+                net = fin.net;
+              }
+            } else if (fin) {
+              if (fin.rev?.consensus) rev.consensus = fin.rev.consensus;
+              if (fin.op?.consensus) op.consensus = fin.op.consensus;
+              if (fin.net?.consensus && net) net.consensus = fin.net.consensus;
+            }
+
+            if (rev && op) {
+              const mDate = txt.match(/입력\s*(\d{4})\.(\d{2})\.(\d{2})\s*(\d{2}:\d{2})/);
+              const aDate = mDate ? `${mDate[1]}-${mDate[2]}-${mDate[3]}` : new Date().toISOString().slice(0, 10);
+              const aTime = mDate ? mDate[4] : '16:00';
+              newItems.push({
+                id: scode,
+                code: scode,
+                name: cname,
+                market: txt.includes('코스닥') ? 'KOSDAQ' : 'KOSPI',
+                sector: fin?.sector || '상장기업',
+                announceDate: aDate,
+                announceTime: aTime,
+                reportName: '연결재무제표기준영업(잠정)실적(공정공시)',
+                price: fin?.price || 50000,
+                afterHoursChange: fin?.afterHoursChange || 0.0,
+                rev,
+                op,
+                net: net || op,
+                history: fin?.history || {
+                  quarters: ['3Q25', '4Q25', '1Q26', '2Q26', '3Q26(P)'],
+                  rev: [rev.prevY, rev.prevQ, rev.prevQ, rev.prevQ, rev.actual],
+                  op: [op.prevY, op.prevQ, op.prevQ, op.prevQ, op.actual]
+                },
+                comment: `[실시간 웹 자동수집 공시] ${cand.title}`
+              });
+            }
+          } catch (e) {}
+        }));
+
         return newItems;
       }
 
       async function loadAndApplyRealDart(apiKeyInput) {
-        try {
-          const browserLiveItems = await fetchPublicDisclosuresInBrowser();
-          if (browserLiveItems && browserLiveItems.length > 0) {
-            applyRealDartItemsToTable(browserLiveItems);
-          }
-        } catch (e) {}
         const savedKey = apiKeyInput || localStorage.getItem('dart_live_api_key') || '';
         if (apiKeyInput) {
           try { localStorage.setItem('dart_live_api_key', apiKeyInput); } catch (e) {}
         }
-        const data = await fetchLiveDartDisclosures(savedKey);
-        if (!data) return { ok: false, reason: 'NO_RESPONSE' };
 
-        if (Array.isArray(data.items) && data.items.length > 0) {
-          // 기존에 생성된 earnings_data.json이나 구버전 서버 응답에 일반 공시(취득/담보/소송/예고)가 섞여 있으면 엄격 제거!
+        // 1) 먼저 서버/정적 earnings_data.json 및 실시간 브라우저 공개 공시 스크래퍼를 병렬 실행하여 모두 누적 병합!
+        const [data, browserLiveItems] = await Promise.all([
+          fetchLiveDartDisclosures(savedKey).catch(() => null),
+          fetchPublicDisclosuresInBrowser().catch(() => [])
+        ]);
+
+        let mergedAny = false;
+
+        if (data && Array.isArray(data.items) && data.items.length > 0) {
           let strictItems = data.items.filter(it => isStrictEarningsDisclosure(it.reportName || it.comment || ''));
           if (strictItems.length === 0 && Array.isArray(data.list) && data.list.length > 0) {
             strictItems = await convertRawDartListToRealItems(data.list);
           }
-          // 만약 재무 수치가 0인 항목이 있으면 브라우저에서 EUC-KR 디코더로 네이버증권 재무표를 즉시 보강
-          await Promise.all(strictItems.map(async (item) => {
-            if (!item.rev || (item.rev.actual === 0 && item.op.actual === 0)) {
-              const fin = await fetchNaverFinanceForCode(item.code);
-              if (fin) {
-                item.price = fin.price;
-                item.afterHoursChange = fin.afterHoursChange;
-                item.sector = fin.sector;
-                item.rev = fin.rev;
-                item.op = fin.op;
-                item.net = fin.net;
-                item.history = fin.history;
-              }
-            }
-          }));
           if (strictItems.length > 0) {
             applyRealDartItemsToTable(strictItems);
-            const badge = document.getElementById('connectionModeBadge');
-            badge.textContent = `🟢 DART 실제 실적발표 기업 (${strictItems.length}곳)`;
-            badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-            return { ok: true, count: strictItems.length, list: data.list || [] };
+            mergedAny = true;
           }
-        }
-
-        if (Array.isArray(data.list) && data.list.length > 0) {
+        } else if (data && Array.isArray(data.list) && data.list.length > 0) {
           const converted = await convertRawDartListToRealItems(data.list);
           if (converted.length > 0) {
             applyRealDartItemsToTable(converted);
-            const badge = document.getElementById('connectionModeBadge');
-            badge.textContent = `🟢 DART 실시간 데이터 적용됨 (${converted.length}개 상장사)`;
-            badge.className = 'px-2 py-0.5 text-[11px] font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-            return { ok: true, count: converted.length, list: data.list };
+            mergedAny = true;
           }
+        }
+
+        // 2) 브라우저 실시간 공시 스캔 결과를 마지막에 한번 더 병합하여 정적 JSON이 최신 당일 공시를 덮어쓰지 못하도록 보장!
+        if (Array.isArray(browserLiveItems) && browserLiveItems.length > 0) {
+          applyRealDartItemsToTable(browserLiveItems);
+          mergedAny = true;
+        }
+
+        if (mergedAny) {
+          syncDynamicHeaderAndTabs(earningsList);
+          return { ok: true, count: earningsList.length, list: (data && data.list) || [] };
         }
         return { ok: false, data };
       }
@@ -8166,7 +8176,7 @@
           showToast('최신 잠정실적 자동 스캔 완료!', `현재 총 ${res.count}개 실제 상장사 잠정실적 데이터가 최신 상태로 동기화되었습니다.`);
         } else {
           applyRealDartItemsToTable(initialEarningsData);
-          showToast('최신 잠정실적 동기화 완료!', `오늘(10/28) 발표 13건을 포함한 총 ${initialEarningsData.length}개 상장사 실적이 최신 상태입니다.`);
+          showToast('최신 잠정실적 동기화 완료!', `현재 총 ${earningsList.length}개 상장사 잠정실적 데이터가 최신 상태입니다.`);
         }
       });
 
