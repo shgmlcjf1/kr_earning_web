@@ -1,9 +1,13 @@
-name: Daily DART Earnings Sync (18:00 KST)
+name: Daily DART Earnings Sync (After-Market Auto Update)
 
 on:
   schedule:
-    # 평일 밤 7시(18:00 KST = 10:00 UTC) 하루 1회 자동 실행
-    - cron: '0 9 * * 1-5'
+    # 평일 장마감 후 16:15, 17:15, 18:15, 19:15, 20:15 KST 자동 실행 (UTC 07:15~11:15)
+    - cron: '15 7,8,9,10,11 * * 1-5'
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'server.py'
   workflow_dispatch:
 
 permissions:
@@ -17,13 +21,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run DART + Naver Finance Earnings Sync (Works with or without DART_API_KEY)
+      - name: Run DART + Public Disclosure News Sync
         env:
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
         run: |
@@ -33,6 +39,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add earnings_data.json index.html
-          git diff --staged --quiet || git commit -m "Auto-update DART 3Q earnings data ($(date +'%Y-%m-%d %H:%M KST'))"
-          git push
+          git add earnings_data.json index.html kr_earnings_screener.html || git add earnings_data.json index.html
+          git diff --staged --quiet || (git commit -m "Auto-update DART 3Q earnings data ($(date +'%Y-%m-%d %H:%M KST'))" && git push)
