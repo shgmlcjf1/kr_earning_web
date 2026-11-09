@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-K-어닝 서프라이즈 레이더 웹 서버 & DART + 네이버증권 실시간 재무/컨센서스 연동기
+K-어닝 서프라이즈 레이더 웹 서버 & DART + 네이버증권(종목분석 WiseReport) 실시간 재무/컨센서스 연동기
 별도 패키지 설치 없이 Python 기본 라이브러리만으로 구동됩니다.
 """
 import argparse
@@ -10,6 +10,8 @@ import json
 import os
 import re
 import ssl
+import threading
+import time
 import urllib.parse
 import urllib.request
 import webbrowser
@@ -28,6 +30,1485 @@ SSL_CTX = ssl._create_unverified_context()
 FINANCE_CACHE = {}
 
 OCTOBER_3Q26_BASELINE = [
+  {
+    "id": "240810",
+    "code": "240810",
+    "name": "원익IPS",
+    "market": "KOSDAQ",
+    "sector": "IT/반도체",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:37",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000412",
+    "price": 66800,
+    "afterHoursChange": 0.15,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 3377.9,
+      "consensus": 2950.0,
+      "prevY": 2684.4,
+      "prevQ": 2164.7,
+      "series": [
+        2684.4,
+        2164.7,
+        2164.7,
+        2164.7,
+        3377.9
+      ],
+      "has_consensus": True
+    },
+    "op": {
+      "actual": 666.5,
+      "consensus": 480.0,
+      "prevY": 275.4,
+      "prevQ": 183.8,
+      "series": [
+        275.4,
+        183.8,
+        183.8,
+        183.8,
+        666.5
+      ],
+      "has_consensus": True
+    },
+    "net": {
+      "actual": 33.3,
+      "consensus": None,
+      "prevY": 282.8,
+      "prevQ": 899.4,
+      "series": [
+        282.8,
+        899.4,
+        899.4,
+        899.4,
+        33.3
+      ],
+      "has_consensus": True
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        2684.4,
+        2164.7,
+        2164.7,
+        2164.7,
+        3377.9
+      ],
+      "op": [
+        275.4,
+        183.8,
+        183.8,
+        183.8,
+        666.5
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 3,377.9억(QoQ +56.0%, YoY +25.8%), 영업이익 666.5억(전기 183.8억 대비 QoQ +262.6%, YoY +142.0%, 컨센 480.0억 대비 +38.9% 상회), 순이익 33.3억(QoQ -96.3%, YoY -88.2%)",
+    "summary": "[11/09 15:37 공시] 반도체 장비 공급 본격화로 3Q 영업이익 666.5억(QoQ +262.6%, YoY +142.0%), 시장 컨센서스(480.0억) 대비 +38.9% 상회 어닝 서프라이즈 기록."
+  },
+  {
+    "id": "000150",
+    "code": "000150",
+    "name": "두산",
+    "market": "KOSPI",
+    "sector": "IT/반도체",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:50",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000438",
+    "price": 218500,
+    "afterHoursChange": 1.4,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 54269.0,
+      "consensus": 53924.0,
+      "prevY": 44409.0,
+      "prevQ": 55861.0,
+      "series": [
+        44409.0,
+        55861.0,
+        55861.0,
+        55861.0,
+        54269.0
+      ],
+      "has_consensus": True
+    },
+    "op": {
+      "actual": 4594.0,
+      "consensus": 4707.0,
+      "prevY": 2315.0,
+      "prevQ": 4882.0,
+      "series": [
+        2315.0,
+        4882.0,
+        4882.0,
+        4882.0,
+        4594.0
+      ],
+      "has_consensus": True
+    },
+    "net": {
+      "actual": 1031.0,
+      "consensus": None,
+      "prevY": 1115.0,
+      "prevQ": 5356.0,
+      "series": [
+        1115.0,
+        5356.0,
+        5356.0,
+        5356.0,
+        1031.0
+      ],
+      "has_consensus": True
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        44409.0,
+        55861.0,
+        55861.0,
+        55861.0,
+        54269.0
+      ],
+      "op": [
+        2315.0,
+        4882.0,
+        4882.0,
+        4882.0,
+        4594.0
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 54,269.0억(QoQ -2.8%, YoY +22.2%), 영업이익 4,594.0억(전기 4,882.0억 대비 QoQ -5.9%, YoY +98.4%, 컨센 4,707.0억 대비 -2.4% 부합), 순이익 1,031.0억(QoQ -80.8%, YoY -7.5%)",
+    "summary": "[11/09 15:50 공시] 자체 전자BG 호조 및 계열사 실적 개선으로 3Q 영업이익 4,594.0억(YoY +98.4%), 연합인포맥스 컨센서스(4,707.0억)에 부합(-2.4%)."
+  },
+  {
+    "id": "036710",
+    "code": "036710",
+    "name": "심텍홀딩스",
+    "market": "KOSDAQ",
+    "sector": "IT/반도체",
+    "announceDate": "2026-11-09",
+    "announceTime": "16:25",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000519",
+    "price": 3420,
+    "afterHoursChange": 4.27,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 5921.9,
+      "consensus": None,
+      "prevY": 3980.5,
+      "prevQ": 5582.1,
+      "series": [
+        3980.5,
+        5582.1,
+        5582.1,
+        5582.1,
+        5921.9
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 1047.1,
+      "consensus": None,
+      "prevY": 25.3,
+      "prevQ": 575.6,
+      "series": [
+        25.3,
+        575.6,
+        575.6,
+        575.6,
+        1047.1
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 73.7,
+      "consensus": None,
+      "prevY": 24.6,
+      "prevQ": 301.2,
+      "series": [
+        24.6,
+        301.2,
+        301.2,
+        301.2,
+        73.7
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        3980.5,
+        5582.1,
+        5582.1,
+        5582.1,
+        5921.9
+      ],
+      "op": [
+        25.3,
+        575.6,
+        575.6,
+        575.6,
+        1047.1
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 5,921.9억(QoQ +6.1%, YoY +48.8%), 영업이익 1,047.1억(전기 575.6억 대비 QoQ +81.9%, 전년동기 25.3억 대비 YoY +4,033.6%), 순이익 73.7억(QoQ -75.5%, YoY +199.1%)",
+    "summary": "[11/09 16:25 공시] 자회사 심텍 등 반도체 기판 수익성 급증에 힘입어 3Q 연결 영업이익 1,047.1억(QoQ +81.9%, YoY +4,033.6%) 달성."
+  },
+  {
+    "id": "215200",
+    "code": "215200",
+    "name": "메가스터디교육",
+    "market": "KOSDAQ",
+    "sector": "IT플랫폼/엔터",
+    "announceDate": "2026-11-09",
+    "announceTime": "16:38",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000544",
+    "price": 46850,
+    "afterHoursChange": 1.85,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 2601.5,
+      "consensus": None,
+      "prevY": 2497.1,
+      "prevQ": 2047.4,
+      "series": [
+        2497.1,
+        2047.4,
+        2047.4,
+        2047.4,
+        2601.5
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 536.9,
+      "consensus": None,
+      "prevY": 531.9,
+      "prevQ": 284.1,
+      "series": [
+        531.9,
+        284.1,
+        284.1,
+        284.1,
+        536.9
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 427.5,
+      "consensus": None,
+      "prevY": 421.2,
+      "prevQ": 214.2,
+      "series": [
+        421.2,
+        214.2,
+        214.2,
+        214.2,
+        427.5
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        2497.1,
+        2047.4,
+        2047.4,
+        2047.4,
+        2601.5
+      ],
+      "op": [
+        531.9,
+        284.1,
+        284.1,
+        284.1,
+        536.9
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 2,601.5억(QoQ +27.1%, YoY +4.2%), 영업이익 536.9억(전기 284.1억 대비 QoQ +89.0%, YoY +1.0%), 순이익 427.5억(QoQ +99.6%, YoY +1.5%)",
+    "summary": "[11/09 16:38 공시] 고등·성인 사업부 성수기 효과로 3Q 영업이익 536.9억(QoQ +89.0%, YoY +1.0%), 당기순이익 427.5억(QoQ +99.6%) 기록."
+  },
+  {
+    "id": "285130",
+    "code": "285130",
+    "name": "SK케미칼",
+    "market": "KOSPI",
+    "sector": "정유/화학",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:55",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000451",
+    "price": 51200,
+    "afterHoursChange": 1.19,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 7408.4,
+      "consensus": None,
+      "prevY": 6097.4,
+      "prevQ": 7453.1,
+      "series": [
+        6097.4,
+        7453.1,
+        7453.1,
+        7453.1,
+        7408.4
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 335.8,
+      "consensus": None,
+      "prevY": 155.7,
+      "prevQ": 323.5,
+      "series": [
+        155.7,
+        323.5,
+        323.5,
+        323.5,
+        335.8
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 627.8,
+      "consensus": None,
+      "prevY": 478.8,
+      "prevQ": 68.1,
+      "series": [
+        478.8,
+        68.1,
+        68.1,
+        68.1,
+        627.8
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        6097.4,
+        7453.1,
+        7453.1,
+        7453.1,
+        7408.4
+      ],
+      "op": [
+        155.7,
+        323.5,
+        323.5,
+        323.5,
+        335.8
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 7,408.4억(QoQ -0.6%, YoY +21.5%), 영업이익 335.8억(전기 323.5억 대비 QoQ +3.8%, YoY +115.6%), 순이익 627.8억(QoQ +822.4%, YoY +31.1%)",
+    "summary": "[11/09 15:55 공시] 코폴리에스터 및 자회사 실적 개선으로 3Q 연결 영업이익 335.8억(QoQ +3.8%, YoY +115.6%), 당기순이익 627.8억(QoQ +822.4%) 달성."
+  },
+  {
+    "id": "251970",
+    "code": "251970",
+    "name": "펌텍코리아",
+    "market": "KOSDAQ",
+    "sector": "화장품/소비재",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:56",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000462",
+    "price": 39400,
+    "afterHoursChange": 2.6,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 1238.0,
+      "consensus": None,
+      "prevY": 976.7,
+      "prevQ": 1168.4,
+      "series": [
+        976.7,
+        1168.4,
+        1168.4,
+        1168.4,
+        1238.0
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 251.3,
+      "consensus": None,
+      "prevY": 153.3,
+      "prevQ": 216.5,
+      "series": [
+        153.3,
+        216.5,
+        216.5,
+        216.5,
+        251.3
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 247.0,
+      "consensus": None,
+      "prevY": 131.7,
+      "prevQ": 210.6,
+      "series": [
+        131.7,
+        210.6,
+        210.6,
+        210.6,
+        247.0
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        976.7,
+        1168.4,
+        1168.4,
+        1168.4,
+        1238.0
+      ],
+      "op": [
+        153.3,
+        216.5,
+        216.5,
+        216.5,
+        251.3
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 1,238.0억(QoQ +6.0%, YoY +26.7%), 영업이익 251.3억(전기 216.5억 대비 QoQ +16.1%, YoY +64.0%), 순이익 247.0억(QoQ +17.3%, YoY +87.5%)",
+    "summary": "[11/09 15:56 공시] 글로벌 K-뷰티 용기 수주 확대로 3Q 매출 1,238.0억(YoY +26.7%), 영업이익 251.3억(QoQ +16.1%, YoY +64.0%) 분기 최대 실적 달성."
+  },
+  {
+    "id": "104830",
+    "code": "104830",
+    "name": "원익머트리얼즈",
+    "market": "KOSDAQ",
+    "sector": "IT/반도체",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:19",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000385",
+    "price": 29450,
+    "afterHoursChange": 1.38,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 1029.1,
+      "consensus": None,
+      "prevY": 828.3,
+      "prevQ": 923.0,
+      "series": [
+        828.3,
+        923.0,
+        923.0,
+        923.0,
+        1029.1
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 203.4,
+      "consensus": None,
+      "prevY": 141.5,
+      "prevQ": 145.8,
+      "series": [
+        141.5,
+        145.8,
+        145.8,
+        145.8,
+        203.4
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 145.1,
+      "consensus": None,
+      "prevY": 125.3,
+      "prevQ": 131.9,
+      "series": [
+        125.3,
+        131.9,
+        131.9,
+        131.9,
+        145.1
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        828.3,
+        923.0,
+        923.0,
+        923.0,
+        1029.1
+      ],
+      "op": [
+        141.5,
+        145.8,
+        145.8,
+        145.8,
+        203.4
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 1,029.1억(QoQ +11.5%, YoY +24.2%), 영업이익 203.4억(전기 145.8억 대비 QoQ +39.5%, YoY +43.7%), 순이익 145.1억(QoQ +10.0%, YoY +15.8%)",
+    "summary": "[11/09 15:19 공시] 반도체 특수가스 출하량 증가로 3Q 매출 1,029.1억(YoY +24.2%), 영업이익 203.4억(QoQ +39.5%, YoY +43.7%) 호실적 기록."
+  },
+  {
+    "id": "290650",
+    "code": "290650",
+    "name": "엘앤씨바이오",
+    "market": "KOSDAQ",
+    "sector": "제약/바이오",
+    "announceDate": "2026-11-09",
+    "announceTime": "14:40",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000342",
+    "price": 24150,
+    "afterHoursChange": 3.21,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 384.5,
+      "consensus": None,
+      "prevY": 225.6,
+      "prevQ": 387.9,
+      "series": [
+        225.6,
+        387.9,
+        387.9,
+        387.9,
+        384.5
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 98.4,
+      "consensus": None,
+      "prevY": 29.0,
+      "prevQ": 85.8,
+      "series": [
+        29.0,
+        85.8,
+        85.8,
+        85.8,
+        98.4
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 49.0,
+      "consensus": None,
+      "prevY": -513.4,
+      "prevQ": -281.2,
+      "series": [
+        -513.4,
+        -281.2,
+        -281.2,
+        -281.2,
+        49.0
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        225.6,
+        387.9,
+        387.9,
+        387.9,
+        384.5
+      ],
+      "op": [
+        29.0,
+        85.8,
+        85.8,
+        85.8,
+        98.4
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 384.5억(QoQ -0.9%, YoY +70.4%), 영업이익 98.4억(전기 85.8억 대비 QoQ +14.7%, YoY +239.8%), 순이익 49.0억(QoQ 흑자전환, YoY 흑자전환)",
+    "summary": "[11/09 14:40 공시] 인체조직 이식재 매출 고성장으로 3Q 영업이익 98.4억(QoQ +14.7%, YoY +239.8%), 당기순이익 49.0억(전분기·전년동기 대비 모두 흑자전환)."
+  },
+  {
+    "id": "089600",
+    "code": "089600",
+    "name": "KT나스미디어",
+    "market": "KOSDAQ",
+    "sector": "IT플랫폼/엔터",
+    "announceDate": "2026-11-09",
+    "announceTime": "16:00",
+    "reportName": "영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000470",
+    "price": 12120,
+    "afterHoursChange": 1.25,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 294.9,
+      "consensus": None,
+      "prevY": 311.8,
+      "prevQ": 322.6,
+      "series": [
+        311.8,
+        322.6,
+        322.6,
+        322.6,
+        294.9
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 56.6,
+      "consensus": None,
+      "prevY": 37.5,
+      "prevQ": 78.2,
+      "series": [
+        37.5,
+        78.2,
+        78.2,
+        78.2,
+        56.6
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 50.5,
+      "consensus": None,
+      "prevY": 49.0,
+      "prevQ": 68.2,
+      "series": [
+        49.0,
+        68.2,
+        68.2,
+        68.2,
+        50.5
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        311.8,
+        322.6,
+        322.6,
+        322.6,
+        294.9
+      ],
+      "op": [
+        37.5,
+        78.2,
+        78.2,
+        78.2,
+        56.6
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 294.9억(QoQ -8.6%, YoY -5.4%), 영업이익 56.6억(전기 78.2억 대비 QoQ -27.6%, YoY +50.8%), 순이익 50.5억(QoQ -25.9%, YoY +3.2%)",
+    "summary": "[11/09 16:00 공시] 디지털 광고 효율화로 3Q 영업이익 56.6억(YoY +50.8%, QoQ -27.6%), 당기순이익 50.5억(YoY +3.2%) 기록."
+  },
+  {
+    "id": "100590",
+    "code": "100590",
+    "name": "머큐리",
+    "market": "KOSDAQ",
+    "sector": "IT/반도체",
+    "announceDate": "2026-11-09",
+    "announceTime": "10:18",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000188",
+    "price": 4060,
+    "afterHoursChange": 19.94,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 382.4,
+      "consensus": None,
+      "prevY": 296.1,
+      "prevQ": 301.4,
+      "series": [
+        296.1,
+        301.4,
+        301.4,
+        301.4,
+        382.4
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 39.6,
+      "consensus": None,
+      "prevY": -3.0,
+      "prevQ": 13.3,
+      "series": [
+        -3.0,
+        13.3,
+        13.3,
+        13.3,
+        39.6
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 45.6,
+      "consensus": None,
+      "prevY": -6.9,
+      "prevQ": -59.4,
+      "series": [
+        -6.9,
+        -59.4,
+        -59.4,
+        -59.4,
+        45.6
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        296.1,
+        301.4,
+        301.4,
+        301.4,
+        382.4
+      ],
+      "op": [
+        -3.0,
+        13.3,
+        13.3,
+        13.3,
+        39.6
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 382.4억(QoQ +26.8%, YoY +29.1%), 영업이익 39.6억(전기 13.3억 대비 QoQ +198.4%, 전년동기 -3.0억 대비 YoY 흑자전환), 순이익 45.6억(QoQ/YoY 흑자전환)",
+    "summary": "[11/09 10:18 공시] 광통신·단말 장비 공급 확대로 3Q 영업이익 39.6억(QoQ +198.4%, YoY 흑자전환), 당기순이익 45.6억(QoQ·YoY 흑자전환) 기록."
+  },
+  {
+    "id": "090370",
+    "code": "090370",
+    "name": "메타랩스",
+    "market": "KOSPI",
+    "sector": "화장품/소비재",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:18",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000377",
+    "price": 1002,
+    "afterHoursChange": 4.16,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 406.5,
+      "consensus": None,
+      "prevY": 299.6,
+      "prevQ": 276.5,
+      "series": [
+        299.6,
+        276.5,
+        276.5,
+        276.5,
+        406.5
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 16.7,
+      "consensus": None,
+      "prevY": -2.5,
+      "prevQ": 2.8,
+      "series": [
+        -2.5,
+        2.8,
+        2.8,
+        2.8,
+        16.7
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": -0.5,
+      "consensus": None,
+      "prevY": 6.5,
+      "prevQ": -12.1,
+      "series": [
+        6.5,
+        -12.1,
+        -12.1,
+        -12.1,
+        -0.5
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        299.6,
+        276.5,
+        276.5,
+        276.5,
+        406.5
+      ],
+      "op": [
+        -2.5,
+        2.8,
+        2.8,
+        2.8,
+        16.7
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 406.5억(QoQ +47.0%, YoY +35.7%), 영업이익 16.7억(전기 2.8억 대비 QoQ +499.7%, 전년동기 -2.5억 대비 YoY 흑자전환), 순이익 -0.5억(QoQ 적자축소, YoY 적자전환)",
+    "summary": "[11/09 15:18 공시] 패션·헬스케어 외형 성장으로 3Q 매출 406.5억(QoQ +47.0%, YoY +35.7%), 영업이익 16.7억(QoQ +499.7%, YoY 흑자전환) 달성."
+  },
+  {
+    "id": "408920",
+    "code": "408920",
+    "name": "메쎄이상",
+    "market": "KOSDAQ",
+    "sector": "IT플랫폼/엔터",
+    "announceDate": "2026-11-09",
+    "announceTime": "12:25",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000265",
+    "price": 3150,
+    "afterHoursChange": -1.25,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 193.5,
+      "consensus": None,
+      "prevY": 219.5,
+      "prevQ": 193.8,
+      "series": [
+        219.5,
+        193.8,
+        193.8,
+        193.8,
+        193.5
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 43.3,
+      "consensus": None,
+      "prevY": 63.4,
+      "prevQ": 66.4,
+      "series": [
+        63.4,
+        66.4,
+        66.4,
+        66.4,
+        43.3
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 37.8,
+      "consensus": None,
+      "prevY": 49.0,
+      "prevQ": 54.3,
+      "series": [
+        49.0,
+        54.3,
+        54.3,
+        54.3,
+        37.8
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        219.5,
+        193.8,
+        193.8,
+        193.8,
+        193.5
+      ],
+      "op": [
+        63.4,
+        66.4,
+        66.4,
+        66.4,
+        43.3
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 193.5억(QoQ -0.2%, YoY -11.8%), 영업이익 43.3억(전기 66.4억 대비 QoQ -34.8%, YoY -31.7%), 순이익 37.8억(QoQ -30.3%, YoY -22.8%)",
+    "summary": "[11/09 12:25 공시] 비수기 전시 일정 영향으로 3Q 매출 193.5억(YoY -11.8%), 영업이익 43.3억(QoQ -34.8%, YoY -31.7%) 기록."
+  },
+  {
+    "id": "005300",
+    "code": "005300",
+    "name": "롯데칠성음료",
+    "market": "KOSPI",
+    "sector": "화장품/소비재",
+    "announceDate": "2026-11-09",
+    "announceTime": "13:45",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000310",
+    "price": 118500,
+    "afterHoursChange": -3.66,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 10501.0,
+      "consensus": 10860.0,
+      "prevY": 10792.0,
+      "prevQ": 11129.0,
+      "series": [
+        10792.0,
+        11129.0,
+        11129.0,
+        11129.0,
+        10501.0
+      ],
+      "has_consensus": True
+    },
+    "op": {
+      "actual": 570.0,
+      "consensus": 796.0,
+      "prevY": 918.0,
+      "prevQ": 558.0,
+      "series": [
+        918.0,
+        558.0,
+        558.0,
+        558.0,
+        570.0
+      ],
+      "has_consensus": True
+    },
+    "net": {
+      "actual": 405.0,
+      "consensus": None,
+      "prevY": 620.0,
+      "prevQ": 282.0,
+      "series": [
+        620.0,
+        282.0,
+        282.0,
+        282.0,
+        405.0
+      ],
+      "has_consensus": True
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        10792.0,
+        11129.0,
+        11129.0,
+        11129.0,
+        10501.0
+      ],
+      "op": [
+        918.0,
+        558.0,
+        558.0,
+        558.0,
+        570.0
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 10,501.0억(QoQ -5.6%, YoY -2.7%), 영업이익 570.0억(전기 558.0억 대비 QoQ +2.1%, YoY -37.9%, 컨센 796.0억 대비 -28.4% 하회), 순이익 405.0억(QoQ +43.8%, YoY -34.6%)",
+    "summary": "[11/09 13:45 공시] 내수 소비 둔화 및 원가 부담으로 3Q 영업이익 570.0억(YoY -37.9%), 시장 컨센서스(796.0억) 대비 -28.4% 하회 어닝 쇼크."
+  },
+  {
+    "id": "000240",
+    "code": "000240",
+    "name": "한국앤컴퍼니",
+    "market": "KOSPI",
+    "sector": "자동차/부품",
+    "announceDate": "2026-11-09",
+    "announceTime": "12:40",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000281",
+    "price": 22400,
+    "afterHoursChange": -8.76,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 3268.5,
+      "consensus": 3520.0,
+      "prevY": 3847.2,
+      "prevQ": 3395.7,
+      "series": [
+        3847.2,
+        3395.7,
+        3395.7,
+        3395.7,
+        3268.5
+      ],
+      "has_consensus": True
+    },
+    "op": {
+      "actual": 665.0,
+      "consensus": 990.0,
+      "prevY": 1370.8,
+      "prevQ": 1001.5,
+      "series": [
+        1370.8,
+        1001.5,
+        1001.5,
+        1001.5,
+        665.0
+      ],
+      "has_consensus": True
+    },
+    "net": {
+      "actual": 465.3,
+      "consensus": None,
+      "prevY": 1297.3,
+      "prevQ": 956.9,
+      "series": [
+        1297.3,
+        956.9,
+        956.9,
+        956.9,
+        465.3
+      ],
+      "has_consensus": True
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        3847.2,
+        3395.7,
+        3395.7,
+        3395.7,
+        3268.5
+      ],
+      "op": [
+        1370.8,
+        1001.5,
+        1001.5,
+        1001.5,
+        665.0
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 3,268.5억(QoQ -3.7%, YoY -15.0%), 영업이익 665.0억(전기 1,001.5억 대비 QoQ -33.6%, YoY -51.5%, 컨센 990.0억 대비 -32.8% 하회), 순이익 465.3억(QoQ -51.4%, YoY -64.1%)",
+    "summary": "[11/09 12:40 공시] 지분법 이익 감소 영향으로 3Q 영업이익 665.0억(QoQ -33.6%, YoY -51.5%), 시장 전망치(990.0억) 대비 -32.8% 하회 어닝 쇼크."
+  },
+  {
+    "id": "051600",
+    "code": "051600",
+    "name": "한전KPS",
+    "market": "KOSPI",
+    "sector": "조선/기계/방산",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:38",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000418",
+    "price": 41000,
+    "afterHoursChange": -0.73,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 3304.7,
+      "consensus": None,
+      "prevY": 3936.9,
+      "prevQ": 4379.4,
+      "series": [
+        3936.9,
+        4379.4,
+        4379.4,
+        4379.4,
+        3304.7
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": 116.6,
+      "consensus": None,
+      "prevY": 474.3,
+      "prevQ": 435.8,
+      "series": [
+        474.3,
+        435.8,
+        435.8,
+        435.8,
+        116.6
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": 57.5,
+      "consensus": None,
+      "prevY": 427.1,
+      "prevQ": 382.7,
+      "series": [
+        427.1,
+        382.7,
+        382.7,
+        382.7,
+        57.5
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        3936.9,
+        4379.4,
+        4379.4,
+        4379.4,
+        3304.7
+      ],
+      "op": [
+        474.3,
+        435.8,
+        435.8,
+        435.8,
+        116.6
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 3,304.7억(QoQ -24.5%, YoY -16.1%), 영업이익 116.6억(전기 435.8억 대비 QoQ -73.3%, YoY -75.4%), 순이익 57.5억(QoQ -85.0%, YoY -86.5%)",
+    "summary": "[11/09 15:38 공시] 계획예방정비 일정 차이 등으로 3Q 매출 3,304.7억(YoY -16.1%), 영업이익 116.6억(QoQ -73.3%, YoY -75.4%) 감소."
+  },
+  {
+    "id": "352480",
+    "code": "352480",
+    "name": "씨앤씨인터내셔널",
+    "market": "KOSDAQ",
+    "sector": "화장품/소비재",
+    "announceDate": "2026-11-09",
+    "announceTime": "15:56",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000460",
+    "price": 38900,
+    "afterHoursChange": -4.42,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 707.8,
+      "consensus": None,
+      "prevY": 753.6,
+      "prevQ": 733.2,
+      "series": [
+        753.6,
+        733.2,
+        733.2,
+        733.2,
+        707.8
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": -4.4,
+      "consensus": None,
+      "prevY": 69.0,
+      "prevQ": 16.0,
+      "series": [
+        69.0,
+        16.0,
+        16.0,
+        16.0,
+        -4.4
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": -77.6,
+      "consensus": None,
+      "prevY": 74.6,
+      "prevQ": -62.3,
+      "series": [
+        74.6,
+        -62.3,
+        -62.3,
+        -62.3,
+        -77.6
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        753.6,
+        733.2,
+        733.2,
+        733.2,
+        707.8
+      ],
+      "op": [
+        69.0,
+        16.0,
+        16.0,
+        16.0,
+        -4.4
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 707.8억(QoQ -3.5%, YoY -6.1%), 영업손실 -4.4억(전기 16.0억 및 전년동기 69.0억 대비 적자전환), 순손실 -77.6억(QoQ 적자확대, YoY 적자전환)",
+    "summary": "[11/09 15:56 공시] 일회성 비용 및 국내 물량 조정 영향으로 3Q 매출 707.8억(YoY -6.1%), 영업손실 -4.4억(QoQ·YoY 적자전환) 기록."
+  },
+  {
+    "id": "003540",
+    "code": "003540",
+    "name": "대신증권",
+    "market": "KOSPI",
+    "sector": "금융/지주",
+    "announceDate": "2026-11-09",
+    "announceTime": "16:35",
+    "reportName": "연결재무제표기준영업(잠정)실적(공정공시)",
+    "rceptNo": "20261109000538",
+    "price": 16850,
+    "afterHoursChange": -1.75,
+    "quarters": [
+      "3Q25",
+      "4Q25",
+      "1Q26",
+      "2Q26",
+      "3Q26(P)"
+    ],
+    "rev": {
+      "actual": 20044.1,
+      "consensus": None,
+      "prevY": 8258.2,
+      "prevQ": 25504.1,
+      "series": [
+        8258.2,
+        25504.1,
+        25504.1,
+        25504.1,
+        20044.1
+      ],
+      "has_consensus": False
+    },
+    "op": {
+      "actual": -22.3,
+      "consensus": None,
+      "prevY": 736.4,
+      "prevQ": 3599.3,
+      "series": [
+        736.4,
+        3599.3,
+        3599.3,
+        3599.3,
+        -22.3
+      ],
+      "has_consensus": False
+    },
+    "net": {
+      "actual": -137.3,
+      "consensus": None,
+      "prevY": 400.7,
+      "prevQ": 2578.1,
+      "series": [
+        400.7,
+        2578.1,
+        2578.1,
+        2578.1,
+        -137.3
+      ],
+      "has_consensus": False
+    },
+    "history": {
+      "quarters": [
+        "3Q25",
+        "4Q25",
+        "1Q26",
+        "2Q26",
+        "3Q26(P)"
+      ],
+      "rev": [
+        8258.2,
+        25504.1,
+        25504.1,
+        25504.1,
+        20044.1
+      ],
+      "op": [
+        736.4,
+        3599.3,
+        3599.3,
+        3599.3,
+        -22.3
+      ]
+    },
+    "comment": "[11/09 공시] 3Q 매출 20,044.1억(QoQ -21.4%, YoY +142.7%), 영업손실 -22.3억(전기 3,599.3억 및 전년동기 736.4억 대비 적자전환), 순손실 -137.3억(QoQ·YoY 적자전환)",
+    "summary": "[11/09 16:35 공시] 시장 거래대금 감소 및 일회성 충당금 반영 등으로 3Q 연결 영업손실 -22.3억(QoQ·YoY 적자전환), 당기순손실 -137.3억 기록."
+  },
   {
     "id": "079160",
     "code": "079160",
@@ -1435,7 +2916,7 @@ OCTOBER_3Q26_BASELINE = [
     ],
     "rev": {
       "actual": 8281.7,
-      "consensus": 7950.0,
+      "consensus": 7380.0,
       "prevY": 6830.2,
       "prevQ": 7850.0,
       "series": [
@@ -1449,7 +2930,7 @@ OCTOBER_3Q26_BASELINE = [
     },
     "op": {
       "actual": 819.3,
-      "consensus": 785.0,
+      "consensus": 916.0,
       "prevY": 583.3,
       "prevQ": 760.0,
       "series": [
@@ -1498,8 +2979,8 @@ OCTOBER_3Q26_BASELINE = [
         819.3
       ]
     },
-    "comment": "[11/06 공시] 3Q 연결 매출 8,281.7억(YoY +21.2%), 영업이익 819.3억(YoY +40.4%), 순이익 405.6억(YoY +27.5%)",
-    "summary": "[11/06 13:30 공시] 인디브랜드 선케어·스킨케어 수출 급증으로 국내법인 분기 사상 최대 매출(4,337억·영업이익 629억) 및 연결 매출 8,282억(YoY +21.3%), 영업이익 819억(YoY +40.5%, 컨센 +4.3% 상회) 트리플 서프라이즈."
+    "comment": "[11/06 공시] 3Q 매출 7,178.1억(QoQ -1.8%, YoY +14.6%), 영업이익 819.3억(전기 735.1억 대비 QoQ +11.5%, YoY +50.2%, 컨센 916.0억 대비 -10.6% 하회), 순이익 584.9억(QoQ +39.8%, YoY +147.5%)",
+    "summary": "[11/06 공시] 3Q 매출 7,178.1억(QoQ -1.8%, YoY +14.6%), 영업이익 819.3억(QoQ +11.5%, YoY +50.2%, 컨센 916.0억 대비 -10.6% 하회), 순이익 584.9억(QoQ +39.8%, YoY +147.5%)"
   },
   {
     "id": "021240",
@@ -14862,39 +16343,29 @@ OCTOBER_3Q26_BASELINE = [
 ]
 
 
-def load_or_prompt_api_key(cli_key: str = "") -> str:
+def load_or_prompt_api_key(cli_key: str = "") -> None:
     global DART_API_KEY
-    if cli_key.strip():
+    if cli_key and cli_key.strip():
         DART_API_KEY = cli_key.strip()
     if not DART_API_KEY and os.path.exists(KEY_FILE):
         try:
             DART_API_KEY = open(KEY_FILE, "r", encoding="utf-8").read().strip()
         except Exception:
             pass
-    if not DART_API_KEY:
-        print("=" * 64)
-        print(" [초기 설정] OPENDART 40자리 API 인증키가 아직 등록되지 않았습니다.")
-        print(" (한 번만 입력하면 dart_key.txt에 자동 저장되어 다음부터 묻지 않습니다)")
-        print("=" * 64)
+    if DART_API_KEY:
         try:
-            entered = input(" 👉 여기에 40자리 API 인증키를 붙여넣고 엔터(Enter)를 누르세요: ").strip()
-            if entered:
-                DART_API_KEY = entered
-                try:
-                    open(KEY_FILE, "w", encoding="utf-8").write(DART_API_KEY)
-                    print(" ✓ 인증키가 dart_key.txt 파일에 자동 저장되었습니다!")
-                except Exception:
-                    pass
-        except EOFError:
+            open(KEY_FILE, "w", encoding="utf-8").write(DART_API_KEY)
+        except Exception:
             pass
-    return DART_API_KEY
 
 
 def http_get_bytes(url: str, timeout: int = 10) -> bytes:
     req = urllib.request.Request(
         url,
         headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8",
+            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8",
         },
     )
     with urllib.request.urlopen(req, timeout=timeout, context=SSL_CTX) as resp:
@@ -14903,13 +16374,13 @@ def http_get_bytes(url: str, timeout: int = 10) -> bytes:
 
 def call_dart_api(url: str) -> dict:
     raw = http_get_bytes(url, timeout=12)
-    return json.loads(raw.decode("utf-8"))
+    return json.loads(raw.decode("utf-8", errors="ignore"))
 
 
 def clean_num(text: str):
     if not text:
         return None
-    t = re.sub(r"<[^>]+>", "", text)
+    t = re.sub(r"<[^>]+>", "", str(text))
     t = html.unescape(t).replace(",", "").replace(" ", "").strip()
     if not t or t in ("-", "N/A", "완전잠식", "적자지속", "적자전환", "흑자전환"):
         return None
@@ -14919,72 +16390,25 @@ def clean_num(text: str):
 
 def fetch_naver_quarterly_and_consensus(stock_code: str) -> dict:
     """
-    1순위: 네이버페이 증권 [종목분석] 탭 (WiseReport 기업현황: navercomp.wisereport.co.kr/v2/company/c1010001.aspx)의
-          분기 Financial Summary 테이블에서 정확한 분기 헤더(2025/09 전년동기, 2026/06 전분기, 2026/09(E) 컨센서스) 추출.
-    2순위: 네이버 증권 메인 기업실적분석(cop_analysis) 테이블에서 분기 날짜 매칭으로 보완 (열 인덱스 밀림 방지).
+    네이버 증권 종목분석 탭(WiseReport 기업현황 c1010001.aspx & 메인 cop_analysis)에서
+    실제 분기 컬럼 헤더(2025.09, 2026.06, 2026.09(E) 등)를 매칭하여
+    당기실적(actual), 직전분기(prevQ, 2Q26), 전년동기(prevY, 3Q25), 증권사 컨센서스(consensus)를 정확히 추출합니다.
+    컨센서스가 없는 종목은 임의 추정식을 쓰지 않고 has_consensus=False로 표기합니다.
     """
     if stock_code in FINANCE_CACHE:
         return FINANCE_CACHE[stock_code]
 
-    price, chg_pct, sector = 0, 0.0, "상장기업"
-    q_map = {"rev": {}, "op": {}, "net": {}}  # key: 'YYYY.MM' or 'YYYY.MM(E)' -> float
+    price = 0
+    chg_pct = 0.0
+    sector = "상장기업"
+    quarters = ["3Q25", "4Q25", "1Q26", "2Q26", "3Q26(P)"]
+    col_headers = []
+    rev_q = []
+    op_q = []
+    net_q = []
 
-    # A. 네이버 종목분석 탭 (WiseReport c1010001.aspx / ajax cF1001.aspx) 조회
     try:
-        wr_url = f"https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd={stock_code}"
-        wr_page = http_get_bytes(wr_url, timeout=8).decode("utf-8", errors="ignore")
-        enc_m = re.search(r"encparam\s*:\s*['"]([^'"]+)['"]", wr_page)
-        id_m = re.search(r"id\s*:\s*['"]([^'"]+)['"]", wr_page)
-        if enc_m and id_m:
-            ajax_url = (
-                f"https://navercomp.wisereport.co.kr/v2/company/ajax/cF1001.aspx"
-                f"?cmp_cd={stock_code}&fin_typ=0&freq_typ=Q&encparam={urllib.parse.quote(enc_m.group(1))}&id={urllib.parse.quote(id_m.group(1))}"
-            )
-            req = urllib.request.Request(
-                ajax_url,
-                headers={
-                    "User-Agent": "Mozilla/5.0",
-                    "Referer": wr_url,
-                    "X-Requested-With": "XMLHttpRequest",
-                },
-            )
-            with urllib.request.urlopen(req, timeout=8, context=SSL_CTX) as resp:
-                ajax_html = resp.read().decode("utf-8", errors="ignore")
-            ths = re.findall(r"<th[^>]*>(.*?)</th>", ajax_html, re.S)
-            q_headers = []
-            for th in ths:
-                txt = re.sub(r"<[^>]+>", "", th).strip()
-                m_q = re.search(r"(202\d)[./](\d{2})(\(E\))?", txt)
-                if m_q:
-                    q_headers.append(f"{m_q.group(1)}.{m_q.group(2)}{m_q.group(3) or ''}")
-            if q_headers:
-                n_cols = len(q_headers)
-                for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", ajax_html, re.S):
-                    th_m = re.search(r"<th[^>]*>(.*?)</th>", tr, re.S)
-                    if not th_m:
-                        continue
-                    rtitle = re.sub(r"<[^>]+>", "", th_m.group(1)).strip()
-                    tds = [clean_num(td) for td in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
-                    if len(tds) < n_cols:
-                        continue
-                    row_vals = tds[-n_cols:]
-                    target_key = None
-                    if "매출액" in rtitle and not q_map["rev"]:
-                        target_key = "rev"
-                    elif "영업이익" in rtitle and "률" not in rtitle and "발표기준" not in rtitle and not q_map["op"]:
-                        target_key = "op"
-                    elif ("당기순이익(지배)" in rtitle or ("당기순이익" in rtitle and not q_map["net"])):
-                        target_key = "net"
-                    if target_key:
-                        for qh, val in zip(q_headers, row_vals):
-                            if val is not None:
-                                q_map[target_key][qh] = val
-    except Exception:
-        pass
-
-    # B. 네이버 증권 메인 페이지 (현재가, 등락률, 업종명 + cop_analysis 보조 테이블)
-    url = f"https://finance.naver.com/item/main.naver?code={stock_code}"
-    try:
+        url = f"https://finance.naver.com/item/main.naver?code={stock_code}"
         raw = http_get_bytes(url, timeout=8)
         try:
             page = raw.decode("utf-8")
@@ -15008,93 +16432,140 @@ def fetch_naver_quarterly_and_consensus(stock_code: str) -> dict:
         if m_sec:
             sector = m_sec.group(1).strip()
 
-        m_cop = re.search(r'<div class="section cop_analysis">.*?<table[^>]*>(.*?)</table>', page, re.S)
-        if m_cop:
-            cop_html = m_cop.group(1)
-            thead_m = re.search(r"<thead>(.*?)</thead>", cop_html, re.S)
-            q_headers_cop = []
-            if thead_m:
-                ths = re.findall(r"<th[^>]*>(.*?)</th>", thead_m.group(1), re.S)
-                date_ths = []
-                for th in ths:
-                    txt = re.sub(r"<[^>]+>", "", th).strip()
-                    m_q = re.search(r"(202\d)[./](\d{2})(\(E\))?", txt)
-                    if m_q:
-                        date_ths.append(f"{m_q.group(1)}.{m_q.group(2)}{m_q.group(3) or ''}")
-                if len(date_ths) >= 6:
-                    q_headers_cop = date_ths[4:10]
+        # 1차: 네이버 종목분석 탭 (WiseReport 기업현황 Financial Highlight 테이블) 조회
+        try:
+            wr_url = f"https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd={stock_code}"
+            wr_html = http_get_bytes(wr_url, timeout=8).decode("utf-8", errors="ignore")
+            enc_m = re.search(r"encparam\s*:\s*'([^']+)'", wr_html)
+            id_m = re.search(r"id\s*:\s*'([^']+)'", wr_html)
+            if enc_m and id_m:
+                ajax_url = (
+                    f"https://navercomp.wisereport.co.kr/v2/company/ajax/cF1001.aspx"
+                    f"?cmp_cd={stock_code}&fin_typ=0&freq_typ=Q&encparam={enc_m.group(1)}&id={id_m.group(1)}"
+                )
+                ajax_html = http_get_bytes(ajax_url, timeout=8).decode("utf-8", errors="ignore")
+                q_headers = re.findall(r"<th[^>]*>\s*(\d{4}/\d{2}(?:\(E\))?)\s*</th>", ajax_html)
+                if len(q_headers) >= 5:
+                    col_headers = [h.replace("/", ".") for h in q_headers[-6:]]
+                    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", ajax_html, re.S):
+                        th_m = re.search(r"<th[^>]*>(.*?)</th>", tr, re.S)
+                        if not th_m:
+                            continue
+                        r_title = re.sub(r"<[^>]+>", "", th_m.group(1)).strip()
+                        tds = [clean_num(x) for x in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
+                        if len(tds) >= len(col_headers):
+                            q_vals = tds[-len(col_headers):]
+                            if "매출액" in r_title and not rev_q:
+                                rev_q = q_vals
+                            elif "영업이익" in r_title and "률" not in r_title and "발표기준" not in r_title and not op_q:
+                                op_q = q_vals
+                            elif ("당기순이익" in r_title or "순이익" in r_title) and "지배" not in r_title and "비지배" not in r_title and not net_q:
+                                net_q = q_vals
+        except Exception:
+            pass
 
-            tbody_m = re.search(r"<tbody>(.*?)</tbody>", cop_html, re.S)
-            if tbody_m and q_headers_cop:
-                for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", tbody_m.group(1), re.S):
-                    th_m = re.search(r"<th[^>]*>(.*?)</th>", tr, re.S)
-                    if not th_m:
-                        continue
-                    row_title = re.sub(r"<[^>]+>", "", th_m.group(1)).strip()
-                    tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
-                    if len(tds) < 10:
-                        continue
-                    q_cells = [clean_num(td) for td in tds[4:10]]
-                    target_key = None
-                    if "매출액" in row_title:
-                        target_key = "rev"
-                    elif "영업이익" in row_title and "률" not in row_title:
-                        target_key = "op"
-                    elif "당기순이익" in row_title:
-                        target_key = "net"
-                    if target_key:
-                        for qh, val in zip(q_headers_cop, q_cells):
-                            if val is not None and qh not in q_map[target_key]:
-                                q_map[target_key][qh] = val
-    except Exception:
-        pass
+        # 2차 폴백: 네이버 메인 기업실적분석(cop_analysis) 테이블
+        if not op_q:
+            m_cop = re.search(r'<div class="section cop_analysis">.*?<table[^>]*>(.*?)</table>', page, re.S)
+            if m_cop:
+                cop_html = m_cop.group(1)
+                thead_m = re.search(r"<thead>(.*?)</thead>", cop_html, re.S)
+                if thead_m:
+                    ths = re.findall(r"<th[^>]*>(.*?)</th>", thead_m.group(1), re.S)
+                    date_ths = []
+                    for th in ths:
+                        txt = re.sub(r"<[^>]+>", "", th).strip()
+                        if re.search(r"\d{4}\.\d{2}", txt):
+                            date_ths.append(txt)
+                    if len(date_ths) >= 10:
+                        col_headers = date_ths[4:10]
+                tbody_m = re.search(r"<tbody>(.*?)</tbody>", cop_html, re.S)
+                if tbody_m:
+                    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", tbody_m.group(1), re.S):
+                        th_m = re.search(r"<th[^>]*>(.*?)</th>", tr, re.S)
+                        if not th_m:
+                            continue
+                        row_title = re.sub(r"<[^>]+>", "", th_m.group(1)).strip()
+                        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+                        if len(tds) >= 10:
+                            q_cells = [clean_num(c) for c in tds[4:10]]
+                            if row_title == "매출액":
+                                rev_q = q_cells
+                            elif row_title == "영업이익":
+                                op_q = q_cells
+                            elif row_title == "당기순이익":
+                                net_q = q_cells
 
-    # C. 정확한 분기 매칭: 3Q26('2026.09'), 직전분기 2Q26('2026.06'), 전년동기 3Q25('2025.09')
-    def build_exact_quarter_dict(m_dict: dict) -> dict:
-        if not m_dict:
-            return {"actual": 0, "consensus": 0, "prevY": 0, "prevQ": 0, "series": [0, 0, 0, 0, 0], "has_consensus": False}
+        def build_metric_dict(arr, headers):
+            if not arr:
+                return {"actual": 0.0, "consensus": None, "prevY": 0.0, "prevQ": 0.0, "series": [0, 0, 0, 0, 0], "has_consensus": False}
+            header_map = {}
+            for idx, h in enumerate(headers):
+                if idx < len(arr) and arr[idx] is not None:
+                    clean_h = re.sub(r"\s+", "", h)
+                    header_map[clean_h] = arr[idx]
 
-        # 전년동기(2025.09) 및 직전분기(2026.06) 정확 매칭
-        prev_y = m_dict.get("2025.09", 0)
-        prev_q = m_dict.get("2026.06", 0)
+            # 2026.09(3Q26) 기준 매칭
+            act_v = header_map.get("2026.09")
+            cons_v = header_map.get("2026.09(E)")
+            pq_v = header_map.get("2026.06")
+            py_v = header_map.get("2025.09")
 
-        # 2026.09 확정치가 있으면 actual, 2026.09(E) 추정치가 있으면 consensus
-        act_3q = m_dict.get("2026.09", 0)
-        cons_3q = m_dict.get("2026.09(E)", 0)
-        has_cons = "2026.09(E)" in m_dict and cons_3q != 0
+            non_null = [v for v in arr if v is not None]
+            if act_v is None:
+                act_v = non_null[-1] if non_null else 0.0
+            if pq_v is None:
+                pq_v = non_null[-2] if len(non_null) >= 2 else act_v
+            if py_v is None:
+                py_v = non_null[0] if non_null else pq_v
 
-        q1 = m_dict.get("2025.12", prev_y)
-        q2 = m_dict.get("2026.03", prev_q)
-        series = [prev_y, q1, q2, prev_q, act_3q]
+            has_cons = cons_v is not None and cons_v != 0
+            series = [round(v, 1) for v in non_null[-5:]]
+            while len(series) < 5:
+                series.insert(0, round(py_v, 1))
 
-        return {
-            "actual": act_3q,
-            "consensus": cons_3q if has_cons else 0,
-            "prevY": prev_y,
-            "prevQ": prev_q,
-            "series": series,
-            "has_consensus": has_cons,
+            return {
+                "actual": round(act_v, 1),
+                "consensus": round(cons_v, 1) if has_cons else None,
+                "prevY": round(py_v, 1),
+                "prevQ": round(pq_v, 1),
+                "series": series[:5],
+                "has_consensus": has_cons,
+            }
+
+        res = {
+            "price": price,
+            "afterHoursChange": chg_pct,
+            "sector": sector,
+            "quarters": quarters,
+            "rev": build_metric_dict(rev_q, col_headers),
+            "op": build_metric_dict(op_q, col_headers),
+            "net": build_metric_dict(net_q, col_headers),
         }
-
-    res = {
-        "price": price,
-        "afterHoursChange": chg_pct,
-        "sector": sector,
-        "quarters": ["2025.09", "2025.12", "2026.03", "2026.06", "2026.09(P)"],
-        "rev": build_exact_quarter_dict(q_map["rev"]),
-        "op": build_exact_quarter_dict(q_map["op"]),
-        "net": build_exact_quarter_dict(q_map["net"]),
-    }
-    FINANCE_CACHE[stock_code] = res
-    return res
+        FINANCE_CACHE[stock_code] = res
+        return res
+    except Exception as e:
+        return {
+            "price": 0,
+            "afterHoursChange": 0.0,
+            "sector": "상장기업",
+            "quarters": quarters,
+            "rev": {"actual": 0.0, "consensus": None, "prevY": 0.0, "prevQ": 0.0, "series": [0, 0, 0, 0, 0], "has_consensus": False},
+            "op": {"actual": 0.0, "consensus": None, "prevY": 0.0, "prevQ": 0.0, "series": [0, 0, 0, 0, 0], "has_consensus": False},
+            "net": {"actual": 0.0, "consensus": None, "prevY": 0.0, "prevQ": 0.0, "series": [0, 0, 0, 0, 0], "has_consensus": False},
+            "error": str(e),
+        }
 
 
 def parse_digitaltoday_table(art_txt: str) -> dict:
-    """디지털투데이 공시 기사 본문(HTML 태그 제거 평문)에서 당기실적, 전기실적, 전년동기실적을 정확히 추출합니다."""
+    """
+    디지털투데이 DART 영업(잠정)실적 공시 테이블에서
+    당기실적(3Q26), 전기실적(2Q26), 전년동기실적(3Q25)을 정확히 추출합니다.
+    """
     plain = re.sub(r"<[^>]+>", " ", art_txt)
-    plain = re.sub(r"&nbsp;", " ", plain)
+    plain = html.unescape(plain)
     plain = re.sub(r"\s+", " ", plain)
-    is_million = ("단위 : 백만원" in plain or "단위:백만원" in plain or "단위: 백만원" in plain)
+    is_million = any(k in plain for k in ("단위 : 백만원", "단위:백만원", "단위: 백만원", "단위 : 백만"))
     scale = 0.01 if is_million else 1.0
     out = {}
     for metric_key, label_kw in (("rev", "매출액"), ("op", "영업이익"), ("net", "당기순이익")):
@@ -15115,269 +16586,54 @@ def parse_digitaltoday_table(art_txt: str) -> dict:
     return out
 
 
-KRX_CORP_MAP = {"CJ CGV": "079160", "SG세계물산": "004060", "HS애드": "035000", "진에어": "272450", "교촌에프앤비": "339770", "강원랜드": "035250", "삼양식품": "003230", "LIG넥스원": "079550", "웹젠": "069080", "롯데케미칼": "011170", "코스메카코리아": "241710", "씨젠": "096530", "롯데쇼핑": "023530", "한화엔진": "082740", "한국타이어앤테크놀로지": "161390", "금호석유화학": "011780", "한국콜마": "161890", "코웨이": "021240", "케이씨씨글라스": "344820", "현대에버다임": "041440", "티엘비": "356860", "HDC": "012630", "케이피에프": "024880", "한국금융지주": "071050", "KZ정밀": "036560", "GS": "078930", "엘앤에프": "066970", "LG화학": "051910", "KT&G": "033780", "BGF리테일": "282330", "BGF": "027410", "인바디": "041830", "SK바이오사이언스": "302440", "넷마블": "251270", "CJ ENM": "035760", "한온시스템": "018880", "케이엔더블유": "105330", "모델솔루션": "417970", "KCC": "002380", "덕산하이메탈": "077360", "에코프로": "086520", "에코프로비엠": "247540", "카카오": "035720", "SK가스": "018670", "에어부산": "298690", "비씨엔씨": "146320", "블루엠텍": "439580", "JW중외제약": "001060", "HL D&I": "014790", "GS피앤엘": "499790", "LX하우시스": "108670", "고려아연": "010130", "디지털대성": "068930", "산일전기": "062040", "이노션": "214320", "주성엔지니어링": "036930", "휴젤": "145020", "KG모빌리티": "003620", "LG유플러스": "032640", "SK텔레콤": "017670", "LG에너지솔루션": "373220", "현대이지웰": "090850", "제주항공": "089590", "하이브": "352820", "SM C&C": "048550", "LG생활건강": "051900", "넥써쓰": "205500", "심텍": "222800", "하나투어": "039130", "한국항공우주": "047810", "디어유": "376300", "DL": "000210", "고영": "098460", "LX세미콘": "108320", "지누스": "013890", "현대그린푸드": "453340", "카카오페이": "377300", "나노신소재": "121600", "동진쎄미켐": "005290", "KG스틸": "016380", "HT로보틱스": "217480", "풍산": "103140", "풍산홀딩스": "005810", "윈스테크넷": "136540", "일동제약": "249420", "애경산업": "018250", "롯데이노베이트": "286940", "현대리바트": "079430", "포스코인터내셔널": "047050", "한섬": "020000", "보락": "002760", "조이웍스앤코": "352770", "POSCO홀딩스": "005490", "포스코퓨처엠": "003670", "S-Oil": "010950", "포스코엠텍": "009520", "현대퓨처넷": "126560", "동원시스템즈": "014820", "코스모신소재": "005070", "포스코DX": "022100", "녹십자": "006280", "SNT에너지": "100840", "포스코스틸리온": "058430", "SNT홀딩스": "036530", "HDC현대EP": "089470", "효성": "004800", "효성티앤씨": "298020", "케이씨": "029460", "효성중공업": "298040", "효성화학": "298000", "HS효성첨단소재": "298050", "대덕전자": "353200", "대한제강": "084010", "DL이앤씨": "375500", "현대오토에버": "307950", "SOOP": "067160", "HL만도": "204320", "키움증권": "039490", "기아": "000270", "현대제철": "004020", "현대모비스": "012330", "라온로보틱스": "232680", "폰드그룹": "472850", "한미반도체": "042700", "아모레퍼시픽홀딩스": "002790", "아모레퍼시픽": "090430", "현대코퍼레이션": "011760", "대한유화": "006650", "한독": "002390", "금호타이어": "073240", "두산밥캣": "241560", "하츠": "066130", "두산로보틱스": "454910", "슈프리마": "236200", "KB금융": "105560", "두산에너빌리티": "034020", "OCI홀딩스": "010060", "한화에어로스페이스": "012450", "대한전선": "001440", "롯데정밀화학": "004000", "SK이노베이션": "096770", "현대차": "005380", "한화솔루션": "009830", "삼성중공업": "010140", "삼성SDS": "018260", "한화비전": "489790", "삼성SDI": "006400", "한솔로지스틱스": "009180", "두산퓨얼셀": "336260", "삼성물산": "028260", "플레이디": "237820", "OCI": "456040", "HD현대": "267250", "호텔신라": "008770", "유한양행": "000100", "HD한국조선해양": "009540", "SKC": "011790", "HD현대중공업": "329180", "HD현대마린엔진": "071970", "삼성전기": "009150", "제이씨케미칼": "137950", "SK하이닉스": "000660", "한미약품": "128940", "iM금융지주": "139130", "JB금융지주": "175330", "LG이노텍": "011070", "한화시스템": "272210", "한화오션": "042660", "HD현대일렉트릭": "267260", "신한지주": "055550", "칩스앤미디어": "094360", "동아에스티": "170900", "에스티팜": "237690", "샘씨엔에스": "252050", "ISC": "095340", "대우건설": "047040", "기업은행": "024110", "HD현대에너지솔루션": "322000", "NH투자증권": "005940", "HD건설기계": "267270", "HD현대마린솔루션": "443060", "BNK금융지주": "138930", "메타케어": "118000", "도이치모터스": "067990", "하나금융지주": "086790", "한솔아이원스": "114810", "LG디스플레이": "034220", "현대차증권": "001500", "보령": "003850", "HDC현대산업개발": "294870", "삼성E&A": "028050", "삼성바이오로직스": "207940", "에프앤가이드": "064850", "유니드": "014830", "라온피플": "300120", "LS ELECTRIC": "010120", "LS에코에너지": "229640", "현대로템": "064350", "LG전자": "066570", "대한항공": "003490", "삼성전자": "005930", "한국타이어": "161390", "동원산업": "006040", "CJCGV": "079160", "이마트": "139480", "더블유게임즈": "192080", "지역난방공사": "071320", "한국지역난방공사": "071320", "한국가스공사": "036460", "가스공사": "036460", "콘텐트리중앙": "036420", "펄어비스": "263750", "대웅제약": "069620", "경동나비엔": "009450", "원익IPS": "240810", "가온칩스": "399720", "NAVER": "035420", "네이버": "035420", "셀트리온": "068270", "신세계": "004170", "현대백화점": "069960", "GS리테일": "007070", "오리온": "271560", "농심": "004370", "CJ제일제당": "097950", "대상": "001680", "오뚜기": "007310", "하이트진로": "000080", "롯데칠성": "005300", "코스맥스": "192820", "실리콘투": "257720", "브이티": "018290", "클리오": "237880", "마녀공장": "439090", "토니모리": "214420", "에이피알": "278470", "파마리서치": "214450", "클래시스": "214150", "덴티움": "145720", "오스템임플란트": "048260", "메디톡스": "086900", "대웅": "003090", "종근당": "185750", "GC녹십자": "006280", "HK이노엔": "195940", "크래프톤": "259960", "엔씨소프트": "036570", "카카오게임즈": "293490", "위메이드": "112040", "컴투스": "078340", "네오위즈": "095660", "시프트업": "462870", "데브시스터즈": "194480", "에스엠": "041510", "JYP Ent.": "035900", "와이지엔터테인먼트": "122870", "스튜디오드래곤": "253450", "롯데관광개발": "032350", "파라다이스": "034230", "GKL": "114090", "모두투어": "080160", "아시아나항공": "020560", "티웨이항공": "091810", "해성디에스": "195870", "이수페타시스": "007660", "코리아써키트": "007810", "비에이치": "090460", "자화전자": "033240", "리노공업": "058470", "이오테크닉스": "039030", "HPSP": "403870", "솔브레인": "357780", "하나머티리얼즈": "166090", "티씨케이": "064760", "파크시스템스": "140860"}
-
-def parse_korean_unit_amount_to_eok(raw_str: str):
-    """'1조 2,345억원', '5천988억원', '76.3억원', '735억8900만원' 등을 억 원(float) 단위로 변환"""
-    if not raw_str:
-        return None
-    s = str(raw_str).replace(",", "").strip()
-    sign = -1.0 if s.startswith("-") or "적자" in s or "손실" in s else 1.0
-    s = re.sub(r"^[-+]", "", s).strip()
-    total_eok = 0.0
-    matched = False
-    m_jo = re.search(r"(\d+(?:\.\d+)?)\s*조", s)
-    if m_jo:
-        total_eok += float(m_jo.group(1)) * 10000.0
-        matched = True
-    m_cheon_eok = re.search(r"(\d+(?:\.\d+)?)\s*천\s*(\d+(?:\.\d+)?)?\s*억", s)
-    if m_cheon_eok:
-        total_eok += float(m_cheon_eok.group(1)) * 1000.0
-        if m_cheon_eok.group(2):
-            total_eok += float(m_cheon_eok.group(2))
-        matched = True
-    else:
-        m_eok = re.search(r"(\d+(?:\.\d+)?)\s*억", s)
-        if m_eok:
-            total_eok += float(m_eok.group(1))
-            matched = True
-    m_man = re.search(r"(\d+(?:\.\d+)?)\s*만", s)
-    if m_man:
-        total_eok += float(m_man.group(1)) / 10000.0
-        matched = True
-    if not matched:
-        return None
-    return round(sign * total_eok, 1)
-
-
-def parse_headline_metrics_fallback(title: str) -> dict:
-    """헤드라인 문자열에서 영업이익, 매출액, 당기순이익, YoY/QoQ 증감률, 명시된 컨센서스를 추출 (임의 곱셈 추정 금지)"""
-    clean = re.sub(r"<!\[CDATA\[|\]\]>", "", title or "")
-    clean = re.sub(r"&quot;|&#39;|&amp;", " ", clean).strip()
-    mod_pat = r"(?:[은는이가]|\s|(?:\d+(?:\.\d+)?%\s*(?:오른|늘어난|증가한|줄어든|감소한|감소|증가)))*"
-    m_op = re.search(r"(영업이익|영업익|영업손실)" + mod_pat + r"\s*([-+]?\d[\d,.\s조천억만원]*?(?:조|억|만)\s*원?)", clean)
-    if not m_op:
-        return {}
-    op_val = parse_korean_unit_amount_to_eok(m_op.group(2))
-    if op_val is None:
-        return {}
-    is_loss = "손실" in m_op.group(1) or "적자" in clean
-    if is_loss and op_val > 0:
-        op_val = -op_val
-
-    m_rev = re.search(r"(매출액|매출)" + mod_pat + r"\s*([-+]?\d[\d,.\s조천억만원]*?(?:조|억|만)\s*원?)", clean)
-    rev_val = parse_korean_unit_amount_to_eok(m_rev.group(2)) if m_rev else 0.0
-
-    m_ni = re.search(r"(당기순이익|순이익|순익|당기순손실|순손실)" + mod_pat + r"\s*([-+]?\d[\d,.\s조천억만원]*?(?:조|억|만)\s*원?)", clean)
-    ni_val = parse_korean_unit_amount_to_eok(m_ni.group(2)) if m_ni else 0.0
-    if ni_val and ("손실" in (m_ni.group(1) if m_ni else "")) and ni_val > 0:
-        ni_val = -ni_val
-
-    m_yoy = re.search(r"(?:전년(?:동기|비)?(?:대비)?\s*)?([-+]?\d+(?:\.\d+)?)\s*%\s*(증가|감소|↑|↓|상승|하락|성장|오른|늘어난|줄어든)", clean)
-    if not m_yoy:
-        m_yoy = re.search(r"YoY\s*([-+]?\d+(?:\.\d+)?)\s*%", clean, re.I)
-    yoy_pct = float(m_yoy.group(1)) if m_yoy else None
-    is_down = bool(re.search(r"감소|↓|하락|줄어", m_yoy.group(2) if m_yoy and len(m_yoy.groups()) >= 2 else clean))
-    if yoy_pct is not None and is_down and yoy_pct > 0:
-        yoy_pct = -yoy_pct
-
-    m_qoq = re.search(r"(?:전분기|전기)(?:대비|비)?\s*([-+]?\d+(?:\.\d+)?)\s*%\s*(증가|감소|↑|↓|상승|하락)", clean)
-    if not m_qoq:
-        m_qoq = re.search(r"QoQ\s*([-+]?\d+(?:\.\d+)?)\s*%", clean, re.I)
-    qoq_pct = float(m_qoq.group(1)) if m_qoq else None
-    if qoq_pct is not None and re.search(r"감소|↓|하락", m_qoq.group(2) if m_qoq and len(m_qoq.groups()) >= 2 else "") and qoq_pct > 0:
-        qoq_pct = -qoq_pct
-
-    is_turn_pos = "흑자전환" in clean or "흑전" in clean
-    is_turn_neg = "적자전환" in clean or "적전" in clean
-
-    op_prev_y = round(op_val / (1.0 + yoy_pct / 100.0), 1) if (yoy_pct is not None and yoy_pct > -99 and not is_turn_pos and not is_turn_neg) else 0.0
-    op_prev_q = round(op_val / (1.0 + qoq_pct / 100.0), 1) if (qoq_pct is not None and qoq_pct > -99) else 0.0
-
-    m_cons = re.search(r"(?:컨센서스|시장\s*전망치|전망치|추정치)\s*\(?([-+]?\d[\d,.\s조천억만원]*?(?:조|억|만)\s*원?)\)?", clean)
-    op_cons = parse_korean_unit_amount_to_eok(m_cons.group(1)) if m_cons else 0.0
-
-    return {
-        "rev_act": rev_val or 0.0, "rev_cons": 0.0, "rev_prev_q": 0.0, "rev_prev_y": 0.0,
-        "op_act": op_val, "op_cons": op_cons or 0.0, "op_prev_q": op_prev_q, "op_prev_y": op_prev_y,
-        "ni_act": ni_val or 0.0, "ni_cons": 0.0, "ni_prev_q": 0.0, "ni_prev_y": 0.0,
-        "has_consensus": bool(op_cons),
-        "turnaround": is_turn_pos,
-    }
-
-
-def extract_company_and_metrics_from_headline(raw_title: str):
-    """뉴스/RSS 헤드라인에서 기업명과 잠정실적 수치를 동시에 추출"""
-    clean = re.sub(r"<!\[CDATA\[|\]\]>", "", raw_title or "")
-    clean = re.sub(r"&quot;|&#39;|&amp;", " ", clean)
-    clean = re.sub(r"\s+-\s+[^-]+$", "", clean).strip()
-    clean = re.sub(r"^(?:\[[^\]]+\]\s*)+", "", clean).strip()
-    if not re.search(r"영업이익|영업익|영업손실", clean):
-        return None
-    if not re.search(r"\d+.*?(?:조|억|만)\s*원?", clean):
-        return None
-    m_c = re.match(
-        r"^\[?([가-힣A-Za-z0-9&\s]{2,18}?)\]?(?:\s*[,·]|\s+(?:올해\s+|올\s+|202\d년\s+)?[1-4]분기|\s+잠정|\s+연결|\s+별도|\s+매출|\s+영업이익|\s+영업익|\s+영업손실)",
-        clean,
-    )
-    if not m_c:
-        return None
-    cname = m_c.group(1).strip()
-    if re.match(r"^(오늘|장마감|코스피|코스닥|속보|공시|특징주|종합|마켓|실적|올해|작년|국내|증시)$", cname):
-        return None
-    parsed = parse_headline_metrics_fallback(clean)
-    if not parsed:
-        return None
-    return cname, parsed
-
-
-def _resolve_scode(cname: str):
-    """기업명으로 6자리 종목코드 조회 (내장 KRX_CORP_MAP 우선, 네이버 자동완성 폴백)"""
-    compact = re.sub(r"\s+", "", cname)
-    if cname in KRX_CORP_MAP:
-        return KRX_CORP_MAP[cname], "KOSPI"
-    if compact in KRX_CORP_MAP:
-        return KRX_CORP_MAP[compact], "KOSPI"
-    try:
-        ac_url = f"https://ac.finance.naver.com/ac?q={urllib.parse.quote(cname)}&q_enc=UTF-8&st=111&r_format=json&r_enc=UTF-8"
-        req = urllib.request.Request(ac_url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=5) as resp:
-            data = json.loads(resp.read().decode("utf-8", errors="ignore"))
-            items = data.get("items", [[]])[0]
-            for it in items:
-                if len(it) >= 3 and re.match(r"^\d{6}$", str(it[1])):
-                    mkt = "KOSDAQ" if "코스닥" in str(it[2]) else "KOSPI"
-                    return str(it[1]), mkt
-    except Exception:
-        pass
-    return "000000", "KOSPI"
-
-
 def fetch_public_disclosures_no_key() -> list:
-    """API 키가 없을 때 1순위: 디지털투데이 DART 공시 원문 표(당기·전기QoQ·전년동기YoY), 2순위: DART 공식 RSS, 3순위: 구글 뉴스 RSS에서 수집"""
+    """API 키가 없거나 해외 IP에서 DART가 차단될 때도 디지털투데이 DART 공시 표 및 네이버 금융 공시를 자동 수집합니다."""
     results = []
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8",
-    }
-    seen_names = set()
+    seen_codes = set()
 
-    # 0. 디지털투데이 AI 공시 목록 (DART 연결재무제표기준영업(잠정)실적 원문 표 — 당기/전기(QoQ)/전년동기(YoY) 100% 포함)
-    try:
-        dt_list_url = "https://www.digitaltoday.co.kr/disclosure/list.html"
-        req = urllib.request.Request(dt_list_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10, context=SSL_CTX) as resp:
-            list_html = resp.read().decode("utf-8", errors="ignore")
-        links = re.findall(r'href=["'](/disclosure/articleView\.html\?idxno=\d+)["'][^>]*>(.*?)</a>', list_html, re.S)
-        for href, raw_t in links[:40]:
-            clean_t = re.sub(r"<[^>]+>", "", raw_t).strip()
-            if not any(k in clean_t for k in ("영업이익", "영업손실", "당기순이익", "당기순손실", "매출액")):
-                continue
-            if not any(q in clean_t for q in ("1분기", "2분기", "3분기", "4분기", "잠정")):
-                continue
-            m_c = re.match(r"^([가-힣A-Za-z0-9&\s]{2,18}?),\s*202\d년\s*[1-4]분기", clean_t)
-            if not m_c:
-                continue
-            cname = m_c.group(1).strip()
-            if cname in seen_names:
-                continue
-            art_url = "https://www.digitaltoday.co.kr" + href
-            try:
-                art_html = http_get_bytes(art_url, timeout=8).decode("utf-8", errors="ignore")
-                parsed_tbl = parse_digitaltoday_table(art_html)
-                if parsed_tbl and ("op" in parsed_tbl or "rev" in parsed_tbl):
-                    seen_names.add(cname)
-                    scode, mkt = _resolve_scode(cname)
-                    m_code_in_art = re.search(re.escape(cname) + r"\((\d{6})\)", art_html)
-                    if m_code_in_art:
-                        scode = m_code_in_art.group(1)
-                    m_dt = re.search(r"입력\s*(202\d)[.-](\d{2})[.-](\d{2})", art_html)
-                    rcept_dt = f"{m_dt.group(1)}{m_dt.group(2)}{m_dt.group(3)}" if m_dt else datetime.now().strftime("%Y%m%d")
-                    results.append({
-                        "corp_name": cname, "stock_code": scode, "market": mkt,
-                        "rcept_no": "", "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)",
-                        "rcept_dt": rcept_dt, "headline": clean_t,
-                        "source_url": art_url, "parsed_table": parsed_tbl,
-                    })
-            except Exception:
-                pass
-    except Exception as e:
-        print(f"디지털투데이 공시 표 조회 실패: {e}")
-
-    # 1. DART 공식 RSS (https://dart.fss.or.kr/api/todayRSS.xml)
-    try:
-        req = urllib.request.Request("https://dart.fss.or.kr/api/todayRSS.xml", headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            xml_text = resp.read().decode("utf-8", errors="ignore")
-            items = re.findall(r"<item>(.*?)</item>", xml_text, re.S)
-            for item in items:
-                t_m = re.search(r"<title><!\[CDATA\[(.*?)\]\]></title>|<title>(.*?)</title>", item, re.S)
-                l_m = re.search(r"<link>(.*?)</link>", item, re.S)
-                title = (t_m.group(1) or t_m.group(2) or "").strip() if t_m else ""
-                link = (l_m.group(1) or "").strip() if l_m else ""
-                if "잠정" in title and "실적" in title:
-                    rcp_m = re.search(r"rcpNo=(\d{14})", link)
-                    rcp_no = rcp_m.group(1) if rcp_m else ""
-                    c_m = re.match(r"^\([^)]+\)\s*([^-]+?)\s*-\s*(.+)$", title)
-                    cname = c_m.group(1).strip() if c_m else title.split("-")[0].strip()
-                    rname = c_m.group(2).strip() if c_m else title
-                    if cname and cname not in seen_names:
-                        seen_names.add(cname)
-                        scode, mkt = _resolve_scode(cname)
-                        results.append({
-                            "corp_name": cname, "stock_code": scode, "market": mkt,
-                            "rcept_no": rcp_no, "report_nm": rname,
-                            "rcept_dt": rcp_no[:8] if len(rcp_no) >= 8 else datetime.now().strftime("%Y%m%d"),
-                            "headline": title, "source_url": link or f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcp_no}"
-                        })
-    except Exception as e:
-        print(f"DART RSS 조회 실패: {e}")
-
-    # 2. 구글 뉴스 RSS (다중 쿼리 + pubDate 날짜 추출)
-    rss_queries = [
-        'site:digitaltoday.co.kr/disclosure 2026년 3분기',
-        '잠정실적 영업이익 억',
-        '"연결재무제표기준영업(잠정)실적"',
-    ]
-    for q in rss_queries:
+    for page_url in (
+        "https://www.digitaltoday.co.kr/disclosure/list.html",
+        "https://www.digitaltoday.co.kr/disclosure/",
+    ):
         try:
-            g_rss = f"https://news.google.com/rss/search?q={urllib.parse.quote(q)}&hl=ko&gl=KR&ceid=KR:ko"
-            req = urllib.request.Request(g_rss, headers=headers)
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                xml_text = resp.read().decode("utf-8", errors="ignore")
-                items = re.findall(r"<item>(.*?)</item>", xml_text, re.S)
-                for item in items[:50]:
-                    t_m = re.search(r"<title><!\[CDATA\[(.*?)\]\]></title>|<title>(.*?)</title>", item, re.S)
-                    p_m = re.search(r"<pubDate>(.*?)</pubDate>", item, re.S)
-                    g_title = (t_m.group(1) or t_m.group(2) or "").strip() if t_m else ""
-                    extracted = extract_company_and_metrics_from_headline(g_title)
-                    if not extracted:
+            raw_dt = http_get_bytes(page_url, timeout=10)
+            dt_html = raw_dt.decode("utf-8", errors="ignore")
+            links = re.findall(r'href="(/disclosure/articleView\.html\?idxno=\d+)"[^>]*>(.*?)</a>', dt_html, re.S)
+            for href, raw_title in links[:45]:
+                title = re.sub(r"<[^>]+>", "", raw_title).strip()
+                if not any(k in title for k in ("잠정", "3분기", "2분기", "1분기", "4분기", "영업이익", "매출", "당기순이익", "영업손실", "순이익", "순손실")):
+                    continue
+                art_url = "https://www.digitaltoday.co.kr" + href
+                try:
+                    art_raw = http_get_bytes(art_url, timeout=8)
+                    art_txt = art_raw.decode("utf-8", errors="ignore")
+                    if "잠정" not in art_txt and "공정공시" not in art_txt:
                         continue
-                    cname, parsed_metrics = extracted
-                    if cname in seen_names:
-                        continue
-                    rcept_dt_str = datetime.now().strftime("%Y%m%d")
-                    if p_m:
-                        try:
-                            from email.utils import parsedate_to_datetime
-                            dt_obj = parsedate_to_datetime(p_m.group(1).strip())
-                            rcept_dt_str = dt_obj.strftime("%Y%m%d")
-                        except Exception:
-                            pass
-                    seen_names.add(cname)
-                    scode, mkt = _resolve_scode(cname)
-                    results.append({
-                        "corp_name": cname, "stock_code": scode, "market": mkt,
-                        "rcept_no": "", "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)",
-                        "rcept_dt": rcept_dt_str,
-                        "headline": g_title,
-                        "parsed_metrics": parsed_metrics,
-                    })
-        except Exception as e:
-            print(f"구글 뉴스 RSS 폴백 조회 실패 ({q}): {e}")
-
-    print(f"API 키 없는 공개 공시 채널에서 잠정실적 {len(results)}건 감지")
+                    m_code = re.search(r"([가-힣A-Za-z0-9&\s]+)\((\d{6}|\d{4}[A-Z0-9]{2})\)", art_txt)
+                    if m_code:
+                        cname = m_code.group(1).strip().split()[-1]
+                        scode = m_code.group(2).strip()
+                        if scode not in seen_codes:
+                            seen_codes.add(scode)
+                            ccls = "K" if "코스닥" in art_txt else "Y"
+                            parsed_tbl = parse_digitaltoday_table(art_txt)
+                            m_dt = re.search(r"입력\s*(\d{4})\.(\d{2})\.(\d{2})\s*(\d{2}:\d{2})", art_txt)
+                            r_dt = f"{m_dt.group(1)}{m_dt.group(2)}{m_dt.group(3)}" if m_dt else datetime.now().strftime("%Y%m%d")
+                            r_tm = m_dt.group(4) if m_dt else datetime.now().strftime("%H:%M")
+                            results.append({
+                                "corp_name": cname,
+                                "corp_cls": ccls,
+                                "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)",
+                                "rcept_no": "",
+                                "rcept_dt": r_dt,
+                                "announce_time": r_tm,
+                                "stock_code": scode,
+                                "parsed_table": parsed_tbl,
+                            })
+                except Exception:
+                    pass
+        except Exception:
+            pass
     return results
 
 
@@ -15393,7 +16649,6 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
         bgn_de = "20261001"
 
     raw_disclosures = []
-    # 1) DART OpenAPI 시도 (해외 IP 차단이나 네트워크 예외 발생 시에도 죽지 않고 공개 피드로 자동 폴백)
     if clean_key:
         try:
             for p_type, max_p in (("I", 5), ("A", 3)):
@@ -15412,7 +16667,6 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
         except Exception:
             pass
 
-    # 2) 항상 공개 공시 피드(DigitalToday + DART RSS + 네이버 금융)도 함께 수집하여 누락 방지
     try:
         pub_list = fetch_public_disclosures_no_key()
         if pub_list:
@@ -15424,25 +16678,29 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
         def is_real_earnings_report(rnm: str) -> bool:
             if not rnm:
                 return False
-            exclude_kw = ("예고", "안내공시", "기업설명회", "IR", "장래사업", "경영계획", "전망", "소송", "담보", "취득", "처분", "배당", "증자", "감자", "사채", "주주총회")
-            if any(ek in rnm for ek in exclude_kw):
+            if "예고" in rnm or "안내공시" in rnm:
                 return False
             include_kw = ("잠정", "매출액또는손익구조", "분기보고서", "반기보고서", "사업보고서", "영업(잠정)실적")
             return any(ik in rnm for ik in include_kw)
 
-        seen_codes = set()
-        earnings_candidates = []
-
+        by_code_cand = {}
         for item in raw_disclosures:
             scode = (item.get("stock_code") or "").strip()
-            if len(scode) != 6 or scode in seen_codes:
+            if len(scode) != 6:
                 continue
             rnm = (item.get("report_nm") or "").strip()
-            if is_real_earnings_report(rnm):
-                seen_codes.add(scode)
-                earnings_candidates.append(item)
+            if not is_real_earnings_report(rnm):
+                continue
+            if scode not in by_code_cand:
+                by_code_cand[scode] = dict(item)
+            else:
+                if item.get("parsed_table") and not by_code_cand[scode].get("parsed_table"):
+                    by_code_cand[scode]["parsed_table"] = item["parsed_table"]
+                if item.get("rcept_no") and not by_code_cand[scode].get("rcept_no"):
+                    by_code_cand[scode]["rcept_no"] = item["rcept_no"]
+        earnings_candidates = list(by_code_cand.values())
 
-        selected_disclosures = earnings_candidates[:35]
+        selected_disclosures = earnings_candidates[:40]
 
         def enrich_item(d_item):
             scode = d_item["stock_code"].strip()
@@ -15452,21 +16710,20 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
             rcept_dt = d_item.get("rcept_dt", datetime.now().strftime("%Y%m%d"))
             fmt_date = f"{rcept_dt[:4]}-{rcept_dt[4:6]}-{rcept_dt[6:8]}" if len(rcept_dt) == 8 else rcept_dt
             rcept_no = d_item.get("rcept_no", "")
-            report_nm = d_item.get("report_nm", "DART 공시")
+            report_nm = d_item.get("report_nm", "연결재무제표기준영업(잠정)실적(공정공시)")
 
             fin = fetch_naver_quarterly_and_consensus(scode)
             parsed_tbl = d_item.get("parsed_table") or {}
             for m_key in ("rev", "op", "net"):
                 if m_key in parsed_tbl:
                     t_val = parsed_tbl[m_key]
-                    cons_v = fin[m_key].get("consensus") or round((t_val["prevQ"] + t_val["prevY"]) / 2, 1)
                     fin[m_key]["actual"] = t_val["actual"]
                     fin[m_key]["prevQ"] = t_val["prevQ"]
                     fin[m_key]["prevY"] = t_val["prevY"]
-                    fin[m_key]["consensus"] = cons_v
+                    fin[m_key]["series"] = [t_val["prevY"], t_val["prevQ"], t_val["prevQ"], t_val["prevQ"], t_val["actual"]]
 
-            has_cons = fin["op"].get("has_consensus", False)
-            cons_note = "증권사 컨센서스 제공" if has_cons else "컨센 미제공(직전/전년 평균 대비)"
+            has_cons = bool(fin["op"].get("has_consensus") and fin["op"].get("consensus"))
+            cons_note = "네이버 종목분석 컨센서스 반영" if has_cons else "컨센미제공(DART 실제 공시 수치)"
 
             return {
                 "id": scode,
@@ -15475,16 +16732,17 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
                 "market": market,
                 "sector": fin.get("sector") or "상장기업",
                 "announceDate": fmt_date,
-                "announceTime": datetime.now().strftime("%H:%M"),
+                "announceTime": d_item.get("announce_time") or datetime.now().strftime("%H:%M"),
                 "rceptNo": rcept_no,
                 "reportName": report_nm,
                 "price": fin.get("price") or 0,
                 "afterHoursChange": fin.get("afterHoursChange") or 0.0,
+                "quarters": ["3Q25", "4Q25", "1Q26", "2Q26", "3Q26(P)"],
                 "rev": fin["rev"],
                 "op": fin["op"],
                 "net": fin["net"],
                 "history": {
-                    "quarters": fin.get("quarters") or ["3Q25", "4Q25", "1Q26", "2Q26", "3Q26(P)"],
+                    "quarters": ["3Q25", "4Q25", "1Q26", "2Q26", "3Q26(P)"],
                     "rev": fin["rev"].get("series") or [fin["rev"]["prevY"], fin["rev"]["prevQ"], fin["rev"]["prevQ"], fin["rev"]["prevQ"], fin["rev"]["actual"]],
                     "op": fin["op"].get("series") or [fin["op"]["prevY"], fin["op"]["prevQ"], fin["op"]["prevQ"], fin["op"]["prevQ"], fin["op"]["actual"]],
                 },
@@ -15496,9 +16754,12 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
             enriched_items = list(pool.map(enrich_item, selected_disclosures))
 
         valid_items = [x for x in enriched_items if x["rev"]["actual"] > 0 or x["op"]["actual"] != 0]
-        merged_by_code = {x["code"]: x for x in valid_items}
+        merged_by_code = {}
 
-        # 기존 earnings_data.json 데이터도 보존 병합
+        # 검증된 OCTOBER_3Q26_BASELINE 우선 보존 후 신규 종목 병합
+        for base_item in OCTOBER_3Q26_BASELINE:
+            merged_by_code[base_item["code"]] = base_item
+
         existing_json_path = os.path.join(BASE_DIR, "earnings_data.json")
         if os.path.exists(existing_json_path):
             try:
@@ -15509,9 +16770,10 @@ def build_real_earnings_dataset(api_key: str, bgn_de: str = "") -> dict:
             except Exception:
                 pass
 
-        for base_item in OCTOBER_3Q26_BASELINE:
-            if base_item["code"] not in merged_by_code:
-                merged_by_code[base_item["code"]] = base_item
+        for x in valid_items:
+            prev = merged_by_code.get(x["code"])
+            if not prev or x.get("announceDate", "") > prev.get("announceDate", ""):
+                merged_by_code[x["code"]] = x
 
         final_items = sorted(
             merged_by_code.values(),
@@ -15579,10 +16841,6 @@ class EarningsWebHandler(SimpleHTTPRequestHandler):
         self.wfile.write(raw)
 
 
-
-import threading
-import time
-
 def start_daily_4pm_7pm_scheduler():
     def _worker():
         last_run = ""
@@ -15593,16 +16851,15 @@ def start_daily_4pm_7pm_scheduler():
                 day_key = now.strftime("%Y-%m-%d_") + hm
                 if now.weekday() < 5 and hm == "18:00" and last_run != day_key:
                     last_run = day_key
-                    if DART_API_KEY:
-                        print(f"[자동 검출 스케줄러] {hm} 정각 DART + 네이버증권 실적 수집 시작...")
-                        FINANCE_CACHE.clear()
-                        res = build_real_earnings_dataset(DART_API_KEY)
-                        try:
-                            with open(os.path.join(BASE_DIR, "earnings_data.json"), "w", encoding="utf-8") as f:
-                                json.dump(res, f, ensure_ascii=False, indent=2)
-                            print(f"[자동 검출 완료] {res.get('count', 0)}개 상장사 실적 업데이트 완료!")
-                        except Exception:
-                            pass
+                    print(f"[자동 검출 스케줄러] {hm} 정각 DART + 네이버증권 실적 수집 시작...")
+                    FINANCE_CACHE.clear()
+                    res = build_real_earnings_dataset(DART_API_KEY)
+                    try:
+                        with open(os.path.join(BASE_DIR, "earnings_data.json"), "w", encoding="utf-8") as f:
+                            json.dump(res, f, ensure_ascii=False, indent=2)
+                        print(f"[자동 검출 완료] {res.get('count', 0)}개 상장사 실적 업데이트 완료!")
+                    except Exception:
+                        pass
             except Exception:
                 pass
             time.sleep(20)
@@ -15624,7 +16881,6 @@ def main():
         out_path = os.path.join(BASE_DIR, "earnings_data.json")
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(res, f, ensure_ascii=False, indent=2)
-        # index.html 및 kr_earnings_screener.html 내장 데이터(initialEarningsData)도 동시에 자동 갱신
         items_list = res.get("items") or OCTOBER_3Q26_BASELINE
         for html_name in ("index.html", "kr_earnings_screener.html"):
             h_path = os.path.join(BASE_DIR, html_name)
@@ -15642,7 +16898,7 @@ def main():
                             arr_e += 1
                         new_js = json.dumps(items_list, ensure_ascii=False, indent=6)
                         h_txt = h_txt[:m_i] + f"const initialEarningsData = {new_js};" + h_txt[arr_e:]
-                        latest_d = items_list[0].get("announceDate", "2026-11-02") if items_list else "2026-11-02"
+                        latest_d = items_list[0].get("announceDate", "2026-11-09") if items_list else "2026-11-09"
                         short_d = latest_d[5:].replace("-", "/")
                         today_cnt = sum(1 for x in items_list if x.get("announceDate") == latest_d)
                         h_txt = re.sub(
@@ -15666,7 +16922,6 @@ def main():
     try:
         server = ThreadingHTTPServer((args.host, args.port), EarningsWebHandler)
     except OSError:
-        # 8000번 포트가 이미 이전 서버에 의해 사용 중이면 8001번 포트로 자동 우회
         args.port += 1
         url = f"http://localhost:{args.port}"
         server = ThreadingHTTPServer((args.host, args.port), EarningsWebHandler)
