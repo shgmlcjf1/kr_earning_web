@@ -1,5 +1,1 @@
-{
-  "version": 2,
-  "name": "kr-earnings-radar",
-  "cleanUrls": true
-}
+{"cleanUrls": true, "trailingSlash": false}
